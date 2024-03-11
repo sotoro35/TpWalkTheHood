@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
         android:text="음식점"
-        android:textColor="#757474"
+        android:textColor="#FF5722"
         android:textSize="14sp"
         android:padding="8dp"
         android:layout_margin="8dp"/>
