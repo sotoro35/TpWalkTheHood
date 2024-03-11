@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_walk" android:title="동네산책" android:icon="@drawable/tab1icon"/>
+    <item android:id="@+id/menu_hood" android:title="동네보기" android:icon="@drawable/tab2icon"/>
+    <item android:id="@+id/menu_feed" android:title="동네이야기" android:icon="@drawable/tab3icon"/>
+    <item android:id="@+id/menu_talk" android:title="동네톡" android:icon="@drawable/tab4icon"/>
+    <item android:id="@+id/menu_my" android:title="나의동네" android:icon="@drawable/tab5icon"/>
+
+</menu>
