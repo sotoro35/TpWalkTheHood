@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MainActivity">
+
 
     <FrameLayout
         android:id="@+id/container_fragment"
@@ -17,6 +19,9 @@
         android:id="@+id/bnv_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bnv_menu"/>
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
+        android:background="@color/white"
+        app:menu="@menu/bnv_menu"
+        app:itemTextColor="@color/bnv"/>
 
 </LinearLayout>

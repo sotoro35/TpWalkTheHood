@@ -1,9 +1,11 @@
 package com.hsr2024.tpwalkthehood
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.get
 import com.hsr2024.tpwalkthehood.databinding.ActivityMainBinding
+import com.hsr2024.tpwalkthehood.login.LoginActivity
 import com.hsr2024.tpwalkthehood.tab1.Tab1WlakFragment
 import com.hsr2024.tpwalkthehood.tab2.Tab2HoodFragment
 import com.hsr2024.tpwalkthehood.tab3.Tab3FeedFragment
@@ -18,6 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+
+        binding.bnvView.itemIconTintList= null
+        binding.bnvView.background= null
+
+        supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragment()).commit()
 
         binding.bnvView.setOnItemSelectedListener {
             when(it.itemId){

@@ -69,9 +69,10 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_loginTest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="동네보기 화면"
+        android:text="동네보기 화면 //\n클릭시 로그인테스화면으로 이동"
         android:gravity="center"/>
 
 </RelativeLayout>

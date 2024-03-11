@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 
+// 인트로화면... 1.5초 뒤 메인으로 이동
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class IntroActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this,MainActivity::class.java))
-            finish() },2000)
+            finish() },1500)
     }
 
 

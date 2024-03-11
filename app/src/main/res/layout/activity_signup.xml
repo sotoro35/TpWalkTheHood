@@ -11,12 +11,12 @@
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:navigationIcon="@drawable/ic_action_back"/>
+        android:navigationIcon="@drawable/icon_back"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:src="@drawable/logotitle" />
 
     <TextView
@@ -103,7 +103,8 @@
         android:hint="비밀번호를 입력하세요"
         android:layout_marginLeft="44dp"
         android:layout_marginRight="44dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +118,8 @@
         android:hint="비밀번호를 입력하세요"
         android:layout_marginLeft="44dp"
         android:layout_marginRight="44dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

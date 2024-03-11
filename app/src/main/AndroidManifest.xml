@@ -18,6 +18,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".tab5.ContactusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.FavoriteListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.MyFeedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab4.ChattingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab4.FriendListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab3.FeedDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".tab3.EditActivity"
             android:exported="false" />
         <activity
