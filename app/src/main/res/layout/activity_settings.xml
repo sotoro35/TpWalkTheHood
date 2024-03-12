@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".tab5.SettingsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/icon_back"
+            app:titleTextAppearance="@style/title"
+            app:titleTextColor="#FF9900"
+            app:title="설정하기"
+            app:titleCentered="true"/>
+
+        <TextView
+            android:id="@+id/btn_save_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="저장"
+            android:textColor="#FF9900"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:fontFamily="@font/hanbit"
+            android:text="알림 설정"
+            android:textSize="20sp"
+            android:layout_below="@id/btn_save_settings"
+            android:gravity="center"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="22dp"/>
+
+        <ImageView
+            android:id="@+id/setting1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/toggle_on"
+            android:layout_below="@id/btn_save_settings"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginRight="22dp"/>
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

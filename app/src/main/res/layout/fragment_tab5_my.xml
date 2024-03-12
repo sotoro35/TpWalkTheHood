@@ -1,12 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/logotitle"
+        android:layout_marginBottom="8dp"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/profile_stroke"
+        android:src="@drawable/profile"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"/>
+
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="나의동네"
-        android:gravity="center"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="닉네임"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="성수동"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/change_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="정보변경"
+            android:textSize="20sp"
+            android:layout_below="@id/line1"
+            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btn_change_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/move"
+            android:layout_below="@id/line1"
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_below="@id/change_profile"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/my_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="내 게시물"
+            android:textSize="20sp"
+            android:layout_below="@id/line2"
+            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btn_my_feed"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/move"
+            android:layout_below="@id/line2"
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_below="@id/my_feed"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"/>
+
+
+        <TextView
+            android:id="@+id/favor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="찜 목록"
+            android:textSize="20sp"
+            android:layout_below="@id/line3"
+            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btn_favor"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/move"
+            android:layout_below="@id/line3"
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_below="@id/favor"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="설정"
+            android:textSize="20sp"
+            android:layout_below="@id/line4"
+            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btn_settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/move"
+            android:layout_below="@id/line4"
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_below="@id/settings"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/contactus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="문의하기"
+            android:textSize="20sp"
+            android:layout_below="@id/line5"
+            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btn_contactus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/move"
+            android:layout_below="@id/line5"
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true" />
+
+        <View
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D9D9D9"
+            android:layout_below="@id/contactus"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:layout_below="@id/line6"
+            android:layout_centerInParent="true"/>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".tab5.EditMyFeed"
+            android:exported="false" />
+        <activity
             android:name=".tab5.ContactusActivity"
             android:exported="false" />
         <activity
@@ -30,7 +33,7 @@
             android:name=".tab5.MyFeedActivity"
             android:exported="false" />
         <activity
-            android:name=".tab5.EditProfileActivity"
+            android:name=".tab5.ChangeProfileActivity"
             android:exported="false" />
         <activity
             android:name=".tab4.ChattingActivity"
