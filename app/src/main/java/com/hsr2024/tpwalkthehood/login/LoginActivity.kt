@@ -20,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
         binding.btnSignup.setOnClickListener { startActivity(Intent(this,SignupActivity::class.java)) }
         binding.btnLogin.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
 
-        binding.btnBack.setOnClickListener { finish() }
 
 
     }

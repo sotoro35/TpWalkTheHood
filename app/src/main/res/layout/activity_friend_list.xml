@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".tab4.FriendListActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -55,8 +56,6 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="6dp"/>
 
-
-
         <TextView
             android:id="@+id/btn_friend_delete"
             android:layout_width="wrap_content"
@@ -67,5 +66,9 @@
             android:fontFamily="@font/hanbit"
             android:layout_gravity="center|right"/>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

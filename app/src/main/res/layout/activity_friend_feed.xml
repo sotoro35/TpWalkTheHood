@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".tab4.FriendFeedActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="동네산책 톡톡"
-        app:titleCentered="true"
-        app:titleTextColor="#FF5722"
+        app:navigationIcon="@drawable/icon_back"
         app:titleTextAppearance="@style/title"
-        app:navigationIcon="@drawable/bell"
-        app:menu="@menu/talk_menu"
-        app:subtitle="채팅목록"
+        app:titleTextColor="#FF9900"
+        app:title="친구 게시물"
+        app:titleCentered="true"
+        app:subtitle="닉네임"
         app:subtitleCentered="true"
-        app:subtitleTextAppearance="@style/subtitle"
-        android:padding="8dp"
-        android:layout_marginTop="8dp"/>
+        app:subtitleTextAppearance="@style/subtitle"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D9D9D9"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_friend_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
