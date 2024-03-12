@@ -7,7 +7,12 @@
 
     <style name="title">
         <item name="fontFamily">@font/hanbit</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="subtitle">
+        <item name="fontFamily">@font/hanbit</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Theme.TpWalkTheHood" parent="Base.Theme.TpWalkTheHood" />
