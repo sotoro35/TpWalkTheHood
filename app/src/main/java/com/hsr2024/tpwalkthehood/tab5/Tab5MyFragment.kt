@@ -10,6 +10,7 @@ import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab5MyBinding
 
 // 내정보화면.. 이동과 로그아웃
+// 프로필 이미지 선택.. Ex68참고
 
 
 class Tab5MyFragment : Fragment(){
