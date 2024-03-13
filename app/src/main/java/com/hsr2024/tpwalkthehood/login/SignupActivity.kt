@@ -14,6 +14,7 @@ import com.hsr2024.tpwalkthehood.network.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 
 
 // 닉네임,이메일 중복확인. 모든 값은 필수. 저장정보 서버로 전송
@@ -25,6 +26,9 @@ class SignupActivity : AppCompatActivity() {
 
     lateinit var nickname:String
     lateinit var email:String
+
+    var nicknameCheck:Boolean = false
+    var emailCheck:Boolean =false
 
 
 
@@ -59,35 +63,57 @@ class SignupActivity : AppCompatActivity() {
                 return
             }
 
+            if (nicknameCheck && emailCheck){
 
-            val retrofit = RetrofitHelper.getRetrofitInstance()
-            val retrofitService = retrofit.create(RetrofitService::class.java)
+                val retrofit = RetrofitHelper.getRetrofitInstance()
+                val retrofitService = retrofit.create(RetrofitService::class.java)
 
-            val userData= UserSignupData(nickname, email, password)
-            retrofitService.userDataToServer(userData).enqueue(object : Callback<String>{
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    var s= response.body().toString()
-                    Toast.makeText(this@SignupActivity, s, Toast.LENGTH_SHORT).show()
-                    finish()
-                }
+                val userData= UserSignupData(nickname, email, password)
+                retrofitService.userDataToServer(userData).enqueue(object : Callback<String>{
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        var s= response.body().toString()
+                        Toast.makeText(this@SignupActivity, s, Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
 
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(this@SignupActivity, "서버오류 ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.d("서버오류","${t.message}")
-                }
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Toast.makeText(this@SignupActivity, "서버오류 ${t.message}", Toast.LENGTH_SHORT).show()
+                        Log.d("서버오류","${t.message}")
+                    }
 
-            })//callback
+                })//callback
+            }else AlertDialog.Builder(this).setMessage("중복확인을 해주세요").create().show()
+
         } else AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
 
 
     }
 
     private fun clickCheckName():Boolean{
+        var check:Boolean= false
+        var nickname = binding.inputLayoutNickname.editText!!.text.toString()
 
+        val retrofit = RetrofitHelper.getRetrofitInstance()
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.userCheckNickname(nickname).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                var s= response.body().toString()
+                AlertDialog.Builder(this@SignupActivity).setMessage(s).create().show()
+//                check=s.toBoolean()
+//                if (check){
+//                    AlertDialog.Builder(this@SignupActivity).setMessage("이미사용중입니다").create().show()
+//                }else {
+//                    AlertDialog.Builder(this@SignupActivity).setMessage("사용가능합니다").create().show()
+//                }
+            }
 
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Toast.makeText(this@SignupActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+            }
 
-        return true
+        })
 
+        return check
     }
 
     private fun clickCheckEmail():Boolean{

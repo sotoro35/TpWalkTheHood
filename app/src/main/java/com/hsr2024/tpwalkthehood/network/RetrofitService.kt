@@ -14,10 +14,10 @@ interface RetrofitService {
     //@Body로 보낸 json문자열을 $_POST라는 배열에 자동 저장되지 않음. Ex68번. 04Retrofit/bbb.php 참고
     @POST("/WalkTheHood/userData.php")
     fun userDataToServer(@Body userData:UserSignupData) : Call<String>
-    @POST("/WalkTheHood/userCheck.php")
+    @GET("/WalkTheHood/userCheck.php")
     fun userCheckNickname(@Query("nickname") ChecknickName:String) : Call<String>
 
-    @POST("/WalkTheHood/userCheck.php")
+    @GET("/WalkTheHood/userCheck.php")
     fun userCheckEmail(@Query("email") CheckEmail:String) : Call<String>
 
 
