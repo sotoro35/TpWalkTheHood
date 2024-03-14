@@ -3,9 +3,13 @@ package com.hsr2024.tpwalkthehood.login
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.UserSignupData
 import com.hsr2024.tpwalkthehood.databinding.ActivitySignupBinding
@@ -26,6 +30,11 @@ class SignupActivity : AppCompatActivity() {
 
     lateinit var nickname:String
     lateinit var email:String
+    lateinit var password:String
+    lateinit var passwordConfirm:String
+
+    var checkNickname = false
+    var checkEmail = false
 
 
 
@@ -38,7 +47,17 @@ class SignupActivity : AppCompatActivity() {
         binding.btnNicknameCheck.setOnClickListener { clickCheckName() }
         binding.btnEmailCheck.setOnClickListener { clickCheckEmail() }
 
+        binding.inputLayoutNickname.editText?.doOnTextChanged { text, start, before, count ->
+            checkNickname = false
+        }
+
+
+        binding.inputLayoutEmail.editText?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) checkEmail = false
+        }
+
     }
+
 
     private fun clickSingup(){
         // 작성한 데이터를 서버에 업로그하기
@@ -49,10 +68,8 @@ class SignupActivity : AppCompatActivity() {
 
         nickname = binding.inputLayoutNickname.editText!!.text.toString()
         email = binding.inputLayoutEmail.editText!!.text.toString()
-        var password = binding.inputLayoutPassword.editText!!.text.toString()
-        var passwordConfirm = binding.inputLayoutPasswordConfirm.editText!!.text.toString()
-
-        if (nickname.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && passwordConfirm.isNotEmpty()){
+        password = binding.inputLayoutPassword.editText!!.text.toString()
+        passwordConfirm = binding.inputLayoutPasswordConfirm.editText!!.text.toString()
 
             if (saveCheck(nickname,email,password,passwordConfirm)){
 
@@ -71,12 +88,9 @@ class SignupActivity : AppCompatActivity() {
                         Toast.makeText(this@SignupActivity, "서버오류 ${t.message}", Toast.LENGTH_SHORT).show()
                         Log.d("서버오류","${t.message}")
                     }
-
                 })//callback
-
             }
 
-        } else AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
 
 
     }
@@ -100,6 +114,12 @@ class SignupActivity : AppCompatActivity() {
         } else if (password.contains(" ") || nickname.contains(" ") || email.contains(" ")) {
             AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
 
+        } else if (!nickname.isNotEmpty() && !email.isNotEmpty() && !password.isNotEmpty() && !passwordConfirm.isNotEmpty()) {
+            AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
+
+        } else if (!checkNickname && !checkEmail){
+            AlertDialog.Builder(this).setMessage("중복확인을 해주세요").create().show()
+
         } else boolean= true
 
         return boolean
@@ -122,7 +142,15 @@ class SignupActivity : AppCompatActivity() {
             retrofitService.userCheckNickname(nickname).enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     var s= response.body().toString()
-                    AlertDialog.Builder(this@SignupActivity).setMessage(s).create().show()
+                    //AlertDialog.Builder(this@SignupActivity).setMessage(s).create().show()
+                    checkNickname= s.trim().toBoolean()
+                    if (checkNickname) {
+                        AlertDialog.Builder(this@SignupActivity).setMessage("사용가능 합니다").create().show()
+                        binding.inputLayoutNickname.editText?.clearFocus()
+                        checkNickname = true
+                    }
+                    else AlertDialog.Builder(this@SignupActivity).setMessage("이미 사용중입니다").create().show()
+
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
@@ -136,7 +164,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun clickCheckEmail(){
-        var email = binding.inputLayoutNickname.editText!!.text.toString()
+        var email = binding.inputLayoutEmail.editText!!.text.toString()
 
         if (email.contains(" ")) {
             AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
@@ -147,11 +175,16 @@ class SignupActivity : AppCompatActivity() {
         }else {
             val retrofit = RetrofitHelper.getRetrofitInstance()
             val retrofitService = retrofit.create(RetrofitService::class.java)
-            retrofitService.userCheckNickname(email).enqueue(object : Callback<String>{
+            retrofitService.userCheckEmail(email).enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     var s= response.body().toString()
-                    AlertDialog.Builder(this@SignupActivity).setMessage(s).create().show()
-
+                    checkEmail= s.trim().toBoolean()
+                    if (checkEmail) {
+                        AlertDialog.Builder(this@SignupActivity).setMessage("사용가능 합니다").create().show()
+                        binding.inputLayoutEmail.editText?.clearFocus()
+                        checkEmail = true
+                    }
+                    else AlertDialog.Builder(this@SignupActivity).setMessage("이미 사용중입니다").create().show()
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
@@ -160,7 +193,6 @@ class SignupActivity : AppCompatActivity() {
 
             })
         }
-
     }
 
 

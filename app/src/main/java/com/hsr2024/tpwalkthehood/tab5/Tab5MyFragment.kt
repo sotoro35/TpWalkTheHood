@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab5MyBinding
 
@@ -30,5 +31,6 @@ class Tab5MyFragment : Fragment(){
 
         // 텍스트에 밑줄
         binding.btnLogout.paintFlags= Paint.UNDERLINE_TEXT_FLAG
+        binding.tvNickname.text = G.userAccount?.nickname
     }
 }

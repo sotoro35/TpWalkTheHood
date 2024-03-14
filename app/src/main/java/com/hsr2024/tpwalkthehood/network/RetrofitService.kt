@@ -1,5 +1,9 @@
 package com.hsr2024.tpwalkthehood.network
 
+
+import com.hsr2024.tpwalkthehood.data.UserAccount
+import com.hsr2024.tpwalkthehood.data.UserLoginData
+import com.hsr2024.tpwalkthehood.data.UserLoginResponse
 import com.hsr2024.tpwalkthehood.data.UserSignupData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -14,11 +18,16 @@ interface RetrofitService {
     //@Body로 보낸 json문자열을 $_POST라는 배열에 자동 저장되지 않음. Ex68번. 04Retrofit/bbb.php 참고
     @POST("/WalkTheHood/userData.php")
     fun userDataToServer(@Body userData:UserSignupData) : Call<String>
-    @GET("/WalkTheHood/userCheck.php")
+    @GET("/WalkTheHood/userTest.php")
     fun userCheckNickname(@Query("nickname") ChecknickName:String) : Call<String>
 
-    @GET("/WalkTheHood/userCheck.php")
+    @GET("/WalkTheHood/userTest.php")
     fun userCheckEmail(@Query("email") CheckEmail:String) : Call<String>
+
+    @POST("/WalkTheHood/userLogin.php")
+    fun userLoginToServer(@Body userData:UserLoginData) : Call<UserLoginResponse>
+
+
 
 
 }
