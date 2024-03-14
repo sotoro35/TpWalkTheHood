@@ -1,6 +1,8 @@
 package com.hsr2024.tpwalkthehood.login
 
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -53,6 +55,8 @@ class LoginActivity : AppCompatActivity() {
                     val loadAccount:UserAccount = this
                     if (G.userAccount == null) G.userAccount = UserAccount(this.email,this.password, this.nickname)
 
+                    saveSharedPreferences()
+
                     startActivity(Intent(this@LoginActivity,MainActivity::class.java))
                     finish()
 
@@ -64,6 +68,19 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    fun saveSharedPreferences(){
+        // SharedPreference 로 저장하기 - "Data.xml"파일에 저장해주는 객체를 소환하기
+        val preferences:SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
+        // 저장작업 시작! -- 작성자 객체를 리턴해 줌
+        val edior:Editor = preferences.edit()
+        // 작성자를 통해 데이터를 작성
+        edior.putString("nickname",G.userAccount?.nickname)
+        edior.putString("email",G.userAccount?.email)
+        edior.putString("password",G.userAccount?.password)
+        edior.apply()
+
     }
 
 }// main...

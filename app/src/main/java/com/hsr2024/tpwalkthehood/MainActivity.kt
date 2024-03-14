@@ -1,6 +1,7 @@
 package com.hsr2024.tpwalkthehood
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -29,7 +30,13 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragment()).commit()
 
-        AlertDialog.Builder(this).setMessage("${G.userAccount?.password}").create().show()
+
+        val preferences:SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
+
+        // 자료형별로 데이터 가져오기
+        var name:String?= preferences.getString("nickname","")
+
+        AlertDialog.Builder(this).setMessage("${name}").create().show()
 
         binding.bnvView.setOnItemSelectedListener {
             when(it.itemId){
