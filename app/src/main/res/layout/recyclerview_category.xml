@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:gravity="center_vertical">
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:background="#D9D9D9"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/choice_01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="전체보기"
+        android:textColor="@color/black"
+        android:layout_margin="4dp"
+        android:background="?android:attr/selectableItemBackground"/>
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:background="#D9D9D9"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
+
+
+    <!--
+    <View
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:background="#D9D9D9"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
+
+
+        <ImageView
+            android:id="@+id/btn_companion_pets"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_selected"
+            android:src="@drawable/companion_pet1"
+            android:layout_margin="2dp"
+            android:padding="4dp"/>
+
+        <ImageView
+            android:id="@+id/btn_companion_kids"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button"
+            android:src="@drawable/companion_baby7"
+            android:layout_margin="2dp"
+            android:padding="4dp"/>
+
+-->
+</LinearLayout>

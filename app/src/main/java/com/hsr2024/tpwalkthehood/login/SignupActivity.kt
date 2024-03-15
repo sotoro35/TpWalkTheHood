@@ -91,7 +91,7 @@ class SignupActivity : AppCompatActivity() {
 
             if (saveCheck(nickname,email,password,passwordConfirm) && checkNickname && checkEmail){
 
-                val retrofit = RetrofitHelper.getRetrofitInstance()
+                val retrofit = RetrofitHelper.getRetrofitInstance("http://ruaris.dothome.co.kr")
                 val retrofitService = retrofit.create(RetrofitService::class.java)
 
                 val userData= UserSignupData(nickname, email, password)
@@ -167,7 +167,7 @@ class SignupActivity : AppCompatActivity() {
                 AlertDialog.Builder(this).setMessage("2~8자 이내로 입력하세요").create().show()
 
         }else {
-            val retrofit = RetrofitHelper.getRetrofitInstance()
+            val retrofit = RetrofitHelper.getRetrofitInstance("http://ruaris.dothome.co.kr")
             val retrofitService = retrofit.create(RetrofitService::class.java)
             retrofitService.userCheckNickname(nickname).enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -203,7 +203,7 @@ class SignupActivity : AppCompatActivity() {
             AlertDialog.Builder(this).setMessage("@넣어 입력해주세요").create().show()
 
         }else {
-            val retrofit = RetrofitHelper.getRetrofitInstance()
+            val retrofit = RetrofitHelper.getRetrofitInstance("http://ruaris.dothome.co.kr")
             val retrofitService = retrofit.create(RetrofitService::class.java)
             retrofitService.userCheckEmail(email).enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {

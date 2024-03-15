@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
         var email= binding.inputLayoutId.editText!!.text.toString()
         var password= binding.inputLayoutPassword.editText!!.text.toString()
 
-        val retrofit= RetrofitHelper.getRetrofitInstance()
+        val retrofit= RetrofitHelper.getRetrofitInstance("http://ruaris.dothome.co.kr")
         val retrofitService = retrofit.create(RetrofitService::class.java)
         val loginData= UserLoginData(email,password)
         retrofitService.userLoginToServer(loginData).enqueue(object : Callback<UserLoginResponse>{

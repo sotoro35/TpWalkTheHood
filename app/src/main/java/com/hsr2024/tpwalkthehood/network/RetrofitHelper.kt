@@ -9,9 +9,9 @@ class RetrofitHelper {
 
     // 레트로핏의 1단계 작업이 너무 길어서 전역으로 만듬
     companion object{
-        fun getRetrofitInstance() : Retrofit{
+        fun getRetrofitInstance(baseUrl:String) : Retrofit{
             val builder = Retrofit.Builder()
-            builder.baseUrl("http://ruaris.dothome.co.kr")
+            builder.baseUrl(baseUrl)
             builder.addConverterFactory(ScalarsConverterFactory.create())
             builder.addConverterFactory(GsonConverterFactory.create())
 

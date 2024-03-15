@@ -1,23 +1,30 @@
 package com.hsr2024.tpwalkthehood
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.view.get
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.hsr2024.tpwalkthehood.databinding.ActivityMainBinding
 import com.hsr2024.tpwalkthehood.login.GuestFragment
 import com.hsr2024.tpwalkthehood.login.LoginActivity
+import com.hsr2024.tpwalkthehood.network.RetrofitHelper
+import com.hsr2024.tpwalkthehood.network.RetrofitService
 import com.hsr2024.tpwalkthehood.tab1.Tab1WlakFragment
 import com.hsr2024.tpwalkthehood.tab2.Tab2HoodFragment
 import com.hsr2024.tpwalkthehood.tab3.Tab3FeedFragment
@@ -29,26 +36,29 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
 
-    // [ Google Fused Location API 사용 play - services - location]
+    // [위치작업] [ Google Fused Location API 사용 play - services - location]
     val locationProviderClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
-    // 현재 내위치 정보 객체 (위도,경도 정보를 멤버로 보유)
+    // [위치작업] 현재 내위치 정보 객체 (위도,경도 정보를 멤버로 보유)
     var myLocation: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.bnvView.itemIconTintList= null // 아이콘 색 넣으려고 설정..
+        binding.bnvView.background= null // 색 넣으려고 설정..
 
 
-        binding.bnvView.itemIconTintList= null
-        binding.bnvView.background= null
-
+        // [바텀네비 별로 프래그먼트 보이도록 설정]
         supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragment()).commit()
 
         binding.bnvView.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.menu_walk -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab1WlakFragment()).commit()
+                R.id.menu_walk -> {
+                    requestMyLocation()
+                    supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab1WlakFragment()).commit()
+                }
                 R.id.menu_hood -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab2HoodFragment()).commit()
                 R.id.menu_feed -> if (G.userAccount == null) supportFragmentManager.beginTransaction().replace((R.id.container_fragment),GuestFragment()).commit()
                 else supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab3FeedFragment()).commit()
@@ -59,44 +69,81 @@ class MainActivity : AppCompatActivity() {
 
             }
             true
-        }
+        }// bnvView listener....
 
 
-        // 위치정보 제공에 대한 퍼미션 체크 - 앱 최초실행시 1번만 권한요청
+
+        // [위치작업] 위치정보 제공에 대한 퍼미션 체크 - 앱 최초실행시 1번만 권한요청
         val permissionState: Int = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         if (permissionState == PackageManager.PERMISSION_DENIED){
+            permissionResult.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
+        } else {
+            requestMyLocation()
         }
-
-//        val permissionState:Int = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) //퍼미션 수락 0 거부 -1
-//        if (permissionState == PackageManager.PERMISSION_DENIED) {//거부되어 있을때 다이얼로그를 뜨게 함
-//            //퍼미션을 요청하는 다이얼로그 보이고 그 결과를 받아오는 작업을 대신해주는 대행사 이용
-//            permissionResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//
-//        }else{
-//            //위치정보 수집이 허가되어 있다면.. 곧바로 위치정보 얻어오는 작업 시작
-//            requestMyLocation()
-//        }
 
 
 
     }// onCreate..
 
-    //퍼미션을 받아올 대행사객체
+    // [위치작업] 퍼미션을 받아올 대행사객체
 
     val permissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if (it) requestMyLocation()
         else Toast.makeText(this, "내 위치정보를 제공하지 않아 검색기능 사용이 제한됩니다.", Toast.LENGTH_SHORT).show()
     }
 
-    //현재 위치를 받아오는 작업 메소드
+    // [위치작업] 사용자의 위치 추적을 위한 설정
+    @SuppressLint("SuspiciousIndentation")
     private fun requestMyLocation(){
 
-    val location: LocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,3000).build() //PRIORITY_HIGH_ACCURACY 높은정확도 gps
+        //( 위치 정보의 정확도, 요청 간격 등)
+    val request: LocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,3000).build() //PRIORITY_HIGH_ACCURACY 높은정확도 gps
 
 
+        //  사용자의 위치 정보에 접근하기 위한 권한이 있는지를 확인
+        if (ActivityCompat.checkSelfPermission(
+                this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+            )!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ){
+            return
+        }
+
+        // 위치 추척 시작
+        locationProviderClient.requestLocationUpdates(request,locationCallback, Looper.getMainLooper())
+
+
+    }// requestMyLocation....
+
+    // [위치작업] 위치정보 갱신때마다 발동하는 콜백 객체
+    private val locationCallback = object : LocationCallback(){
+        override fun onLocationResult(p0: LocationResult) {
+            super.onLocationResult(p0)
+
+            myLocation = p0.lastLocation // 마지막 추척된 위치
+
+            locationProviderClient.removeLocationUpdates(this) // 여기서 this는 콜백객체
+
+
+            //차후 키워드 검색시... 파싱하는 작업 메소드 실행
+            //searchPlaces()
+        }
+    } // locationcallback....
+
+
+    //[검색작업] 카카오 API 검색
+    private fun searchPlaces(){
+        Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
+
+        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
 
 
 
     }
+
 }// main..
