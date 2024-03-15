@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@drawable/ripple_background">
 
-    <TextView
-        android:id="@+id/sub_01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hanbit"
-        android:text="전체보기"
-        android:textColor="@color/black"
-        android:layout_margin="4dp"
-        android:background="?android:attr/selectableItemBackground"/>
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/btn_companion_pets"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/companion_pet1"
+            android:layout_centerHorizontal="true"
+            android:padding="2dp"/>
+
+        <TextView
+            android:id="@+id/sub_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_companion_pets"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/hanbit"
+            android:text="전체보기"
+            android:textColor="@color/black"
+            android:background="?android:attr/selectableItemBackground"/>
+
+</RelativeLayout>

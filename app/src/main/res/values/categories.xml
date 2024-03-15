@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 대분류 카테고리 -->
+    <string-array name="main_categories">
+        <item>음식점</item>
+        <item>카페</item>
+        <item>문화시설</item>
+        <item>편의점</item>
+        <item>마트</item>
+        <item>은행</item>
+        <item>병원</item>
+        <item>약국</item>
+    </string-array>
+
+
+    <!-- 소분류 카테고리 -->
     <string-array name="food_categories">
         <item>전체보기</item>
         <item>한식</item>
@@ -36,10 +50,10 @@
 
     <string-array name="hospital_categories">
         <item>전체보기</item>
-        <item>소아청소년과</item>
         <item>내과</item>
         <item>이비인후과</item>
         <item>정형외과</item>
+        <item>소아청소년과</item>
         <item>산부인과</item>
         <item>동물</item>
     </string-array>
