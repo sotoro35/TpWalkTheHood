@@ -12,7 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.hsr2024.tpwalkthehood.databinding.ActivityMainBinding
 import com.hsr2024.tpwalkthehood.login.GuestFragment
 import com.hsr2024.tpwalkthehood.login.LoginActivity
@@ -87,7 +89,14 @@ class MainActivity : AppCompatActivity() {
         else Toast.makeText(this, "내 위치정보를 제공하지 않아 검색기능 사용이 제한됩니다.", Toast.LENGTH_SHORT).show()
     }
 
+    //현재 위치를 받아오는 작업 메소드
     private fun requestMyLocation(){
+
+    val location: LocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,3000).build() //PRIORITY_HIGH_ACCURACY 높은정확도 gps
+
+
+
+
 
     }
 }// main..

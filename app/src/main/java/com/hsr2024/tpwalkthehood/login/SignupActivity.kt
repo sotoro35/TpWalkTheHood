@@ -2,6 +2,8 @@ package com.hsr2024.tpwalkthehood.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -28,10 +30,10 @@ class SignupActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySignupBinding.inflate(layoutInflater) }
 
-    lateinit var nickname:String
-    lateinit var email:String
-    lateinit var password:String
-    lateinit var passwordConfirm:String
+    var nickname:String= ""
+    var email:String = ""
+    var password:String = ""
+    var passwordConfirm:String = ""
 
     var checkNickname = false
     var checkEmail = false
@@ -47,16 +49,32 @@ class SignupActivity : AppCompatActivity() {
         binding.btnNicknameCheck.setOnClickListener { clickCheckName() }
         binding.btnEmailCheck.setOnClickListener { clickCheckEmail() }
 
-        binding.inputLayoutNickname.editText?.doOnTextChanged { text, start, before, count ->
-            checkNickname = false
-        }
+        binding.inputLayoutNickname.editText?.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if( checkNickname && nickname!=s.toString()) checkNickname=false
+                Toast.makeText(this@SignupActivity, "$checkNickname: $s", Toast.LENGTH_SHORT).show()
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        }) //////
+
+        binding.inputLayoutEmail.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if( checkEmail && email!=s.toString()) checkEmail=false
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
 
 
-        binding.inputLayoutEmail.editText?.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) checkEmail = false
-        }
-
-    }
+    }// onCreate...
 
 
     private fun clickSingup(){
@@ -71,7 +89,7 @@ class SignupActivity : AppCompatActivity() {
         password = binding.inputLayoutPassword.editText!!.text.toString()
         passwordConfirm = binding.inputLayoutPasswordConfirm.editText!!.text.toString()
 
-            if (saveCheck(nickname,email,password,passwordConfirm)){
+            if (saveCheck(nickname,email,password,passwordConfirm) && checkNickname && checkEmail){
 
                 val retrofit = RetrofitHelper.getRetrofitInstance()
                 val retrofitService = retrofit.create(RetrofitService::class.java)
@@ -89,8 +107,7 @@ class SignupActivity : AppCompatActivity() {
                         Log.d("서버오류","${t.message}")
                     }
                 })//callback
-            }
-
+            }else AlertDialog.Builder(this).setMessage("중복확인을 해주세요").create().show()
 
 
     }
@@ -99,36 +116,49 @@ class SignupActivity : AppCompatActivity() {
 
         var boolean = false
 
-        if (!email.contains("@")){
-            AlertDialog.Builder(this).setMessage("@넣어 입력해주세요").create().show()
+        when{
+            !email.contains("@") -> {
+                AlertDialog.Builder(this).setMessage("@넣어 입력해주세요").create().show()
+                boolean = false
+            }
 
-        } else if (password != passwordConfirm) {
-            AlertDialog.Builder(this).setMessage("패스워드가 다릅니다.다시 확인해주세요").create().show()
+            password != passwordConfirm -> {
+                AlertDialog.Builder(this).setMessage("패스워드가 다릅니다.다시 확인해주세요").create().show()
+                boolean = false
+            }
 
-        } else if (nickname.length < 2){
-            AlertDialog.Builder(this).setMessage("닉네임이 너무 짧습니다").create().show()
+            nickname.length < 2 -> {
+                AlertDialog.Builder(this).setMessage("닉네임이 너무 짧습니다").create().show()
+                boolean = false
+            }
 
-        } else if (password.length < 4){
-            AlertDialog.Builder(this).setMessage("비밀번호가 너무 짧습니다").create().show()
+            password.length < 4 -> {
+                AlertDialog.Builder(this).setMessage("비밀번호가 너무 짧습니다").create().show()
+                boolean = false
+            }
 
-        } else if (password.contains(" ") || nickname.contains(" ") || email.contains(" ")) {
-            AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
+            password.contains(" ") || nickname.contains(" ") || email.contains(" ") -> {
+                AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
+                boolean = false
+            }
 
-        } else if (!nickname.isNotEmpty() && !email.isNotEmpty() && !password.isNotEmpty() && !passwordConfirm.isNotEmpty()) {
-            AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
+            !nickname.isNotEmpty() && !email.isNotEmpty() && !password.isNotEmpty() && !passwordConfirm.isNotEmpty() -> {
+                AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
+                boolean = false
+            }
 
-        } else if (!checkNickname && !checkEmail){
-            AlertDialog.Builder(this).setMessage("중복확인을 해주세요").create().show()
-
-        } else boolean= true
+            else -> boolean = true
+        } // when...
 
         return boolean
     }
 
 
+
+
     private fun clickCheckName(){
 
-        var nickname = binding.inputLayoutNickname.editText!!.text.toString()
+        nickname = binding.inputLayoutNickname.editText!!.text.toString()
 
         if (nickname.contains(" ")) {
             AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
