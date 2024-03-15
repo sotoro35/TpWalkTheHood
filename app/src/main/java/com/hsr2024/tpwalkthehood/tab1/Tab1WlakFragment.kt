@@ -1,10 +1,12 @@
 package com.hsr2024.tpwalkthehood.tab1
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.MainCategoryAdapter
 import com.hsr2024.tpwalkthehood.adapter.SubCategoryAdapter
@@ -17,6 +19,7 @@ import com.hsr2024.tpwalkthehood.databinding.FragmentTab1WlakBinding
 class Tab1WlakFragment : Fragment() {
 
     private lateinit var binding:FragmentTab1WlakBinding
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,11 +34,14 @@ class Tab1WlakFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity = requireActivity() as MainActivity
 
 
         // 대분류 어댑터 설정
         val mainCategories = resources.getStringArray(R.array.main_categories)
         val mainCategoryAdapter = MainCategoryAdapter(requireContext(), mainCategories) { category ->
+            mainActivity.onCategorySelected(category,"전체보기")
+
             showSubCategories(category)
         }
         binding.reyclerViewMainCategory.adapter = mainCategoryAdapter
@@ -45,6 +51,7 @@ class Tab1WlakFragment : Fragment() {
 
         // "음식점"에 해당하는 소분류 목록을 표시
         showSubCategories(mainCategories[0])
+
 
 
 
@@ -82,8 +89,10 @@ class Tab1WlakFragment : Fragment() {
         }
 
         val subCategoryAdapter = SubCategoryAdapter(requireContext(),subCategoryArray, subCategoryImages
-        ){ category ->
-            // 소분류 클릭시 인텐트로 해당 키워드 전달하기...
+        ){ selectedSubCategory ->
+
+            // 소분류 클릭시 메인메소드 실행...
+            mainActivity.onCategorySelected(category, selectedSubCategory)
 
         }
 

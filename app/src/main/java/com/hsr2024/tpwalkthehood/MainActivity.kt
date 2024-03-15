@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
 
+
     // [위치작업] [ Google Fused Location API 사용 play - services - location]
     val locationProviderClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
@@ -48,6 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.bnvView.itemIconTintList= null // 아이콘 색 넣으려고 설정..
         binding.bnvView.background= null // 색 넣으려고 설정..
+
+
+        searchPlaces("음식점", "전체보기")
+
 
 
         // [바텀네비 별로 프래그먼트 보이도록 설정]
@@ -85,6 +90,24 @@ class MainActivity : AppCompatActivity() {
 
 
     }// onCreate..
+
+
+    // [ 검색기능 ]
+    fun onCategorySelected(mainCategory: String, subCategory: String) {
+        // 카테고리 선택 시 API 검색
+        searchPlaces(mainCategory, subCategory)
+    }
+
+    private fun searchPlaces(mainCategory: String, subCategory: String) {
+
+        // API 호출 및 검색 결과 처리
+        // mainCategory와 subCategory를 이용하여 검색을 수행
+        // ...
+
+        Toast.makeText(this, "$mainCategory : $subCategory", Toast.LENGTH_SHORT).show()
+    }
+
+
 
     // [위치작업] 퍼미션을 받아올 대행사객체
 
@@ -127,7 +150,6 @@ class MainActivity : AppCompatActivity() {
             myLocation = p0.lastLocation // 마지막 추척된 위치
 
             locationProviderClient.removeLocationUpdates(this) // 여기서 this는 콜백객체
-
 
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
             //searchPlaces()
