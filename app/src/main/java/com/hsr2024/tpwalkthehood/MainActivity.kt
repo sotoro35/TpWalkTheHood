@@ -14,12 +14,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.view.get
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
 import com.hsr2024.tpwalkthehood.data.KakaoSearchPlaceResponse
 import com.hsr2024.tpwalkthehood.data.Place
 import com.hsr2024.tpwalkthehood.databinding.ActivityMainBinding
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bnvView.itemIconTintList= null // 아이콘 색 넣으려고 설정..
         binding.bnvView.background= null // 색 넣으려고 설정..
+        binding.bnvView.background= null
 
 
         // 위치권한 초기화
@@ -98,7 +101,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
     // [위치작업] 퍼미션을 받아올 대행사객체
 
     val permissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()){
@@ -108,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     // [위치작업] 사용자의 위치 추적을 위한 설정
     @SuppressLint("SuspiciousIndentation")
-    private fun requestMyLocation(){
+    fun requestMyLocation(){
 
         //( 위치 정보의 정확도, 요청 간격 등)
     val request: LocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,3000).build() //PRIORITY_HIGH_ACCURACY 높은정확도 gps
@@ -184,10 +186,12 @@ class MainActivity : AppCompatActivity() {
                     placeResponse = response.body()
                     val documents: List<Place>? = placeResponse?.documents
 
+                    val placeAdapter =PlaceItemAdapter(this@MainActivity,documents ?: emptyList())
+                    findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
+                    placeAdapter.notifyDataSetChanged()
+
                    //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}").create().show()
                     Toast.makeText(this@MainActivity, "\"${documents?.get(0)?.place_name}\"", Toast.LENGTH_SHORT).show()
-
-
 
                 }
 

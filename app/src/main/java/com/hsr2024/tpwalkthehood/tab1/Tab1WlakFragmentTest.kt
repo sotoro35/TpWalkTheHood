@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
@@ -29,24 +30,33 @@ class Tab1WlakFragmentTest : Fragment(){
     ): View? {
         binding = FragmentTab1testWlakBinding.inflate(layoutInflater)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        main = activity as MainActivity
 
-
-        Log.d("오류", "여기까지 실행")
+        Log.d("성공", "여기까지 실행")
 
         //대분류 클릭시 버튼에 클릭리스너
         setCategoryListener()
 
+        main = activity as MainActivity
 
 
+        //main.placeResponse?: return
+        if (main.placeResponse !== null){
+            val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents ?: emptyList())
+            binding.recyclerSubItem.adapter = placeAdapter
+            placeAdapter.notifyDataSetChanged()
+        }
+
+        Log.d("성공","3")
 
 
     }
+
 
     //멤버변수(property)
     var categoryId= R.id.category_01
@@ -64,6 +74,10 @@ class Tab1WlakFragmentTest : Fragment(){
         binding.categoryBtns.category06.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category07.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category08.setOnClickListener { clickCategory(it) }
+
+        Log.d("성공","4")
+
+
 
     } // listner
 
@@ -120,11 +134,11 @@ class Tab1WlakFragmentTest : Fragment(){
                 CategoryItem("정형외과",R.drawable.icon_bone),
                 CategoryItem("소아청소년과",R.drawable.icon_pediatric),
                 CategoryItem("산부인과",R.drawable.icon_pregnant),
-                CategoryItem("애견동반",R.drawable.icon_pet)
+                CategoryItem("동물",R.drawable.icon_pet)
             )
             R.id.category_08 -> listOf(
                 CategoryItem("전체보기",R.drawable.icon_all),
-                CategoryItem("애견동반",R.drawable.icon_pet)
+                CategoryItem("동물",R.drawable.icon_pet)
             )
             else -> emptyList()
         }
@@ -174,18 +188,21 @@ class Tab1WlakFragmentTest : Fragment(){
            main.searchPlaces(searchCategory,searchKeyword)
 
         val subsubcategoryAdapter = subCategoryTestAdapter(requireContext(),subcategoryData) { clickedItem ->
-            searchKeyword = clickedItem.category
-            main.searchPlaces(searchCategory, searchKeyword)
+
+            if (!clickedItem.category.equals("전체보기")) searchKeyword = clickedItem.category
+            else searchKeyword = searchKeyword
+
+            //Toast.makeText(requireContext(), "$searchKeyword:$searchCategory", Toast.LENGTH_SHORT).show()
+           main.searchPlaces(searchCategory, searchKeyword)
         }
 
         binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
 
-        main.placeResponse?: return
-        val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents)
-        binding.recyclerSubItem.adapter = placeAdapter
+//        main.placeResponse?: return
+//        val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents)
+//        binding.recyclerSubItem.adapter = placeAdapter
 
-
-
+        Log.d("성공","5")
         }
 
 
