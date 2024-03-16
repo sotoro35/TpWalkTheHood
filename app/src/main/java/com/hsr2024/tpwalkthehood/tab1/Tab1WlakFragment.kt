@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.MainCategoryAdapter
+import com.hsr2024.tpwalkthehood.adapter.PlaceTab1RecyclerAdapter
 import com.hsr2024.tpwalkthehood.adapter.SubCategoryAdapter
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1WlakBinding
 
@@ -20,6 +21,9 @@ class Tab1WlakFragment : Fragment() {
 
     private lateinit var binding:FragmentTab1WlakBinding
     private lateinit var mainActivity: MainActivity
+
+    lateinit var tab1RecyclerAdapter : PlaceTab1RecyclerAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +41,7 @@ class Tab1WlakFragment : Fragment() {
         mainActivity = requireActivity() as MainActivity
 
 
+
         // 대분류 어댑터 설정
         val mainCategories = resources.getStringArray(R.array.main_categories)
         val mainCategoryAdapter = MainCategoryAdapter(requireContext(), mainCategories) { category ->
@@ -44,6 +49,7 @@ class Tab1WlakFragment : Fragment() {
 
             showSubCategories(category)
         }
+
         binding.reyclerViewMainCategory.adapter = mainCategoryAdapter
 
         // "음식점" 대분류를 초기 선택 상태로 설정
@@ -55,7 +61,18 @@ class Tab1WlakFragment : Fragment() {
 
 
 
+
     }//onViewCreated...
+
+    override fun onResume() {
+        super.onResume()
+
+        mainActivity.placeResponse?: return
+        tab1RecyclerAdapter = PlaceTab1RecyclerAdapter(requireContext(),mainActivity.placeResponse!!.documents)
+        binding.recyclerTab1.adapter = tab1RecyclerAdapter
+
+
+    }
 
     private fun showSubCategories(category: String){
         //선택된 분류에 따라 소분류를 설정
@@ -92,12 +109,16 @@ class Tab1WlakFragment : Fragment() {
         ){ selectedSubCategory ->
 
             // 소분류 클릭시 메인메소드 실행...
-            mainActivity.onCategorySelected(category, selectedSubCategory)
+
+            if (mainActivity.onCategorySelected(category, selectedSubCategory)){
+                tab1RecyclerAdapter.notifyDataSetChanged()
+            }
 
         }
 
         binding.reyclerViewSubCategory.adapter = subCategoryAdapter
         subCategoryAdapter.selectFirstItem()
+
 
     }
 

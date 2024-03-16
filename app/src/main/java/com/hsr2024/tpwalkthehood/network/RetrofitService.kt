@@ -2,6 +2,7 @@ package com.hsr2024.tpwalkthehood.network
 
 
 import com.hsr2024.tpwalkthehood.data.CategoryGroupCode
+import com.hsr2024.tpwalkthehood.data.KakaoSearchPlaceResponse
 import com.hsr2024.tpwalkthehood.data.UserAccount
 import com.hsr2024.tpwalkthehood.data.UserLoginData
 import com.hsr2024.tpwalkthehood.data.UserLoginResponse
@@ -35,8 +36,15 @@ interface RetrofitService {
     @Headers ("Authorization: KakaoAK e70102dbac743d584daa83924b1a25d2")
     @GET ("v2/local/search/keyword.json")
     fun searchPlaceToString(@Query("query")query:String, @Query("x") longitude:String,
-                            @Query("y") latitude:String, @Query("category_group_code") category: CategoryGroupCode) : Call<String>
+                            @Query("y") latitude:String, @Query("category_group_code") category:String,
+                            @Query("radius") radius:Int = 5000, @Query("sort") sort:String= "distance" ) : Call<String>
 
+
+    @Headers ("Authorization: KakaoAK e70102dbac743d584daa83924b1a25d2")
+    @GET ("v2/local/search/keyword.json")
+    fun searchPlaceToKakao(@Query("query")query:String, @Query("x") longitude:String,
+                           @Query("y") latitude:String, @Query("category_group_code") category:String,
+                           @Query("radius") radius:Int = 5000, @Query("sort") sort:String= "distance" ) : Call<KakaoSearchPlaceResponse>
 
 
 
