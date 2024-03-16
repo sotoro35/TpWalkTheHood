@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hsr2024.tpwalkthehood.data.CategoryItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewCategorySubBinding
 
-class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryItem>) : Adapter<subCategoryTestAdapter.VHsub>(){
+class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryItem>,val onItemClick: (CategoryItem) -> Unit) : Adapter<subCategoryTestAdapter.VHsub>(){
 
     inner class VHsub(val binding:RecyclerviewCategorySubBinding) : ViewHolder(binding.root)
 
@@ -22,6 +22,11 @@ class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryIte
     override fun onBindViewHolder(holder: VHsub, position: Int) {
         holder.binding.sub01.text = subitems[position].category
         holder.binding.btnCompanionPets.setImageResource(subitems[position].categoryIcon)
+
+        holder.binding.root.setOnClickListener {
+            onItemClick(subitems[position])
+        }
+
 
     }
 }

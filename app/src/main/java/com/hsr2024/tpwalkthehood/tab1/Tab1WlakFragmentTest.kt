@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
+import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
 import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
 import com.hsr2024.tpwalkthehood.data.CategoryItem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1WlakBinding
@@ -40,6 +41,9 @@ class Tab1WlakFragmentTest : Fragment(){
 
         //대분류 클릭시 버튼에 클릭리스너
         setCategoryListener()
+
+
+
 
 
     }
@@ -126,9 +130,6 @@ class Tab1WlakFragmentTest : Fragment(){
         }
 
 
-        val subsubcategoryAdapter = subCategoryTestAdapter(requireContext(),subcategoryData)
-        binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
-
 
         //////////////////////////////////////////////////////////
 
@@ -171,6 +172,19 @@ class Tab1WlakFragmentTest : Fragment(){
         } // when...
 
            main.searchPlaces(searchCategory,searchKeyword)
+
+        val subsubcategoryAdapter = subCategoryTestAdapter(requireContext(),subcategoryData) { clickedItem ->
+            searchKeyword = clickedItem.category
+            main.searchPlaces(searchCategory, searchKeyword)
+        }
+
+        binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
+
+        main.placeResponse?: return
+        val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents)
+        binding.recyclerSubItem.adapter = placeAdapter
+
+
 
         }
 

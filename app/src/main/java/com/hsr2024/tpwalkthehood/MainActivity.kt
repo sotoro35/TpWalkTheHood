@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
 
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
-            //searchPlaces()
+            searchPlaces("FD6","음식점")
         }
     } // locationcallback....
 
@@ -175,19 +175,29 @@ class MainActivity : AppCompatActivity() {
     fun searchPlaces(searchCategory:String,searchKeyword:String){
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToString("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
-            object :Callback<String>{
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    var s = response.body()
-                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
+        retrofitService.searchPlaceToKakao("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
+            object : Callback<KakaoSearchPlaceResponse>{
+                override fun onResponse(
+                    call: Call<KakaoSearchPlaceResponse>,
+                    response: Response<KakaoSearchPlaceResponse>
+                ) {
+                    placeResponse = response.body()
+                    val documents: List<Place>? = placeResponse?.documents
+
+                   //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}").create().show()
+                    Toast.makeText(this@MainActivity, "\"${documents?.get(0)?.place_name}\"", Toast.LENGTH_SHORT).show()
+
+
+
                 }
 
-                override fun onFailure(call: Call<String>, t: Throwable) {
+                override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
                 }
 
             }
         )
+
 
     }
 
