@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
+import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
+import com.hsr2024.tpwalkthehood.data.CategoryItem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1WlakBinding
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1testWlakBinding
 
@@ -83,6 +85,53 @@ class Tab1WlakFragmentTest : Fragment(){
         //view.findViewById<TextView>(categoryId).setTextColor(Color.BLACK)
         //if (view is TextView) view.setTextColor(Color.BLUE)
 
+        // 클릭한 대분류에 해당하는 소분류 설정
+        val clickedCategoryId =view.id
+        val subcategoryData = when(clickedCategoryId){
+            R.id.category_01 -> listOf(
+                CategoryItem("전체보기",R.drawable.icon_all),
+                CategoryItem("한식",R.drawable.icon_rice),
+                CategoryItem("중식",R.drawable.icon_noodle),
+                CategoryItem("일식",R.drawable.icon_sushi),
+                CategoryItem("피자",R.drawable.icon_pizza),
+                CategoryItem("치킨",R.drawable.icon_chicke),
+                CategoryItem("분식",R.drawable.icon_ricecake),
+                CategoryItem("애견동반",R.drawable.icon_pet)
+                )
+            R.id.category_02 -> listOf(
+                CategoryItem("전체보기",R.drawable.icon_all),
+                CategoryItem("애견동반",R.drawable.icon_pet)
+            )
+            R.id.category_03 -> listOf(
+                CategoryItem("전체보기",R.drawable.icon_all),
+                CategoryItem("어린이",R.drawable.icon_childre)
+            )
+            R.id.category_04 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+            R.id.category_05 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+            R.id.category_06 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+            R.id.category_07 -> listOf(
+                CategoryItem("전체보기",R.drawable.icon_all),
+                CategoryItem("내과",R.drawable.icon_stethoscope),
+                CategoryItem("이비인후과",R.drawable.icon_otorhinolaryngology),
+                CategoryItem("정형외과",R.drawable.icon_bone),
+                CategoryItem("소아청소년과",R.drawable.icon_pediatric),
+                CategoryItem("산부인과",R.drawable.icon_pregnant),
+                CategoryItem("애견동반",R.drawable.icon_pet)
+            )
+            R.id.category_08 -> listOf(
+                CategoryItem("전체보기",R.drawable.icon_all),
+                CategoryItem("애견동반",R.drawable.icon_pet)
+            )
+            else -> emptyList()
+        }
+
+
+        val subsubcategoryAdapter = subCategoryTestAdapter(requireContext(),subcategoryData)
+        binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
+
+
+        //////////////////////////////////////////////////////////
+
 
         //클릭한 뷰의 id를 저장
         categoryId= view.id
@@ -120,9 +169,6 @@ class Tab1WlakFragmentTest : Fragment(){
                 searchKeyword = "약국"
             }
         } // when...
-
-
-
 
            main.searchPlaces(searchCategory,searchKeyword)
 
