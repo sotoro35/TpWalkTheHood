@@ -27,7 +27,8 @@ import com.hsr2024.tpwalkthehood.login.GuestFragment
 import com.hsr2024.tpwalkthehood.login.LoginActivity
 import com.hsr2024.tpwalkthehood.network.RetrofitHelper
 import com.hsr2024.tpwalkthehood.network.RetrofitService
-import com.hsr2024.tpwalkthehood.tab1.Tab1WlakFragment
+//import com.hsr2024.tpwalkthehood.tab1.Tab1WlakFragment
+import com.hsr2024.tpwalkthehood.tab1.Tab1WlakFragmentTest
 import com.hsr2024.tpwalkthehood.tab2.Tab2HoodFragment
 import com.hsr2024.tpwalkthehood.tab3.Tab3FeedFragment
 import com.hsr2024.tpwalkthehood.tab4.Tab4TalkFragment
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     // [검색작업] 카카오 검색된 내용을 갖고 있는 클래스
     var placeResponse:KakaoSearchPlaceResponse? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -59,19 +61,15 @@ class MainActivity : AppCompatActivity() {
         binding.bnvView.background= null // 색 넣으려고 설정..
 
 
-        searchPlaces("음식점", "전체보기")
-
-
+        // 위치권한 초기화
+        requestMyLocation()
 
         // [바텀네비 별로 프래그먼트 보이도록 설정]
-        supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragment()).commit()
+        supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragmentTest()).commit()
 
         binding.bnvView.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.menu_walk -> {
-                    requestMyLocation()
-                    supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab1WlakFragment()).commit()
-                }
+                R.id.menu_walk -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab1WlakFragmentTest()).commit()
                 R.id.menu_hood -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab2HoodFragment()).commit()
                 R.id.menu_feed -> if (G.userAccount == null) supportFragmentManager.beginTransaction().replace((R.id.container_fragment),GuestFragment()).commit()
                 else supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab3FeedFragment()).commit()
@@ -96,60 +94,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
     }// onCreate..
 
-
-    // [ 검색기능 ]
-    fun onCategorySelected(mainCategory: String, subCategory: String) : Boolean{
-
-        searchPlaces()
-        return placeResponse != null
-    }
-
-    fun searchPlaces(mainCategory: String, subCategory: String) {
-
-        var categoryGroupCode:String = when (mainCategory) {
-            "음식점" -> "FD6"
-            "카페" -> "CE7"
-            "문화시설" -> "CT1"
-            "편의점" -> "CS2"
-            "마트" -> "MT1"
-            "은행" -> "BK9"
-            "병원" -> "HP8"
-            "약국" -> "PM9"
-            else -> "FD6"
-
-        }
-        var categoryKeyword = if (subCategory.equals("전체보기")) mainCategory  else subCategory
-
-        Toast.makeText(this, "$mainCategory : $subCategory", Toast.LENGTH_SHORT).show()
-
-        retrofit(mainCategory,categoryGroupCode,categoryKeyword)
-        AlertDialog.Builder(this).setMessage("$categoryGroupCode,$categoryKeyword:${placeResponse?.documents?.get(0)?.place_name}").create().show()
-    }
-
-    private fun retrofit(mainCategory: String, categoryGroupCode:String, categoryKeyword:String){
-        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
-        val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToKakao("$categoryKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$categoryGroupCode").enqueue(
-            object :Callback<KakaoSearchPlaceResponse>{
-                override fun onResponse(
-                    call: Call<KakaoSearchPlaceResponse>,
-                    response: Response<KakaoSearchPlaceResponse>
-                ) {
-                    placeResponse = response.body()
-                    var documents:List<Place>? = placeResponse?.documents
-                    AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}")
-                }
-
-                override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        )
-    }
 
 
 
@@ -197,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
 
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
-            searchPlaces()
+            //searchPlaces()
         }
     } // locationcallback....
 
@@ -214,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     placeResponse = response.body()
                     var documents:List<Place>? = placeResponse?.documents
-                    AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}")
+                    AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}").create().show()
                 }
 
                 override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
@@ -224,7 +170,24 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
+    }
 
+    fun searchPlaces(searchCategory:String,searchKeyword:String){
+        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.searchPlaceToString("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
+            object :Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    var s = response.body()
+                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        )
 
     }
 
