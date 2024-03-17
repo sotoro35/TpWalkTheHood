@@ -146,6 +146,7 @@ class MainActivity : AppCompatActivity() {
 
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
             searchPlaces("FD6","음식점")
+            //searchPlaces()
         }
     } // locationcallback....
 
@@ -154,25 +155,19 @@ class MainActivity : AppCompatActivity() {
     private fun searchPlaces(){
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToKakao("음식점","${myLocation?.longitude}","${myLocation?.latitude}","FD6").enqueue(
-            object :Callback<KakaoSearchPlaceResponse>{
-                override fun onResponse(
-                    call: Call<KakaoSearchPlaceResponse>,
-                    response: Response<KakaoSearchPlaceResponse>
-                ) {
-                    placeResponse = response.body()
-                    var documents:List<Place>? = placeResponse?.documents
-                    AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}").create().show()
+        retrofitService.searchPlaceToString("음식점","${myLocation?.longitude}","${myLocation?.latitude}","FD6").enqueue(
+            object : Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    val s = response.body()
+                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
                 }
-
-                override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
+                override fun onFailure(call: Call<String>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
                 }
-
             }
         )
-
     }
+
 
     fun searchPlaces(searchCategory:String,searchKeyword:String){
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
@@ -186,11 +181,13 @@ class MainActivity : AppCompatActivity() {
                     placeResponse = response.body()
                     val documents: List<Place>? = placeResponse?.documents
 
+                    //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.distance}").create().show()
+
                     val placeAdapter =PlaceItemAdapter(this@MainActivity,documents ?: emptyList())
                     findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
                     placeAdapter.notifyDataSetChanged()
 
-                   //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.place_name}").create().show()
+                    //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(1)?.phone}").create().show()
                     Toast.makeText(this@MainActivity, "\"${documents?.get(0)?.place_name}\"", Toast.LENGTH_SHORT).show()
 
                 }
@@ -198,11 +195,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
                 }
-
             }
         )
+    }//searchPlaces
 
 
-    }
 
 }// main..

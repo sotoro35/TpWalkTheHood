@@ -13,7 +13,7 @@ data class Place( // 한 아이템에 있는 내용..
     var x: String,
     var y: String,
     var place_url: String,
-    var distance: String
+    var distance:String
 
 
 )

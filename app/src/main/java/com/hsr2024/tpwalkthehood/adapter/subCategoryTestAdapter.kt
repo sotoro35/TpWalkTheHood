@@ -32,8 +32,9 @@ class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryIte
         }
 
 
+        // 클릭했을때 배경색 변경, 클릭한 텍스트 콜백
         holder.binding.root.setOnClickListener {
-
+            // 이전에 선택된 아이템의 배경색을 원래대로 되돌립니다.
             val prevSelectedItemPosition = selectedItemPosition
             selectedItemPosition = holder.adapterPosition
             if (prevSelectedItemPosition != -1) {
@@ -42,12 +43,14 @@ class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryIte
             // 현재 클릭된 아이템의 배경색을 변경합니다.
             notifyItemChanged(selectedItemPosition)
 
-            onItemClick(subitems[position])
+            //클릭한 아이템의 텍스트를 콜백
+           onItemClick(subitems[position])
 
         }
 
     }
 
-    private var selectedItemPosition = -1
+    // 첫 번째 아이템이 선택되도록 초기화
+    private var selectedItemPosition = 0
 
 }

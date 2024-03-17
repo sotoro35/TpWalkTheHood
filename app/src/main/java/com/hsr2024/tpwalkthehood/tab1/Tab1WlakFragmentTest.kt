@@ -37,8 +37,6 @@ class Tab1WlakFragmentTest : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
 
-        Log.d("성공", "여기까지 실행")
-
         //대분류 클릭시 버튼에 클릭리스너
         setCategoryListener()
 
@@ -51,9 +49,9 @@ class Tab1WlakFragmentTest : Fragment(){
             placeAdapter.notifyDataSetChanged()
         }
 
-        binding.reyclerViewSubCategory.visibility = View.VISIBLE
+        clickCategory(binding.categoryBtns.category01)
 
-        Log.d("성공","3")
+
 
 
     }
@@ -67,8 +65,6 @@ class Tab1WlakFragmentTest : Fragment(){
 
     private fun setCategoryListener(){
 
-        binding.categoryBtns.category01.selectionStart
-
         binding.categoryBtns.category01.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category02.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category03.setOnClickListener { clickCategory(it) }
@@ -78,19 +74,25 @@ class Tab1WlakFragmentTest : Fragment(){
         binding.categoryBtns.category07.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category08.setOnClickListener { clickCategory(it) }
 
-        Log.d("성공","4")
-
 
 
     } // listner
 
+    var SelectedCategory: Int = -1
+
     private fun clickCategory(view:View){
 
+        if (SelectedCategory != -1) {
+            val prevView = binding.root.findViewById<TextView>(SelectedCategory)
+            prevView?.setTextColor(Color.parseColor("#757474"))
+        }
+        // 현재 클릭한 텍스트뷰의 색상을 변경합니다.
+        (view as TextView).setTextColor(Color.parseColor("#FF009688"))
 
-        //현재 클릭한 ImageView의 배경을 선택된 회색 원크림으로 변경
-        view.setBackgroundColor(Color.GRAY)
-        // 기존에 선택되었던 ImageView를 찾아서 배경이미지를 선택되지 않는 하얀색 원그림으로 변경
-       // view.findViewById<TextView>(view.id).setBackgroundColor(R.drawable.button_selected)
+        // 현재 클릭한 텍스트뷰의 id를 저장하여 다음에 선택 색상을 변경할 때 사용합니다.
+        SelectedCategory = view.id
+
+
 
 
         // 클릭한 대분류에 해당하는 소분류 설정
@@ -176,24 +178,26 @@ class Tab1WlakFragmentTest : Fragment(){
 
            main.searchPlaces(searchCategory,searchKeyword)
 
+
+        var subsearchKeyword = ""
+
         val subsubcategoryAdapter = subCategoryTestAdapter(requireContext(),subcategoryData) { clickedItem ->
 
-            if (!clickedItem.category.equals("전체보기")) searchKeyword = clickedItem.category
-            else searchKeyword = searchKeyword
+            if (!clickedItem.category.equals("전체보기")) {
+                subsearchKeyword = clickedItem.category
+            } else {
+                subsearchKeyword = searchKeyword
 
+            }
             //Toast.makeText(requireContext(), "$searchKeyword:$searchCategory", Toast.LENGTH_SHORT).show()
-           main.searchPlaces(searchCategory, searchKeyword)
+           main.searchPlaces(searchCategory, subsearchKeyword)
+
         }
 
         binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
         subsubcategoryAdapter.notifyDataSetChanged()
 
 
-//        main.placeResponse?: return
-//        val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents)
-//        binding.recyclerSubItem.adapter = placeAdapter
-
-        Log.d("성공","5")
         }
 
 } // fragment..
