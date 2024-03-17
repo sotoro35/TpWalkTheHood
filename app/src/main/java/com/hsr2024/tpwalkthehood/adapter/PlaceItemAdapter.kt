@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.LayoutInflaterCompat
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.gson.Gson
 import com.hsr2024.tpwalkthehood.data.KakaoSearchPlaceResponse
@@ -24,25 +25,21 @@ class PlaceItemAdapter(val context: Context,val itemList:List<Place>): Adapter<P
     override fun getItemCount(): Int = itemList.size
 
     override fun onBindViewHolder(holder: VHplace, position: Int) {
-        val item = itemList[position]
+        val item:Place = itemList[position]
 
         holder.binding.tvPlaceName.text = item.place_name
         holder.binding.tvAddress.text = if (item.road_address_name == "") item.address_name else item.road_address_name
         holder.binding.tvPhone.text = item.phone
         holder.binding.tvDistance.text = "${item.distance}M"
 
-//        holder.binding.root.setOnClickListener {
-//            val intent = Intent(context,ItemDetailActivity::class.java)
-//
-//            holder.binding.root.setOnClickListener {
-//                val intent= Intent(context, PlaceDetailActivity::class.java)
-//
-//                //장소정보에 대한 데이터를 추가로 보내기 [ 객체는 추가데이터로 전송불가 --> json문자열로 변환 ]
-//                val gson= Gson()
-//                val s: String = gson.toJson(place) // 객체 --> json String
-//                intent.putExtra("place",s)
-//                context.startActivity(intent)
-//
+        holder.binding.root.setOnClickListener {
+            val intent = Intent(context,ItemDetailActivity::class.java)
+            val gson= Gson()
+            val s:String = gson.toJson(item) // 객체 --> json String
+            intent.putExtra("place",s)
+            context.startActivity(intent)
+        }
+
         }
     }
 

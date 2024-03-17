@@ -171,7 +171,13 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
 
-        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val category = searchCategory
+        val subcategory = searchKeyword
+        val fragment = Tab2HoodFragment()
+        fragment.processData(category, subcategory)
+
+
+            val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
         retrofitService.searchPlaceToKakao("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
             object : Callback<KakaoSearchPlaceResponse>{
@@ -181,7 +187,6 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     placeResponse = response.body()
                     val documents: List<Place>? = placeResponse?.documents
-
 
                     val placeAdapter: PlaceItemAdapter
                     if (documents.isNullOrEmpty()) {

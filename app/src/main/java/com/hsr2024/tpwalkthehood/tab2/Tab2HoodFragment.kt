@@ -1,5 +1,6 @@
 package com.hsr2024.tpwalkthehood.tab2
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ class Tab2HoodFragment : Fragment() {
 
     private val binding by lazy { FragmentTab2HoodBinding.inflate(layoutInflater) }
 
+    var category:String? = null
+    var keyword:String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,8 +28,14 @@ class Tab2HoodFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvLoginTest.setOnClickListener {
-            startActivity(Intent(requireContext(),LoginActivity::class.java))
+            AlertDialog.Builder(requireContext()).setMessage("$category:$keyword").create().show()
 
         }
+    }
+
+
+    fun processData(searchCategory: String?, subsearchKeyword: String?) {
+        category = searchCategory
+        keyword = subsearchKeyword
     }
 }
