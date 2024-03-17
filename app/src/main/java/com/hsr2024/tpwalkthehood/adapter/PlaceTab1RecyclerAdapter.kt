@@ -29,6 +29,7 @@ class PlaceTab1RecyclerAdapter(val context:Context,val placeList:List<Place>) : 
         holder.binding.tvPhone.text = place.phone
         holder.binding.tvDistance.text = "${place.distance}M"
 
+
     }
 
 

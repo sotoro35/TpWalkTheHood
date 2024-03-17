@@ -15,8 +15,8 @@ import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
 import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
 import com.hsr2024.tpwalkthehood.data.CategoryItem
-import com.hsr2024.tpwalkthehood.databinding.FragmentTab1WlakBinding
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1testWlakBinding
+import okhttp3.internal.notify
 
 class Tab1WlakFragmentTest : Fragment(){
 
@@ -44,13 +44,14 @@ class Tab1WlakFragmentTest : Fragment(){
 
         main = activity as MainActivity
 
-
         //main.placeResponse?: return
         if (main.placeResponse !== null){
             val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents ?: emptyList())
             binding.recyclerSubItem.adapter = placeAdapter
             placeAdapter.notifyDataSetChanged()
         }
+
+        binding.reyclerViewSubCategory.visibility = View.VISIBLE
 
         Log.d("성공","3")
 
@@ -65,6 +66,8 @@ class Tab1WlakFragmentTest : Fragment(){
 
 
     private fun setCategoryListener(){
+
+        binding.categoryBtns.category01.selectionStart
 
         binding.categoryBtns.category01.setOnClickListener { clickCategory(it) }
         binding.categoryBtns.category02.setOnClickListener { clickCategory(it) }
@@ -84,24 +87,11 @@ class Tab1WlakFragmentTest : Fragment(){
     private fun clickCategory(view:View){
 
 
-        // 클릭한 뷰를 파란색으로 변경
-        val clickedTextView = view.findViewById<TextView>(view.id)
-        clickedTextView?.setTextColor(Color.BLUE)
+        //현재 클릭한 ImageView의 배경을 선택된 회색 원크림으로 변경
+        view.setBackgroundColor(Color.GRAY)
+        // 기존에 선택되었던 ImageView를 찾아서 배경이미지를 선택되지 않는 하얀색 원그림으로 변경
+       // view.findViewById<TextView>(view.id).setBackgroundColor(R.drawable.button_selected)
 
-        // 나머지 뷰들을 검은색으로 변경
-        val categoryIds = arrayOf(
-            R.id.category_01, R.id.category_02, R.id.category_03, R.id.category_04,
-            R.id.category_05, R.id.category_06, R.id.category_07, R.id.category_08
-        )
-        for (categoryId in categoryIds) {
-            if (categoryId != view.id) {
-                val textView = view.findViewById<TextView>(categoryId)
-                textView?.setTextColor(Color.BLACK)
-            }
-        }
-
-        //view.findViewById<TextView>(categoryId).setTextColor(Color.BLACK)
-        //if (view is TextView) view.setTextColor(Color.BLUE)
 
         // 클릭한 대분류에 해당하는 소분류 설정
         val clickedCategoryId =view.id
@@ -142,7 +132,6 @@ class Tab1WlakFragmentTest : Fragment(){
             )
             else -> emptyList()
         }
-
 
 
         //////////////////////////////////////////////////////////
@@ -197,6 +186,8 @@ class Tab1WlakFragmentTest : Fragment(){
         }
 
         binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
+        subsubcategoryAdapter.notifyDataSetChanged()
+
 
 //        main.placeResponse?: return
 //        val placeAdapter = PlaceItemAdapter(requireContext(),main.placeResponse!!.documents)
@@ -205,8 +196,7 @@ class Tab1WlakFragmentTest : Fragment(){
         Log.d("성공","5")
         }
 
-
-    } // fragment..
+} // fragment..
 
 
 
