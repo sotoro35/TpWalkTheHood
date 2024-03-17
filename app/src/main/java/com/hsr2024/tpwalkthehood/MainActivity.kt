@@ -9,6 +9,9 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -64,9 +67,6 @@ class MainActivity : AppCompatActivity() {
         binding.bnvView.background= null
 
 
-        // 위치권한 초기화
-        requestMyLocation()
-
         // [바텀네비 별로 프래그먼트 보이도록 설정]
         supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragmentTest()).commit()
 
@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestMyLocation()
         }
-
 
     }// onCreate..
 
@@ -140,7 +139,6 @@ class MainActivity : AppCompatActivity() {
             super.onLocationResult(p0)
 
             myLocation = p0.lastLocation // 마지막 추척된 위치
-
             locationProviderClient.removeLocationUpdates(this) // 여기서 this는 콜백객체
             Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
 
@@ -170,6 +168,9 @@ class MainActivity : AppCompatActivity() {
 
 
     fun searchPlaces(searchCategory:String,searchKeyword:String){
+
+        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
         retrofitService.searchPlaceToKakao("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
@@ -181,17 +182,31 @@ class MainActivity : AppCompatActivity() {
                     placeResponse = response.body()
                     val documents: List<Place>? = placeResponse?.documents
 
-                    //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(0)?.distance}").create().show()
 
-                    val placeAdapter =PlaceItemAdapter(this@MainActivity,documents ?: emptyList())
-                    findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
-                    placeAdapter.notifyDataSetChanged()
+                    val placeAdapter: PlaceItemAdapter
+                    if (documents.isNullOrEmpty()) {
+                        // documents가 비어 있을 경우, 빈 메시지를 표시합니다.
+                        findViewById<TextView>(R.id.empty_view).visibility = View.VISIBLE
+                        findViewById<RecyclerView>(R.id.recycler_sub_item).visibility = View.GONE
+                        Toast.makeText(this@MainActivity, "검색중..", Toast.LENGTH_SHORT).show()
 
-                    //AlertDialog.Builder(this@MainActivity).setMessage("${documents?.get(1)?.phone}").create().show()
-                    Toast.makeText(this@MainActivity, "\"${documents?.get(0)?.place_name}\"", Toast.LENGTH_SHORT).show()
+                        placeAdapter = PlaceItemAdapter(this@MainActivity, emptyList<Place>())
+                        findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
+                        placeAdapter.notifyDataSetChanged()
+
+                    } else {
+                        findViewById<RecyclerView>(R.id.recycler_sub_item).visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.empty_view).visibility = View.GONE
+
+                        placeAdapter = PlaceItemAdapter(this@MainActivity, documents)
+                        findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
+                        placeAdapter.notifyDataSetChanged()
+
+                    }
+
+                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
 
                 }
-
                 override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
                 }
