@@ -84,7 +84,6 @@ class Tab1WlakFragmentTest : Fragment(){
         binding.categoryBtns.category08.setOnClickListener { clickCategory(it) }
 
 
-
     } // listner......
 
 

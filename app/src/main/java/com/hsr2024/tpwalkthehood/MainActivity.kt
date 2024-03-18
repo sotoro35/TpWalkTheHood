@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -38,6 +39,8 @@ import com.hsr2024.tpwalkthehood.tab2.Tab2HoodFragment
 import com.hsr2024.tpwalkthehood.tab3.Tab3FeedFragment
 import com.hsr2024.tpwalkthehood.tab4.Tab4TalkFragment
 import com.hsr2024.tpwalkthehood.tab5.Tab5MyFragment
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.vectormap.MapView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,15 +50,18 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
 
-
     // [위치작업] [ Google Fused Location API 사용 play - services - location]
     val locationProviderClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
     // [위치작업] 현재 내위치 정보 객체 (위도,경도 정보를 멤버로 보유)
     var myLocation: Location? = null
 
+
     // [검색작업] 카카오 검색된 내용을 갖고 있는 클래스
     var placeResponse:KakaoSearchPlaceResponse? = null
+
+    val apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+    val key = "1TBrPTECd6gt7PR%2FK29IQYy7BEH1YV%2FQxqn8XOOg1ZQ7ujvcn1HCfL0ln4BYyF9jIHgGVq25bquADIFdixh3Mg%3D%3D"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,9 +69,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.bnvView.itemIconTintList= null // 아이콘 색 넣으려고 설정..
-        binding.bnvView.background= null // 색 넣으려고 설정..
-        binding.bnvView.background= null
-
+        //binding.bnvView.background= null // 색 넣으려고 설정..
 
         // [바텀네비 별로 프래그먼트 보이도록 설정]
         supportFragmentManager.beginTransaction().add((R.id.container_fragment),Tab1WlakFragmentTest()).commit()
@@ -73,7 +77,10 @@ class MainActivity : AppCompatActivity() {
         binding.bnvView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.menu_walk -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab1WlakFragmentTest()).commit()
-                R.id.menu_hood -> supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab2HoodFragment()).commit()
+                R.id.menu_hood -> {
+                    searchPlaces("FD6","음식점")
+                    supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab2HoodFragment()).commit()
+                }
                 R.id.menu_feed -> if (G.userAccount == null) supportFragmentManager.beginTransaction().replace((R.id.container_fragment),GuestFragment()).commit()
                 else supportFragmentManager.beginTransaction().replace((R.id.container_fragment),Tab3FeedFragment()).commit()
                 R.id.menu_talk -> if (G.userAccount == null) supportFragmentManager.beginTransaction().replace((R.id.container_fragment),GuestFragment()).commit()
@@ -150,6 +157,84 @@ class MainActivity : AppCompatActivity() {
 
 
     //[검색작업] 카카오 API 검색
+    fun searchPlaces(searchCategory:String,searchKeyword:String){
+
+        findViewById<ProgressBar>(R.id.progressBar)?.visibility = View.VISIBLE
+
+        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.searchPlaceToKakao("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
+            object : Callback<KakaoSearchPlaceResponse>{
+                override fun onResponse(
+                    call: Call<KakaoSearchPlaceResponse>,
+                    response: Response<KakaoSearchPlaceResponse>
+                ) {
+                    placeResponse = response.body()
+                    val documents: List<Place>? = placeResponse?.documents
+
+                    // 탭2 타이틀에 텍스트 변경하려고...
+                    G.categoryG = searchCategory
+                    G.keywordG = searchKeyword
+
+                    val placeAdapter: PlaceItemAdapter
+                    if (documents.isNullOrEmpty()) {
+                        // documents가 비어 있을 경우, 빈 메시지를 표시합니다.
+                        findViewById<TextView>(R.id.empty_view)?.visibility = View.VISIBLE
+                        findViewById<RecyclerView>(R.id.recycler_sub_item)?.visibility = View.GONE
+                        Toast.makeText(this@MainActivity, "검색중..", Toast.LENGTH_SHORT).show()
+
+                        placeAdapter = PlaceItemAdapter(this@MainActivity, emptyList<Place>())
+                        findViewById<RecyclerView>(R.id.recycler_sub_item)?.adapter = placeAdapter
+                        placeAdapter.notifyDataSetChanged()
+
+                    } else {
+                        findViewById<RecyclerView>(R.id.recycler_sub_item)?.visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.empty_view)?.visibility = View.GONE
+
+                        placeAdapter = PlaceItemAdapter(this@MainActivity, documents)
+                        findViewById<RecyclerView>(R.id.recycler_sub_item)?.adapter = placeAdapter
+                        placeAdapter.notifyDataSetChanged()
+
+                    }
+
+                    findViewById<ProgressBar>(R.id.progressBar)?.visibility = View.GONE
+
+                }
+                override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+    }//searchPlaces
+
+    fun searchPlacesMap(searchCategory:String,searchKeyword:String){
+        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.searchPlaceToString("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
+            object : Callback<String>{
+                override fun onResponse(
+                    call: Call<String>,
+                    response: Response<String>
+                ) {
+                    val s = response.body()
+                    G.testmessage = s
+                    G.categoryG = searchCategory
+                    G.keywordG = searchKeyword
+
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        )
+
+
+    }
+
+
+
     private fun searchPlaces(){
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
@@ -164,60 +249,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         )
-    }
-
-
-    fun searchPlaces(searchCategory:String,searchKeyword:String){
-
-        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
-
-        val category = searchCategory
-        val subcategory = searchKeyword
-        val fragment = Tab2HoodFragment()
-        fragment.processData(category, subcategory)
-
-
-            val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
-        val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToKakao("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
-            object : Callback<KakaoSearchPlaceResponse>{
-                override fun onResponse(
-                    call: Call<KakaoSearchPlaceResponse>,
-                    response: Response<KakaoSearchPlaceResponse>
-                ) {
-                    placeResponse = response.body()
-                    val documents: List<Place>? = placeResponse?.documents
-
-                    val placeAdapter: PlaceItemAdapter
-                    if (documents.isNullOrEmpty()) {
-                        // documents가 비어 있을 경우, 빈 메시지를 표시합니다.
-                        findViewById<TextView>(R.id.empty_view).visibility = View.VISIBLE
-                        findViewById<RecyclerView>(R.id.recycler_sub_item).visibility = View.GONE
-                        Toast.makeText(this@MainActivity, "검색중..", Toast.LENGTH_SHORT).show()
-
-                        placeAdapter = PlaceItemAdapter(this@MainActivity, emptyList<Place>())
-                        findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
-                        placeAdapter.notifyDataSetChanged()
-
-                    } else {
-                        findViewById<RecyclerView>(R.id.recycler_sub_item).visibility = View.VISIBLE
-                        findViewById<TextView>(R.id.empty_view).visibility = View.GONE
-
-                        placeAdapter = PlaceItemAdapter(this@MainActivity, documents)
-                        findViewById<RecyclerView>(R.id.recycler_sub_item).adapter = placeAdapter
-                        placeAdapter.notifyDataSetChanged()
-
-                    }
-
-                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
-
-                }
-                override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        )
-    }//searchPlaces
+    }//searchPlaces..........
 
 
 

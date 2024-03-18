@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.BottomNavigationView"
-        android:background="@color/white"
+        android:background="#E1F4F6"
+        android:backgroundTint="#E1F4F6"
         app:menu="@menu/bnv_menu"
         app:itemTextColor="@color/bnv"/>
 

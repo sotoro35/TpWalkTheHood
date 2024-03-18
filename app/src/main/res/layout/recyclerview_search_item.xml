@@ -22,6 +22,7 @@
             android:fontFamily="@font/hanbit"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:breakStrategy="simple"
             android:padding="4dp"/>
 
         <TextView
@@ -50,6 +51,7 @@
             android:textColor="#FF5722"
             android:textStyle="bold"
             android:padding="4dp"
+            android:layout_below="@id/tv_address"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 

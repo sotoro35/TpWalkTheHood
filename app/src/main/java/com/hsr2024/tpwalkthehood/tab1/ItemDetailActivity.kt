@@ -31,8 +31,6 @@ class ItemDetailActivity : AppCompatActivity() {
 
             binding.webView.loadUrl(place.place_url)
 
-
-
         }
 
     }

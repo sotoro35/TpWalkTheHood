@@ -78,6 +78,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 카카오 지도 앱키 등록 -->
+        <meta-data
+            android:name="com.kakao.vectormap.APP_KEY"
+            android:value="d93d64947a13f3365a84a2b2ca5e432d"/>
+
     </application>
 
 </manifest>
