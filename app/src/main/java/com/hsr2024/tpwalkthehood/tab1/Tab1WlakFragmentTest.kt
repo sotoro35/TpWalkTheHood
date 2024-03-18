@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hsr2024.tpwalkthehood.MainActivity
@@ -19,13 +20,23 @@ import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
 import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
 import com.hsr2024.tpwalkthehood.data.CategoryItem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1testWlakBinding
+import com.hsr2024.tpwalkthehood.network.RetrofitHelper
+import com.hsr2024.tpwalkthehood.network.RetrofitService
 import com.hsr2024.tpwalkthehood.tab2.Tab2HoodFragment
+import com.kakao.sdk.common.KakaoSdk
 import okhttp3.internal.notify
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.create
 
 class Tab1WlakFragmentTest : Fragment(){
 
     private lateinit var binding:FragmentTab1testWlakBinding
     lateinit var main:MainActivity
+
+    val apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +50,6 @@ class Tab1WlakFragmentTest : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         //대분류 클릭시 버튼에 클릭리스너
         setCategoryListener()
@@ -59,7 +69,13 @@ class Tab1WlakFragmentTest : Fragment(){
             main.findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId = R.id.menu_hood
         }
 
+
+        //binding.ivWeather.setOnClickListener { main.WeatherGet() }
+
+
     }//onViewCreated......
+
+
 
 
 

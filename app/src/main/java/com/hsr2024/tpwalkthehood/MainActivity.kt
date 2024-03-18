@@ -9,7 +9,9 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -44,6 +46,9 @@ import com.kakao.vectormap.MapView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,8 +65,10 @@ class MainActivity : AppCompatActivity() {
     // [검색작업] 카카오 검색된 내용을 갖고 있는 클래스
     var placeResponse:KakaoSearchPlaceResponse? = null
 
-    val apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+
+    val apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0"
     val key = "1TBrPTECd6gt7PR%2FK29IQYy7BEH1YV%2FQxqn8XOOg1ZQ7ujvcn1HCfL0ln4BYyF9jIHgGVq25bquADIFdixh3Mg%3D%3D"
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +110,70 @@ class MainActivity : AppCompatActivity() {
             requestMyLocation()
         }
 
+        // 준비 단계 : base_date(발표 일자), base_time(발표 시각)
+        // 현재 날짜, 시간 정보 가져오기
+//        val cal = Calendar.getInstance()
+//        base_date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.time) // 현재 날짜
+//        val timeH = SimpleDateFormat("HH", Locale.getDefault()).format(cal.time) // 현재 시각
+//        val timeM = SimpleDateFormat("HH", Locale.getDefault()).format(cal.time) // 현재 분
+//        // API 가져오기 적당하게 변환
+//        base_time = getBaseTime(timeH, timeM)
+//        // 현재 시각이 00시이고 45분 이하여서 baseTime이 2330이면 어제 정보 받아오기
+//        if (timeH == "00" && base_time == "2330") {
+//            cal.add(Calendar.DATE, -1).toString()
+//            base_date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.time)
+//        }
+
+
+
     }// onCreate..
+
+    private var base_date = "20210510"  // 발표 일자
+    private var base_time = "1400"      // 발표 시각
+
+
+    // 날씨 정보 가져오기
+    // (한 페이지 결과 수 = 60, 페이지 번호 = 1, 응답 자료 형식-"JSON", 발표 날싸, 발표 시각, 예보지점 좌표)
+    fun WeatherGet(){
+        val retrofit = RetrofitHelper.getRetrofitInstance(apiUrl)
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.GetWeatherToString(60,1,"JSON","20240318","2100","${myLocation?.longitude}","${myLocation?.latitude}")
+            .enqueue(object : Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    var s = response.body().toString()
+                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "오류", Toast.LENGTH_SHORT).show()
+                    Log.d("에러","${t.message}")
+                }
+
+            })
+    }
+
+    // baseTime 설정하기
+    private fun getBaseTime(h : String, m : String) : String {
+        var result = ""
+
+        // 45분 전이면
+        if (m.toInt() < 45) {
+            // 0시면 2330
+            if (h == "00") result = "2330"
+            // 아니면 1시간 전 날씨 정보 부르기
+            else {
+                var resultH = h.toInt() - 1
+                // 1자리면 0 붙여서 2자리로 만들기
+                if (resultH < 10) result = "0" + resultH + "30"
+                // 2자리면 그대로
+                else result = resultH.toString() + "30"
+            }
+        }
+        // 45분 이후면 바로 정보 받아오기
+        else result = h + "30"
+
+        return result
+    }
 
 
 

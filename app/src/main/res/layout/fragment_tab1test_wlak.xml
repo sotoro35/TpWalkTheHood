@@ -14,20 +14,35 @@
         android:layout_marginTop="16dp">
 
         <ImageView
-            android:id="@+id/weather"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/weather_sun"/>
-
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/logotitle"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/iv_weather"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/weather_sun"/>
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="맑음"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_weather2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12도"
+            android:layout_gravity="center"/>
+
     </LinearLayout>
 
     <View
