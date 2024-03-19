@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/weather_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="오후1시"
+        android:gravity="center"
+        android:layout_alignParentTop="true"/>
+
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:src="@drawable/weather_sun"
+        android:layout_below="@id/weather_time"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/weather_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="8도"
+        android:layout_below="@id/weather_icon"
+        android:gravity="center"/>
+
+
+
+</RelativeLayout>

@@ -8,10 +8,7 @@ class G {
         var userAccount:UserAccount? = null
         var categoryG:String = "FD6"
         var keywordG:String = "음식점"
-
         var testmessage:String? = ""
-
-
         }
 
 

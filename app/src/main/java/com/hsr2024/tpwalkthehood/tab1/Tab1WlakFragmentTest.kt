@@ -13,12 +13,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
+import com.hsr2024.tpwalkthehood.adapter.WeatherAdapter
 import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
 import com.hsr2024.tpwalkthehood.data.CategoryItem
+import com.hsr2024.tpwalkthehood.data.ModelWeather
+import com.hsr2024.tpwalkthehood.data.Weather
+import com.hsr2024.tpwalkthehood.data.Weatheritem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab1testWlakBinding
 import com.hsr2024.tpwalkthehood.network.RetrofitHelper
 import com.hsr2024.tpwalkthehood.network.RetrofitService
@@ -29,13 +34,24 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class Tab1WlakFragmentTest : Fragment(){
 
     private lateinit var binding:FragmentTab1testWlakBinding
     lateinit var main:MainActivity
 
+    // [날씨작업]
     val apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"
+
+    private var base_date = "20240318"  // 발표 일자
+    private var base_time = "1400"      // 발표 시각
+    private var nx = "55"               // 예보지점 X 좌표
+    private var ny = "127"              // 예보지점 Y 좌표
+
+    var weatherResponse:Weather? = null
 
 
     override fun onCreateView(
@@ -56,27 +72,130 @@ class Tab1WlakFragmentTest : Fragment(){
 
         main = activity as MainActivity
 
+        clickCategory(binding.categoryBtns.category01)
+
         //main.placeResponse?: return
-        if (main.placeResponse !== null) {
+        if (main.placeResponse !== null ) {
             val placeAdapter = PlaceItemAdapter(requireContext(), main.placeResponse!!.documents)
             binding.recyclerSubItem.adapter = placeAdapter
             placeAdapter.notifyDataSetChanged()
         }
 
-        clickCategory(binding.categoryBtns.category01)
-
+        // 맵 플로팅버튼 클릭시 이동...
         binding.moveMap.setOnClickListener {
             main.findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId = R.id.menu_hood
         }
 
 
-        //binding.ivWeather.setOnClickListener { main.WeatherGet() }
+        // 날씨 클릭시 다이얼로그...
+        binding.ivWeather.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("오늘의 날씨")
+            builder.setView(R.layout.dialog_weather)
+            builder.create().show()
+        }
 
+        //WeatherGet()
 
     }//onViewCreated......
 
+    //[날씨작업]
+    // 날씨 정보 API 실행
+    // (한 페이지 결과 수 = 60, 페이지 번호 = 1, 응답 자료 형식-"JSON", 발표 날싸, 발표 시각, 예보지점 좌표)
+    fun WeatherGet(nx: String,ny: String){
+        setWeather(nx, ny)
+
+        val retrofit = RetrofitHelper.getRetrofitInstance(apiUrl)
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.GetWeather(60,1,"JSON",base_date,base_time,nx,ny)
+            .enqueue(object : Callback<Weather>{
+                override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+                    weatherResponse = response.body()
+                    var weatherItem:List<Weatheritem>? = weatherResponse?.response?.body?.items?.item
+
+                    // 현재 시각부터 1시간 뒤의 날씨 6개를 담을 배열
+                    val weatherArr = arrayOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
+
+                    weatherItem?.apply {
+                        // 배열채우기
+                        var index = 0
+                        val totalCount = response.body()!!.response.body.totalCount - 1
+                        for (i in 0 .. totalCount){
+                            index %= 6
+                            when(weatherItem[i].category) {
+                                "PTY" -> weatherArr[index].rainType = weatherItem[i].fcstValue
+                                "SKY" -> weatherArr[index].sky = weatherItem[i].fcstValue
+                                "T1H" -> weatherArr[index].temp = weatherItem[i].fcstValue
+                                else -> continue
+                            } // when....
+                            index++
+                        }// for....
+                        // 각 날짜 배열 시간 설정
+                        for (i in 0 .. 5) weatherArr[i].fcstTime = weatherItem[i].fcstTime
+
+                        AlertDialog.Builder(requireContext()).setMessage("${base_date}:${base_time}").create().show()
+
+                        binding.tvWeather.text = weatherItem[0].fcstTime
+                    } // apply.....
+                }// onResponse
+
+                override fun onFailure(call: Call<Weather>, t: Throwable) {
+                    Toast.makeText(requireContext(), "날씨파싱오류", Toast.LENGTH_SHORT).show()
+                    Log.e("날씨","${t.message}")
+                }//onFailure
+            })//retrofitService.....
 
 
+    }
+
+    fun showAlertDialog(){
+
+    }
+
+    // 날씨 정보 설정하기
+    private fun setWeather(nx:String, ny:String) {
+        // 멤버변수: base_date(발표 일자), base_time(발표 시각)
+
+        // 현재 날짜, 시간 정보 가져오기
+
+        val cal = Calendar.getInstance()
+        base_date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.time)
+        var timeH = SimpleDateFormat("HH", Locale.getDefault()).format(cal.time)
+        var timeM = SimpleDateFormat("mm", Locale.getDefault()).format(cal.time)
+
+        //API 요청 문구로 변환
+        base_time = getBaseTime(timeH,timeM)
+        // 새벽1시라면 어제 정보 받아오기
+        if(timeH == "00" && base_time == "2330"){
+            cal.add(Calendar.DATE, -1).toString()
+            base_date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.time)
+        }
+    }
+
+    // baseTime 설정하기 ( API 에 맞게 설정 )
+    private fun getBaseTime(h : String, m : String) : String {
+        // 매시간 45분마다 API 정보 제공시간. 현재시간 기준 45분이 되었는지 안되었는지에 맞춰 시각 변경
+        // 요청시간은 무조건 매시각 30분으로 설정
+        var result = ""
+
+        // 45분 전이면
+        if (m.toInt() < 45) {
+            // 0시면 2330 // 전날 11시30분 요청
+            if (h == "00") result = "2330"
+            // 아니면 1시간 전 날씨 정보 부르기 // 발표전이라 전시각 발표 요청.
+            else {
+                var resultH = h.toInt() - 1
+                // 1자리면 0 붙여서 2자리로 만들기
+                if (resultH < 10) result = "0" + resultH + "30"
+                // 2자리면 그대로
+                else result = resultH.toString() + "30"
+            }
+        }
+        // 45분 이후면 바로 정보 받아오기
+        else result = h + "30"
+
+        return result
+    }
 
 
     //멤버변수(property)

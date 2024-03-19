@@ -52,6 +52,12 @@ interface RetrofitService {
         @Query("radius") radius: Int = 5000, @Query("sort") sort: String = "distance"
     ): Call<KakaoSearchPlaceResponse>
 
+    //지역 동 단위 받아오기
+    @Headers("Authorization: KakaoAK e70102dbac743d584daa83924b1a25d2")
+    @GET("v2/local/geo/coord2regioncode.json")
+    fun region_name()
+
+
     @GET("getUltraSrtFcst?serviceKey=1TBrPTECd6gt7PR%2FK29IQYy7BEH1YV%2FQxqn8XOOg1ZQ7ujvcn1HCfL0ln4BYyF9jIHgGVq25bquADIFdixh3Mg%3D%3D")
     fun GetWeather(
         @Query("numOfRows") num_of_rows: Int,     // 한 페이지 경과 수
