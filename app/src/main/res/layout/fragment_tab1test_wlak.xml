@@ -6,44 +6,92 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:src="@drawable/logotitle"
+        android:background="@color/logo_background"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="16dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logotitle"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"/>
-
-        <ImageView
-            android:id="@+id/iv_weather"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:src="@drawable/weather_sun"/>
+        android:padding="4dp">
 
         <TextView
-            android:id="@+id/tv_weather"
+            android:id="@+id/hood_myhood"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/hanbit"
-            android:text="맑음" />
+            android:text="동네 산책 중.."
+            android:textColor="#636060"
+            android:layout_alignBottom="@id/tv_region"
+            android:layout_toRightOf="@id/tv_region"/>
 
         <TextView
-            android:id="@+id/tv_weather2"
+            android:id="@+id/tv_region"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12도"
-            android:layout_gravity="center"/>
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="6dp"
+            android:fontFamily="@font/hanbit"
+            android:text="서울"
+            android:textColor="#00BCD4"
+            android:textSize="24sp" />
 
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/hood_tvvv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/layout_weather"
+            android:layout_alignStart="@id/layout_weather"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/hanbit"
+            android:text="우리동네 날씨는?" />
+
+        <LinearLayout
+            android:id="@+id/layout_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="24dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hanbit"
+                android:text="맑음"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                />
+
+            <ImageView
+                android:id="@+id/iv_weather"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/weather_sun"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"/>
+
+            <TextView
+                android:id="@+id/tv_weather2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hanbit"
+                android:text="12도"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"
@@ -115,7 +163,7 @@
             android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/move_map"
+            android:id="@+id/reload"
             style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +174,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/logo_background"
-            android:src="@drawable/map"
+            android:src="@drawable/icon_reload"
             app:tint="@null"/>
     </RelativeLayout>
 

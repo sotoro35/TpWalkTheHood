@@ -1,5 +1,6 @@
 package com.hsr2024.tpwalkthehood.tab1
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
 import com.hsr2024.tpwalkthehood.adapter.WeatherAdapter
 import com.hsr2024.tpwalkthehood.adapter.subCategoryTestAdapter
 import com.hsr2024.tpwalkthehood.data.CategoryItem
+import com.hsr2024.tpwalkthehood.data.KakaoRegionResponse
 import com.hsr2024.tpwalkthehood.data.ModelWeather
 import com.hsr2024.tpwalkthehood.data.Weather
 import com.hsr2024.tpwalkthehood.data.Weatheritem
@@ -51,7 +53,10 @@ class Tab1WlakFragmentTest : Fragment(){
     private var nx = "55"               // 예보지점 X 좌표
     private var ny = "127"              // 예보지점 Y 좌표
 
+    //[날씨 api 값 넣을 변수
     var weatherResponse:Weather? = null
+
+    //[날씨 api 값을 어댑터에 연결할 변수]
 
 
     override fun onCreateView(
@@ -82,22 +87,31 @@ class Tab1WlakFragmentTest : Fragment(){
         }
 
         // 맵 플로팅버튼 클릭시 이동...
-        binding.moveMap.setOnClickListener {
-            main.findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId = R.id.menu_hood
+        binding.reload.setOnClickListener {
+            main.requestMyLocation()
+            clickCategory(binding.categoryBtns.category01)
+
         }
 
 
         // 날씨 클릭시 다이얼로그...
         binding.ivWeather.setOnClickListener {
+//            val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
+//            val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
+
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("오늘의 날씨")
-            builder.setView(R.layout.dialog_weather)
-            builder.create().show()
+            //builder.setView(dialogView)
+            builder.create().setOnShowListener {
+//                val weatherAdapter =  WeatherAdapter(requireContext(),weatherArr)
+//                recyclerView.adapter = weatherAdapter
+            }
+            builder.show()
         }
 
-        //WeatherGet()
-
     }//onViewCreated......
+
+    //var weatherArr= arrayOf(ModelWeather())
 
     //[날씨작업]
     // 날씨 정보 API 실행
@@ -113,8 +127,10 @@ class Tab1WlakFragmentTest : Fragment(){
                     weatherResponse = response.body()
                     var weatherItem:List<Weatheritem>? = weatherResponse?.response?.body?.items?.item
 
+
+
                     // 현재 시각부터 1시간 뒤의 날씨 6개를 담을 배열
-                    val weatherArr = arrayOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
+                    var weatherArr = arrayOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
 
                     weatherItem?.apply {
                         // 배열채우기
@@ -133,9 +149,12 @@ class Tab1WlakFragmentTest : Fragment(){
                         // 각 날짜 배열 시간 설정
                         for (i in 0 .. 5) weatherArr[i].fcstTime = weatherItem[i].fcstTime
 
-                        AlertDialog.Builder(requireContext()).setMessage("${base_date}:${base_time}").create().show()
+                        AlertDialog.Builder(requireContext()).setMessage("${weatherArr[0].rainType}:${weatherArr[0].sky}").create().show()
 
-                        binding.tvWeather.text = weatherItem[0].fcstTime
+                        binding.ivWeather.setImageResource(getSky(weatherArr[0].rainType,weatherArr[0].sky))
+                        binding.tvWeather.text = getSkyString(weatherArr[0].rainType,weatherArr[0].sky)
+                        binding.tvWeather2.text = "${weatherArr[0].temp}도"
+
                     } // apply.....
                 }// onResponse
 
@@ -195,6 +214,78 @@ class Tab1WlakFragmentTest : Fragment(){
         else result = h + "30"
 
         return result
+    }
+
+    fun getSky(rainType:String, sky :String):Int{
+        return if (rainType == "0"){
+            when(sky){
+                "1" -> R.drawable.weathericon_sunny //맑음
+                "3" -> R.drawable.weathericon_cloudy1 //구름 많음
+                "4" -> R.drawable.weathericon_cloudy2 //흐림
+                else -> R.drawable.icon_reload
+            }
+        } else {
+            when(rainType){
+                "1" -> R.drawable.weathericon_rain //비
+                "2" -> R.drawable.weathericon_snowrain //비/눈
+                "3" -> R.drawable.weathericon_snow //눈
+                else -> R.drawable.icon_reload
+            }
+        }
+    }
+
+    fun getSkyString(rainType:String, sky :String):String{
+        return if (rainType == "0"){
+            when(sky){
+                "1" -> "맑음"//맑음
+                "3" -> "구름" //구름 많음
+                "4" -> "흐림" //흐림
+                else -> "오류"
+            }
+        } else {
+            when(rainType){
+                "1" -> "비" //비
+                "2" -> "비/눈" //비/눈
+                "3" -> "눈" //눈
+                else -> "오류"
+            }
+        }
+    }
+
+    fun regionNameRetrofit(x:String, y:String){
+        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        retrofitService.regionName(x,y)
+            .enqueue(object : Callback<KakaoRegionResponse>{
+                override fun onResponse(
+                    call: Call<KakaoRegionResponse>,
+                    response: Response<KakaoRegionResponse>
+                ) {
+                    val regionResponse = response.body()
+                    var regionItem = regionResponse?.documents
+                    binding.tvRegion.text = regionItem?.get(0)?.region_2depth_name
+                    //AlertDialog.Builder(requireContext()).setMessage("${regionItem?.get(0)?.region_2depth_name}").create().show()
+                }
+
+                override fun onFailure(call: Call<KakaoRegionResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "region오류", Toast.LENGTH_SHORT).show()
+//                Log.e("region","${t.message}")
+                }
+
+            })
+//            .enqueue(object : Callback<String>{
+//            override fun onResponse(call: Call<String>, response: Response<String>) {
+//                var s = response.body()
+//                AlertDialog.Builder(requireContext()).setMessage(s).create().show()
+//            }
+//
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                Toast.makeText(requireContext(), "region오류", Toast.LENGTH_SHORT).show()
+//                Log.e("region","${t.message}")
+//            }
+//
+//        })
+
     }
 
 

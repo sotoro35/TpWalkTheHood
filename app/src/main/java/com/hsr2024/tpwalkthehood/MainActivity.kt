@@ -178,8 +178,11 @@ class MainActivity : AppCompatActivity() {
             // [날씨에게 좌표넘기기]
             if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_walk) {
                 val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
-                AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
+                //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
                 fragment.WeatherGet(curPoint!!.x.toString(),curPoint!!.y.toString())
+                // [ 동 구해오기 ]
+                fragment.regionNameRetrofit(myLocation?.longitude.toString(),myLocation?.latitude.toString())
+
             }
         }
     } // locationcallback....

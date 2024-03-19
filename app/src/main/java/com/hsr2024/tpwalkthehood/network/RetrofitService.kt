@@ -2,6 +2,7 @@ package com.hsr2024.tpwalkthehood.network
 
 
 import com.hsr2024.tpwalkthehood.data.CategoryGroupCode
+import com.hsr2024.tpwalkthehood.data.KakaoRegionResponse
 import com.hsr2024.tpwalkthehood.data.KakaoSearchPlaceResponse
 import com.hsr2024.tpwalkthehood.data.UserAccount
 import com.hsr2024.tpwalkthehood.data.UserLoginData
@@ -55,7 +56,17 @@ interface RetrofitService {
     //지역 동 단위 받아오기
     @Headers("Authorization: KakaoAK e70102dbac743d584daa83924b1a25d2")
     @GET("v2/local/geo/coord2regioncode.json")
-    fun region_name()
+    fun regionNameToString(
+        @Query("x") longitude:String,
+        @Query("y") latitude: String
+    ): Call<String>
+
+    @Headers("Authorization: KakaoAK e70102dbac743d584daa83924b1a25d2")
+    @GET("v2/local/geo/coord2regioncode.json")
+    fun regionName(
+        @Query("x") longitude:String,
+        @Query("y") latitude: String
+    ): Call<KakaoRegionResponse>
 
 
     @GET("getUltraSrtFcst?serviceKey=1TBrPTECd6gt7PR%2FK29IQYy7BEH1YV%2FQxqn8XOOg1ZQ7ujvcn1HCfL0ln4BYyF9jIHgGVq25bquADIFdixh3Mg%3D%3D")
