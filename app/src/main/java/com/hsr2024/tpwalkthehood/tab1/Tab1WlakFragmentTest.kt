@@ -96,22 +96,19 @@ class Tab1WlakFragmentTest : Fragment(){
 
         // 날씨 클릭시 다이얼로그...
         binding.ivWeather.setOnClickListener {
-//            val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
-//            val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
-
+            main.requestMyLocation()
+            val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
+            val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
             val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("오늘의 날씨")
-            //builder.setView(dialogView)
-            builder.create().setOnShowListener {
-//                val weatherAdapter =  WeatherAdapter(requireContext(),weatherArr)
-//                recyclerView.adapter = weatherAdapter
-            }
+            builder.setView(dialogView)
+            val weatherAdapter =  WeatherAdapter(requireContext(),weatherArr)
+            recyclerView.adapter = weatherAdapter
             builder.show()
         }
 
     }//onViewCreated......
 
-    //var weatherArr= arrayOf(ModelWeather())
+    var weatherArr= mutableListOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
 
     //[날씨작업]
     // 날씨 정보 API 실행
@@ -130,7 +127,7 @@ class Tab1WlakFragmentTest : Fragment(){
 
 
                     // 현재 시각부터 1시간 뒤의 날씨 6개를 담을 배열
-                    var weatherArr = arrayOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
+                    //var weatherArr = mutableListOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
 
                     weatherItem?.apply {
                         // 배열채우기
@@ -149,7 +146,7 @@ class Tab1WlakFragmentTest : Fragment(){
                         // 각 날짜 배열 시간 설정
                         for (i in 0 .. 5) weatherArr[i].fcstTime = weatherItem[i].fcstTime
 
-                        AlertDialog.Builder(requireContext()).setMessage("${weatherArr[0].rainType}:${weatherArr[0].sky}").create().show()
+                        //AlertDialog.Builder(requireContext()).setMessage("${weatherArr[0].rainType}:${weatherArr[0].sky}").create().show()
 
                         binding.ivWeather.setImageResource(getSky(weatherArr[0].rainType,weatherArr[0].sky))
                         binding.tvWeather.text = getSkyString(weatherArr[0].rainType,weatherArr[0].sky)

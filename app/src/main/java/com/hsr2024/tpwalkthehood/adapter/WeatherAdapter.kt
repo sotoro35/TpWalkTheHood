@@ -10,7 +10,7 @@ import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.ModelWeather
 import com.hsr2024.tpwalkthehood.databinding.RecyclerViewWeatherBinding
 
-class WeatherAdapter(val context: Context,var items:Array<ModelWeather>):Adapter<WeatherAdapter.VHweather>() {
+class WeatherAdapter(val context: Context,var items:List<ModelWeather>):Adapter<WeatherAdapter.VHweather>() {
     inner class VHweather(val binding:RecyclerViewWeatherBinding):ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHweather {
@@ -22,7 +22,7 @@ class WeatherAdapter(val context: Context,var items:Array<ModelWeather>):Adapter
     override fun onBindViewHolder(holder: VHweather, position: Int) {
         var item = items[position]
         holder.binding.weatherTime.text = item.fcstTime
-        holder.binding.weatherTemp.text = item.temp
+        holder.binding.weatherTemp.text = "${item.temp} 도"
         holder.binding.weatherIcon.setImageResource(getSky(item.rainType,item.sky))
         holder.binding.weatherTv.text = getSkyString(item.rainType,item.sky)
 
