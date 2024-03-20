@@ -36,6 +36,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -86,27 +87,26 @@ class Tab1WlakFragmentTest : Fragment(){
             placeAdapter.notifyDataSetChanged()
         }
 
-        // 맵 플로팅버튼 클릭시 이동...
-        binding.reload.setOnClickListener {
-            main.requestMyLocation()
-            clickCategory(binding.categoryBtns.category01)
-
-        }
-
-
         // 날씨 클릭시 다이얼로그...
-        binding.ivWeather.setOnClickListener {
-            main.requestMyLocation()
-            val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
-            val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setView(dialogView)
-            val weatherAdapter =  WeatherAdapter(requireContext(),weatherArr)
-            recyclerView.adapter = weatherAdapter
-            builder.show()
+        try {
+            binding.ivWeather.setOnClickListener {
+                main.requestMyLocation()
+                val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
+                val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setView(dialogView)
+
+                val weatherAdapter = WeatherAdapter(requireContext(), weatherArr)
+                recyclerView.adapter = weatherAdapter
+                builder.show()
+            }
+        }catch ( e:Exception){
+            AlertDialog.Builder(requireContext()).setMessage("다시 시도해주세요").create().show()
         }
 
     }//onViewCreated......
+
+
 
     var weatherArr= mutableListOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
 
@@ -148,8 +148,8 @@ class Tab1WlakFragmentTest : Fragment(){
 
                         //AlertDialog.Builder(requireContext()).setMessage("${weatherArr[0].rainType}:${weatherArr[0].sky}").create().show()
 
-                        binding.ivWeather.setImageResource(getSky(weatherArr[0].rainType,weatherArr[0].sky))
-                        binding.tvWeather.text = getSkyString(weatherArr[0].rainType,weatherArr[0].sky)
+                        binding.ivWeather.setImageResource(ModelWeather.getSky(weatherArr[0].rainType,weatherArr[0].sky))
+                        binding.tvWeather.text = ModelWeather.getSkyString(weatherArr[0].rainType,weatherArr[0].sky)
                         binding.tvWeather2.text = "${weatherArr[0].temp}도"
 
                     } // apply.....
@@ -213,42 +213,7 @@ class Tab1WlakFragmentTest : Fragment(){
         return result
     }
 
-    fun getSky(rainType:String, sky :String):Int{
-        return if (rainType == "0"){
-            when(sky){
-                "1" -> R.drawable.weathericon_sunny //맑음
-                "3" -> R.drawable.weathericon_cloudy1 //구름 많음
-                "4" -> R.drawable.weathericon_cloudy2 //흐림
-                else -> R.drawable.icon_reload
-            }
-        } else {
-            when(rainType){
-                "1" -> R.drawable.weathericon_rain //비
-                "2" -> R.drawable.weathericon_snowrain //비/눈
-                "3" -> R.drawable.weathericon_snow //눈
-                else -> R.drawable.icon_reload
-            }
-        }
-    }
-
-    fun getSkyString(rainType:String, sky :String):String{
-        return if (rainType == "0"){
-            when(sky){
-                "1" -> "맑음"//맑음
-                "3" -> "구름" //구름 많음
-                "4" -> "흐림" //흐림
-                else -> "오류"
-            }
-        } else {
-            when(rainType){
-                "1" -> "비" //비
-                "2" -> "비/눈" //비/눈
-                "3" -> "눈" //눈
-                else -> "오류"
-            }
-        }
-    }
-
+    // 위치에 해당하는 행정구역 받아오기
     fun regionNameRetrofit(x:String, y:String){
         val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
         val retrofitService = retrofit.create(RetrofitService::class.java)
@@ -260,7 +225,7 @@ class Tab1WlakFragmentTest : Fragment(){
                 ) {
                     val regionResponse = response.body()
                     var regionItem = regionResponse?.documents
-                    binding.tvRegion.text = regionItem?.get(0)?.region_2depth_name
+                    binding.tvRegion.text = "${regionItem?.get(0)?.region_2depth_name} ${regionItem?.get(0)?.region_3depth_name}"
                     //AlertDialog.Builder(requireContext()).setMessage("${regionItem?.get(0)?.region_2depth_name}").create().show()
                 }
 
@@ -294,7 +259,6 @@ class Tab1WlakFragmentTest : Fragment(){
 
     lateinit var subsubcategoryAdapter:subCategoryTestAdapter
 
-
     private fun setCategoryListener(){
 
         binding.categoryBtns.category01.setOnClickListener { clickCategory(it) }
@@ -312,8 +276,7 @@ class Tab1WlakFragmentTest : Fragment(){
 
 
     var SelectedCategory: Int = -1
-
-    private fun clickCategory(view:View){
+     fun clickCategory(view:View){
 
         ///// 클릭 했을때 색상 변경 /////////////
         if (SelectedCategory != -1) {
@@ -328,7 +291,6 @@ class Tab1WlakFragmentTest : Fragment(){
 
 
         //카테고리 설정
-
         // 클릭한 대분류에 해당하는 소분류 설정
         val clickedCategoryId =view.id
         val subcategoryData = when(clickedCategoryId){
@@ -360,17 +322,16 @@ class Tab1WlakFragmentTest : Fragment(){
                 CategoryItem("정형외과",R.drawable.icon_bone),
                 CategoryItem("소아청소년과",R.drawable.icon_pediatric),
                 CategoryItem("산부인과",R.drawable.icon_pregnant),
-                CategoryItem("동물",R.drawable.icon_pet)
+                CategoryItem("동물",R.drawable.companion_pet1)
             )
             R.id.category_08 -> listOf(
                 CategoryItem("전체보기",R.drawable.icon_all),
-                CategoryItem("동물",R.drawable.icon_pet)
+                CategoryItem("동물",R.drawable.companion_pet1)
             )
             else -> emptyList()
         }
 
         //////////////////////////////////////////////////////////
-
 
         //클릭한 뷰의 id를 저장
         categoryId= view.id
@@ -409,9 +370,7 @@ class Tab1WlakFragmentTest : Fragment(){
             }
         } // when...
 
-
         /////// 클릭시 검색하기 ///////////////////////
-
         main.searchPlaces(searchCategory,searchKeyword)
 
         // 서브 카테고리 어댑터를 업데이트합니다.
@@ -432,99 +391,82 @@ class Tab1WlakFragmentTest : Fragment(){
     }
 
 
-
-
-    //    private fun first(view:View){
-//        val clickedCategoryId = view.id
-//        val subcategoryData = setupSubcategoryData(clickedCategoryId)
-//        setupSearchKeywords(clickedCategoryId)
-//        subsubcategoryAdapter = subCategoryTestAdapter(requireContext(), subcategoryData) { clickedItem ->
+//        private fun setupSubcategoryData(clickedCategoryId: Int): List<CategoryItem> {
+//            return when(clickedCategoryId){
+//                R.id.category_01 -> listOf(
+//                    CategoryItem("전체보기",R.drawable.icon_all),
+//                    CategoryItem("한식",R.drawable.icon_rice),
+//                    CategoryItem("중식",R.drawable.icon_noodle),
+//                    CategoryItem("일식",R.drawable.icon_sushi),
+//                    CategoryItem("피자",R.drawable.icon_pizza),
+//                    CategoryItem("치킨",R.drawable.icon_chicke),
+//                    CategoryItem("분식",R.drawable.icon_ricecake),
+//                    CategoryItem("애견동반",R.drawable.icon_pet)
+//                )
+//                R.id.category_02 -> listOf(
+//                    CategoryItem("전체보기",R.drawable.icon_all),
+//                    CategoryItem("애견동반",R.drawable.icon_pet)
+//                )
+//                R.id.category_03 -> listOf(
+//                    CategoryItem("전체보기",R.drawable.icon_all),
+//                    CategoryItem("어린이",R.drawable.icon_childre)
+//                )
+//                R.id.category_04 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+//                R.id.category_05 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+//                R.id.category_06 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
+//                R.id.category_07 -> listOf(
+//                    CategoryItem("전체보기",R.drawable.icon_all),
+//                    CategoryItem("내과",R.drawable.icon_stethoscope),
+//                    CategoryItem("이비인후과",R.drawable.icon_otorhinolaryngology),
+//                    CategoryItem("정형외과",R.drawable.icon_bone),
+//                    CategoryItem("소아청소년과",R.drawable.icon_pediatric),
+//                    CategoryItem("산부인과",R.drawable.icon_pregnant),
+//                    CategoryItem("동물",R.drawable.icon_pet)
+//                )
+//                R.id.category_08 -> listOf(
+//                    CategoryItem("전체보기",R.drawable.icon_all),
+//                    CategoryItem("동물",R.drawable.icon_pet)
+//                )
+//                else -> emptyList()
+//            }
 //        }
 //
-//        // 리사이클러뷰에 어댑터 설정
-//        binding.reyclerViewSubCategory.adapter = subsubcategoryAdapter
-//        subsubcategoryAdapter.notifyDataSetChanged()
-//
-//        main.searchPlaces(searchCategory,searchKeyword)
-//
-//    }
-
-        private fun setupSubcategoryData(clickedCategoryId: Int): List<CategoryItem> {
-            return when(clickedCategoryId){
-                R.id.category_01 -> listOf(
-                    CategoryItem("전체보기",R.drawable.icon_all),
-                    CategoryItem("한식",R.drawable.icon_rice),
-                    CategoryItem("중식",R.drawable.icon_noodle),
-                    CategoryItem("일식",R.drawable.icon_sushi),
-                    CategoryItem("피자",R.drawable.icon_pizza),
-                    CategoryItem("치킨",R.drawable.icon_chicke),
-                    CategoryItem("분식",R.drawable.icon_ricecake),
-                    CategoryItem("애견동반",R.drawable.icon_pet)
-                )
-                R.id.category_02 -> listOf(
-                    CategoryItem("전체보기",R.drawable.icon_all),
-                    CategoryItem("애견동반",R.drawable.icon_pet)
-                )
-                R.id.category_03 -> listOf(
-                    CategoryItem("전체보기",R.drawable.icon_all),
-                    CategoryItem("어린이",R.drawable.icon_childre)
-                )
-                R.id.category_04 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-                R.id.category_05 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-                R.id.category_06 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-                R.id.category_07 -> listOf(
-                    CategoryItem("전체보기",R.drawable.icon_all),
-                    CategoryItem("내과",R.drawable.icon_stethoscope),
-                    CategoryItem("이비인후과",R.drawable.icon_otorhinolaryngology),
-                    CategoryItem("정형외과",R.drawable.icon_bone),
-                    CategoryItem("소아청소년과",R.drawable.icon_pediatric),
-                    CategoryItem("산부인과",R.drawable.icon_pregnant),
-                    CategoryItem("동물",R.drawable.icon_pet)
-                )
-                R.id.category_08 -> listOf(
-                    CategoryItem("전체보기",R.drawable.icon_all),
-                    CategoryItem("동물",R.drawable.icon_pet)
-                )
-                else -> emptyList()
-            }
-        }
-
-        private fun setupSearchKeywords(categoryId: Int) {
-            when(categoryId) {
-                R.id.category_01 -> {
-                    searchCategory = "FD6"
-                    searchKeyword = "음식점"
-                }
-                R.id.category_02 -> {
-                    searchCategory = "CE7"
-                    searchKeyword = "카페"
-                }
-                R.id.category_03 -> {
-                    searchCategory = "CT1"
-                    searchKeyword = "문화시설"
-                }
-                R.id.category_04 -> {
-                    searchCategory = "CS2"
-                    searchKeyword = "편의점"
-                }
-                R.id.category_05 -> {
-                    searchCategory = "MT1"
-                    searchKeyword = "마트"
-                }
-                R.id.category_06 -> {
-                    searchCategory = "BK9"
-                    searchKeyword = "은행"
-                }
-                R.id.category_07 -> {
-                    searchCategory = "HP8"
-                    searchKeyword = "병원"
-                }
-                R.id.category_08 -> {
-                    searchCategory = "PM9"
-                    searchKeyword = "약국"
-                }
-            }
-        }
+//        private fun setupSearchKeywords(categoryId: Int) {
+//            when(categoryId) {
+//                R.id.category_01 -> {
+//                    searchCategory = "FD6"
+//                    searchKeyword = "음식점"
+//                }
+//                R.id.category_02 -> {
+//                    searchCategory = "CE7"
+//                    searchKeyword = "카페"
+//                }
+//                R.id.category_03 -> {
+//                    searchCategory = "CT1"
+//                    searchKeyword = "문화시설"
+//                }
+//                R.id.category_04 -> {
+//                    searchCategory = "CS2"
+//                    searchKeyword = "편의점"
+//                }
+//                R.id.category_05 -> {
+//                    searchCategory = "MT1"
+//                    searchKeyword = "마트"
+//                }
+//                R.id.category_06 -> {
+//                    searchCategory = "BK9"
+//                    searchKeyword = "은행"
+//                }
+//                R.id.category_07 -> {
+//                    searchCategory = "HP8"
+//                    searchKeyword = "병원"
+//                }
+//                R.id.category_08 -> {
+//                    searchCategory = "PM9"
+//                    searchKeyword = "약국"
+//                }
+//            }
+//        }
 
 } // fragment..
 

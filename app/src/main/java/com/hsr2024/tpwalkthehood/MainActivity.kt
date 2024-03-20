@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -89,26 +90,29 @@ class MainActivity : AppCompatActivity() {
 
         binding.bnvView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.menu_walk -> supportFragmentManager.beginTransaction()
-                    .replace((R.id.container_fragment), Tab1WlakFragmentTest(),).commit()
+                R.id.menu_walk -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace((R.id.container_fragment), Tab1WlakFragmentTest(),).commit()
+                    requestMyLocation()
+                }
 
                 R.id.menu_hood -> {
-                    searchPlaces("FD6", "음식점")
+                    requestMyLocation()
                     supportFragmentManager.beginTransaction()
                         .replace((R.id.container_fragment), Tab2HoodFragment(),).commit()
                 }
 
-                R.id.menu_feed -> if (G.userAccount == null) supportFragmentManager.beginTransaction()
+                R.id.menu_feed -> if (G.userAccount?.email == null || G.userAccount?.email == "") supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), GuestFragment(),).commit()
                 else supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), Tab3FeedFragment()).commit()
 
-                R.id.menu_talk -> if (G.userAccount == null) supportFragmentManager.beginTransaction()
+                R.id.menu_talk -> if (G.userAccount?.email == null || G.userAccount?.email == "") supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), GuestFragment(),).commit()
                 else supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), Tab4TalkFragment()).commit()
 
-                R.id.menu_my -> if (G.userAccount == null) supportFragmentManager.beginTransaction()
+                R.id.menu_my -> if (G.userAccount?.email == null || G.userAccount?.email == "") supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), GuestFragment(),).commit()
                 else supportFragmentManager.beginTransaction()
                     .replace((R.id.container_fragment), Tab5MyFragment()).commit()
@@ -124,6 +128,16 @@ class MainActivity : AppCompatActivity() {
             permissionResult.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
         } else { requestMyLocation() }
+
+
+
+
+        // 플로팅버튼 클릭시 새로고침..
+        binding.reload.setOnClickListener {
+            requestMyLocation()
+            val animation = AnimationUtils.loadAnimation(this, R.anim.floatting_rotate)
+            binding.reload.startAnimation(animation)
+        }
 
     }// onCreate..
 
@@ -179,11 +193,15 @@ class MainActivity : AppCompatActivity() {
             if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_walk) {
                 val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
                 //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
+                fragment.clickCategory(findViewById(R.id.category_01))
                 fragment.WeatherGet(curPoint!!.x.toString(),curPoint!!.y.toString())
                 // [ 동 구해오기 ]
                 fragment.regionNameRetrofit(myLocation?.longitude.toString(),myLocation?.latitude.toString())
 
-            }
+            }else if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_hood) {
+                    val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab2HoodFragment
+                    searchPlaces("FD6", "음식점")
+                }
         }
     } // locationcallback....
 
@@ -279,50 +297,22 @@ class MainActivity : AppCompatActivity() {
         )
     }//searchPlaces
 
-    fun searchPlacesMap(searchCategory:String,searchKeyword:String){
-        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
-        val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToString("$searchKeyword","${myLocation?.longitude}","${myLocation?.latitude}","$searchCategory").enqueue(
-            object : Callback<String>{
-                override fun onResponse(
-                    call: Call<String>,
-                    response: Response<String>
-                ) {
-                    val s = response.body()
-                    G.testmessage = s
-                    G.categoryG = searchCategory
-                    G.keywordG = searchKeyword
 
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        )
-
-
-    }
-
-
-
-    private fun searchPlaces(){
-        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
-        val retrofitService = retrofit.create(RetrofitService::class.java)
-        retrofitService.searchPlaceToString("음식점","${myLocation?.longitude}","${myLocation?.latitude}","FD6").enqueue(
-            object : Callback<String>{
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    val s = response.body()
-                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
-                }
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        )
-    }//searchPlaces..........
-
+//    private fun searchPlaces(){
+//        val retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+//        val retrofitService = retrofit.create(RetrofitService::class.java)
+//        retrofitService.searchPlaceToString("음식점","${myLocation?.longitude}","${myLocation?.latitude}","FD6").enqueue(
+//            object : Callback<String>{
+//                override fun onResponse(call: Call<String>, response: Response<String>) {
+//                    val s = response.body()
+//                    AlertDialog.Builder(this@MainActivity).setMessage(s).create().show()
+//                }
+//                override fun onFailure(call: Call<String>, t: Throwable) {
+//                    Toast.makeText(this@MainActivity, "오류${t.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        )
+//    }//searchPlaces..........
 
 
 }// main..

@@ -37,7 +37,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-
     private fun clickLogin(){
         var email= binding.inputLayoutId.editText!!.text.toString()
         var password= binding.inputLayoutPassword.editText!!.text.toString()
@@ -53,7 +52,9 @@ class LoginActivity : AppCompatActivity() {
                 val userResponse= response.body()
                 userResponse?.user?.apply {
                     val loadAccount:UserAccount = this
-                    if (G.userAccount == null) G.userAccount = UserAccount(this.email,this.password, this.nickname)
+                    if (G.userAccount?.email == null || G.userAccount?.email == "") {
+                        G.userAccount = UserAccount(this.email,this.password, this.nickname,this.imgfile)
+                    }
 
                     saveSharedPreferences()
 
@@ -79,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
         edior.putString("nickname",G.userAccount?.nickname)
         edior.putString("email",G.userAccount?.email)
         edior.putString("password",G.userAccount?.password)
+        edior.putString("imgfile",G.userAccount?.imgfile)
         edior.apply()
 
     }

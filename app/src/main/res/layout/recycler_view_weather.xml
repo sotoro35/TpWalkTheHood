@@ -41,6 +41,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
         android:text="8도"
+        android:textSize="12sp"
+        android:textColor="#555555"
         android:layout_below="@id/weather_tv"
         android:gravity="center"/>
 

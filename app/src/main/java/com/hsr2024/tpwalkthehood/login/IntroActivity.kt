@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.MainActivity
@@ -20,16 +22,27 @@ class IntroActivity : AppCompatActivity() {
 
         Glide.with(this).load(R.drawable.logo).into(findViewById(R.id.logo))
 
+        val preferences: SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
+
+        //var s = preferences.getString("email","")?: ""
+
+        // 자료형별로 데이터 가져오기
+        G.userAccount = UserAccount("","","","")
+        G.userAccount?.nickname= preferences.getString("nickname","")?: ""
+        G.userAccount?.email= preferences.getString("email","")?: ""
+        G.userAccount?.password= preferences.getString("password","")?: ""
+        G.userAccount?.imgfile = preferences.getString("imgfile","")?: ""
+
+
+        //AlertDialog.Builder(this).setMessage(s).create().show()
+       // AlertDialog.Builder(this).setMessage("${G.userAccount?.email}").create().show()
+
+//        findViewById<ImageView>(R.id.logo).setOnClickListener {
+//            startActivity(Intent(this,MainActivity::class.java))
+//        }
+
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val preferences: SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
-
-            // 자료형별로 데이터 가져오기
-            G.userAccount = null
-            G.userAccount?.nickname= preferences.getString("nickname","").toString()
-            G.userAccount?.email= preferences.getString("email","").toString()
-            G.userAccount?.password= preferences.getString("password","").toString()
-
             startActivity(Intent(this,MainActivity::class.java))
             finish() },1500)
     }

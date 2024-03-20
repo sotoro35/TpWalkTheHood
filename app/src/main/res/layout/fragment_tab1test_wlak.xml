@@ -24,8 +24,8 @@
             android:fontFamily="@font/hanbit"
             android:text="동네 산책 중.."
             android:textColor="#636060"
-            android:layout_alignBottom="@id/tv_region"
-            android:layout_toRightOf="@id/tv_region"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@id/tv_region" />
 
         <TextView
             android:id="@+id/tv_region"
@@ -33,12 +33,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="6dp"
             android:fontFamily="@font/hanbit"
-            android:text="서울"
+            android:text="서울 광진구"
             android:textColor="#00BCD4"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
 
         <TextView
@@ -115,7 +115,9 @@
         android:layout_height="60dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
-        android:paddingLeft="4dp" />
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="4dp"/>
 
 <!--    <View-->
 <!--        android:layout_width="match_parent"-->
@@ -162,20 +164,6 @@
             android:layout_marginTop="16dp"
             android:visibility="gone"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/reload"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/logo_background"
-            android:src="@drawable/icon_reload"
-            app:tint="@null"/>
     </RelativeLayout>
 
 

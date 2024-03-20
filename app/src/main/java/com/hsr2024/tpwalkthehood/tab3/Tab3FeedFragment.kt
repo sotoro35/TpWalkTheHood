@@ -1,11 +1,13 @@
 package com.hsr2024.tpwalkthehood.tab3
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
+import com.hsr2024.tpwalkthehood.tab5.ChangeProfileActivity
 
 
 // 리사이클러뷰에 서버에 저장되어있는 게시물들 가져오기
@@ -23,5 +25,14 @@ class Tab3FeedFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.edit.setOnClickListener { startActivity(
+            Intent(requireContext(),
+                EditActivity::class.java)
+        ) }
     }
 }

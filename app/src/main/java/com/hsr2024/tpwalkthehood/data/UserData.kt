@@ -15,10 +15,13 @@ data class UserLoginResponse(
     var rowNum:Int,
     var user: UserAccount
 )
+
+
 data class UserAccount(
     var email: String,
     var password: String,
-    var nickname: String
+    var nickname: String,
+    var imgfile:String
 )
 
 data class CategoryGroupCode(

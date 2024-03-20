@@ -9,12 +9,15 @@ import com.hsr2024.tpwalkthehood.data.UserLoginData
 import com.hsr2024.tpwalkthehood.data.UserLoginResponse
 import com.hsr2024.tpwalkthehood.data.UserSignupData
 import com.hsr2024.tpwalkthehood.data.Weather
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.PartMap
 import retrofit2.http.Query
 
@@ -33,6 +36,12 @@ interface RetrofitService {
 
     @POST("/WalkTheHood/userLogin.php")
     fun userLoginToServer(@Body userData: UserLoginData): Call<UserLoginResponse>
+
+    // 유저 정보 변경
+    @Multipart
+    @POST("/WalkTheHood/userChangeProfile.php")
+    fun userChangeProfile(@PartMap dataPart: Map<String, String>, @Part filePart: MultipartBody.Part? ) : Call<UserLoginResponse>
+
 
 
     // 카카오톡 API

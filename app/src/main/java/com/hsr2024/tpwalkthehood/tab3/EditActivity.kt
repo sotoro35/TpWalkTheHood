@@ -3,11 +3,21 @@ package com.hsr2024.tpwalkthehood.tab3
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hsr2024.tpwalkthehood.R
+import com.hsr2024.tpwalkthehood.databinding.ActivityEditBinding
 
-// 저장시 서버에 저장하면서 Feed 로 이동과 새로고침
+
 class EditActivity : AppCompatActivity() {
+    val binding by lazy { ActivityEditBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
+        setContentView(binding.root)
+
+        //구현목록
+        //myeditTitle,myedittext의 내용과 이미지 서버에 저장
+
+        binding.toolbar.setNavigationOnClickListener { finish() }
+        binding.myeditSave.setOnClickListener {  } // 서버에 저장
+        binding.tvMyeditIvselect.setOnClickListener {  } // 이미지 선택창
+
     }
 }
