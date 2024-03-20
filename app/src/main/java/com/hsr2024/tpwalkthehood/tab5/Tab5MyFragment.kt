@@ -42,11 +42,11 @@ class Tab5MyFragment : Fragment(){
 
         // 텍스트에 밑줄
         binding.btnLogout.paintFlags= Paint.UNDERLINE_TEXT_FLAG
-        binding.tvNickname.text = G.userAccount?.nickname
+        binding.tabTvNickname.text = G.userAccount?.nickname
 
         if (G.userAccount?.imgfile.equals("") || G.userAccount?.imgfile == null){
-            binding.ivProfile.setImageResource(R.drawable.profile)
-        }else Glide.with(requireContext()).load(imgUrl).into(binding.ivProfile)
+            binding.tabIvProfile.setImageResource(R.drawable.profile)
+        }else Glide.with(requireContext()).load(imgUrl).into(binding.tabIvProfile)
 
         binding.btnLogout.setOnClickListener { clickLogout() }
 
@@ -71,5 +71,11 @@ class Tab5MyFragment : Fragment(){
 
         G.userAccount = null
 
+    }
+
+    fun reloadMypage(){
+//fun reloadMypage(nickname:String,imgUrl:String){
+        binding.tabTvNickname.text = G.userAccount?.nickname
+        Glide.with(requireContext()).load(imgUrl).into(binding.tabIvProfile)
     }
 }

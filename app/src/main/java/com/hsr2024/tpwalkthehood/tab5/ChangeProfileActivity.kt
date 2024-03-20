@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -121,7 +123,7 @@ class ChangeProfileActivity : AppCompatActivity() {
         return file.absolutePath
     }////////////////////////////////////////////////////////////////////////////
 
-
+    //val fragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab5MyFragment
     private fun clickChange(){
         // 기존 내 이메일과 비교하여 프로필 저장
         var nickname = binding.inputNickname.editText!!.text.toString()
@@ -154,12 +156,16 @@ class ChangeProfileActivity : AppCompatActivity() {
                             G.userAccount?.nickname = userResponse.user.nickname
                             G.userAccount?.password = userResponse.user.password
                             G.userAccount?.imgfile = userResponse.user.imgfile
+
+
+
                         }
 
-                        AlertDialog.Builder(this@ChangeProfileActivity)
-                            .setMessage("${G.userAccount?.nickname}").create().show()
+                        //fragment.reloadMypage() 결과를 받아와서 프래그먼트에 어떻게 구현하나... 메소드가 안먹힘
+                        saveSharedPreferences()
+                        finish()
 
-                        //saveSharedPreferences()
+
                     }
 
                     override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
