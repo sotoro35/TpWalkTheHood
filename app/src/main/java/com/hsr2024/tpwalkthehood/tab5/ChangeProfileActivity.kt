@@ -149,10 +149,12 @@ class ChangeProfileActivity : AppCompatActivity() {
             retrofitService.userChangeProfile(dataPart,filePart).enqueue(object : Callback<UserLoginResponse>{
                 override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
                     val userResponse = response.body()
+
+                    G.userAccount?.imgfile = userResponse?.user?.imgfile?: ""
+
                     userResponse?.user?.apply {
                             G.userAccount?.nickname = userResponse.user.nickname
                             G.userAccount?.password = userResponse.user.password
-                            G.userAccount?.imgfile = userResponse.user.imgfile
                         }
 
                     //Toast.makeText(this@ChangeProfileActivity, "변경이 완료되었습니다", Toast.LENGTH_LONG)

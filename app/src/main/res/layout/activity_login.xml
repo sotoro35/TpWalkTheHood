@@ -64,7 +64,8 @@
         android:layout_below="@id/input_layout_id"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp">
+        android:layout_marginRight="32dp"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

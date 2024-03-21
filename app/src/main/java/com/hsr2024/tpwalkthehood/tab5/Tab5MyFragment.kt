@@ -9,16 +9,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.UserAccount
+import com.hsr2024.tpwalkthehood.data.UserLoginData
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab5MyBinding
 import com.hsr2024.tpwalkthehood.login.GuestFragment
+import com.hsr2024.tpwalkthehood.network.RetrofitHelper
+import com.hsr2024.tpwalkthehood.network.RetrofitService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // 내정보화면.. 이동과 로그아웃
 // 프로필 이미지 선택.. Ex68참고
@@ -45,7 +56,11 @@ class Tab5MyFragment : Fragment(){
 
         // 텍스트에 밑줄
         binding.btnLogout.paintFlags= Paint.UNDERLINE_TEXT_FLAG
+        binding.btnUserDelete.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+        //클릭리스너
         binding.btnLogout.setOnClickListener { clickLogout() }
+        binding.btnUserDelete.setOnClickListener { clickDelete() }
         binding.changeProfile.setOnClickListener { startActivity(Intent(requireContext(),ChangeProfileActivity::class.java)) }
         binding.myFeed.setOnClickListener { startActivity(Intent(requireContext(),MyFeedActivity::class.java)) }
         binding.favorite.setOnClickListener { startActivity(Intent(requireContext(),FavoriteListActivity::class.java)) }
@@ -59,6 +74,49 @@ class Tab5MyFragment : Fragment(){
         reloadMypage()
     }
 
+    lateinit var alertDialog:AlertDialog
+    private fun clickDelete(){
+        val dialogV = layoutInflater.inflate(R.layout.dialog_userdelete,null)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogV)
+        alertDialog = builder.create()
+
+        dialogV.findViewById<TextView>(R.id.deleteOk).setOnClickListener {
+            val passwordV = dialogV.findViewById<TextInputLayout>(R.id.input_password_delete)
+            var password = passwordV.editText!!.text.toString()
+
+            // 서버에서 회원정보 비교 후, 맞다면 회원 정보 삭제
+            clickDeleteRetrofit(password)
+
+        }
+        alertDialog.show()
+
+    }
+
+    private fun clickDeleteRetrofit(password:String){
+        val retrofit = RetrofitHelper.getRetrofitInstance("http://ruaris.dothome.co.kr")
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        var email = G.userAccount?.email ?: ""
+        val loginData= UserLoginData(email,password)
+        retrofitService.userDelete(loginData).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                var s = response.body()
+                AlertDialog.Builder(requireContext()).setMessage(s).create().show()
+                clickLogout()
+
+                alertDialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Toast.makeText(requireContext(), "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
+                Log.e("탈퇴오류","${t.message}")
+            }
+
+        })
+
+    }
+
+
     private fun clickLogout(){
         val preferences: SharedPreferences = (activity as MainActivity).getSharedPreferences("UserData",
             AppCompatActivity.MODE_PRIVATE)
@@ -71,7 +129,7 @@ class Tab5MyFragment : Fragment(){
         transaction.replace(R.id.container_fragment, GuestFragment())
         transaction.commit()
 
-        G.userAccount = null
+        G.userAccount?.email = ""
 
     }
 

@@ -55,7 +55,7 @@ class SignupActivity : AppCompatActivity() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if( checkNickname && nickname!=s.toString()) checkNickname=false
-                Toast.makeText(this@SignupActivity, "$checkNickname: $s", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@SignupActivity, "$checkNickname: $s", Toast.LENGTH_SHORT).show()
             }
             override fun afterTextChanged(s: Editable?) {
             }
@@ -98,12 +98,12 @@ class SignupActivity : AppCompatActivity() {
                 retrofitService.userDataToServer(userData).enqueue(object : Callback<String>{
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         var s= response.body().toString()
-                        Toast.makeText(this@SignupActivity, s, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@SignupActivity, s, Toast.LENGTH_SHORT).show()
                         if (s.trim().equals("회원가입이 완료되었습니다.")) finish()
                     }
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
-                        Toast.makeText(this@SignupActivity, "서버오류 ${t.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@SignupActivity, "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
                         Log.d("서버오류","${t.message}")
                     }
                 })//callback
@@ -184,7 +184,8 @@ class SignupActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(this@SignupActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignupActivity, "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
+                    Log.d("서버오류","${t.message}")
                 }
 
             })
@@ -218,7 +219,8 @@ class SignupActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(this@SignupActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignupActivity, "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
+                    Log.d("서버오류","${t.message}")
                 }
 
             })

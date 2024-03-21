@@ -50,19 +50,23 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<UserLoginResponse>
             ) {
                 val userResponse= response.body()
+
+                G.userAccount?.imgfile = userResponse?.user?.imgfile?: ""
+
                 userResponse?.user?.apply {
-                    val loadAccount:UserAccount = this
                     if (G.userAccount?.email == null || G.userAccount?.email == "") {
-                        G.userAccount = UserAccount(this.email,this.password, this.nickname,this.imgfile)
-                    }
+                        G.userAccount?.email = userResponse.user.email
+                        G.userAccount?.password = userResponse.user.password
+                        G.userAccount?.nickname = userResponse.user.nickname
 
-                    saveSharedPreferences()
+                        saveSharedPreferences()
+                        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+                        finish()
 
-                    startActivity(Intent(this@LoginActivity,MainActivity::class.java))
-                    finish()
+                    }}?: AlertDialog.Builder(this@LoginActivity).setMessage("이메일과 비밀번호를 확인하세요").create().show()
 
-                    } ?: AlertDialog.Builder(this@LoginActivity).setMessage("이메일과 비밀번호를 확인하세요").create().show()
             }
+
 
             override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
                 Toast.makeText(this@LoginActivity, "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()

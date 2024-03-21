@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:layout_margin="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:background="@drawable/button"
+        android:layout_gravity="right"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="정말로 탈퇴하시겠습니까?\n 회원님의 모든 정보가 삭제됩니다"
+        android:textColor="#F44336"
+        android:textSize="20sp"
+        android:gravity="center"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/input_password_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:passwordToggleEnabled="true">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/deleteOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="탈퇴합니다"
+        android:padding="8dp"
+        android:gravity="center"
+        android:background="@drawable/button"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"/>
+</LinearLayout>

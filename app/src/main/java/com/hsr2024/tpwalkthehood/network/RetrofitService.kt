@@ -35,7 +35,10 @@ interface RetrofitService {
     fun userCheckEmail(@Query("email") CheckEmail: String): Call<String>
 
     @POST("/WalkTheHood/userLogin.php")
-    fun userLoginToServer(@Body userData: UserLoginData): Call<UserLoginResponse>
+    fun userLoginToServer(@Body userData:UserLoginData): Call<UserLoginResponse>
+
+    @POST("/WalkTheHood/userDelete.php")
+    fun userDelete(@Body userData:UserLoginData): Call<String>
 
     // 유저 정보 변경
     @Multipart
