@@ -54,7 +54,7 @@ class ItemDetailActivity : AppCompatActivity() {
         //postDto.favorite[uid!!] = true
         binding.favor.setOnClickListener {
 
-            val data = place.place_url
+            val data = place.place_url.replace("/","")
             val favorlist: MutableMap<String, Any> = mutableMapOf(
             "place_name" to "${place.place_name}",
             "road_address_name" to "${place.road_address_name}",
@@ -73,7 +73,7 @@ class ItemDetailActivity : AppCompatActivity() {
 
             if (!isFavorite) {
                 favorRef.document("${G.userAccount!!.email}")
-                    .update("aaa",favorlist)
+                    .update("${data}",favorlist)
                     .addOnSuccessListener {
                         Toast.makeText(this, "찜 추가", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener { e -> Log.w("찜", "추가에러", e) }
