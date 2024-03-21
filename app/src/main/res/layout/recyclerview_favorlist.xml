@@ -51,14 +51,6 @@
                 android:text="서울 성동구 왕십리로 17로 2길"
                 android:padding="4dp"/>
 
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_address"
-                android:fontFamily="@font/hanbit"
-                android:text="02 - 123 - 4567"
-                android:padding="4dp"/>
 
             <TextView
                 android:id="@+id/tv_distance"

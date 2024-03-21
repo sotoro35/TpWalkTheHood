@@ -138,6 +138,11 @@ class MainActivity : AppCompatActivity() {
 
     }// onCreate..
 
+    override fun onResume() {
+        super.onResume()
+        binding.bnvView.selectedItemId= R.id.menu_walk
+    }
+
 
     // [위치작업] 퍼미션을 받아올 대행사객체
 

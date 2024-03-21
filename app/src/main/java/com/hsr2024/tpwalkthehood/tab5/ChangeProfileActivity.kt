@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
@@ -157,9 +159,12 @@ class ChangeProfileActivity : AppCompatActivity() {
                             G.userAccount?.password = userResponse.user.password
                         }
 
-                    //Toast.makeText(this@ChangeProfileActivity, "변경이 완료되었습니다", Toast.LENGTH_LONG)
+                    AlertDialog.Builder(this@ChangeProfileActivity).setMessage("변경이 완료되었습니다").create().show()
                     saveSharedPreferences()
-                    finish()
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        finish() },1500)
+
 
                     }
                     override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {

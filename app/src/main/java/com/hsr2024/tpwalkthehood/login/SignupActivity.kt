@@ -1,7 +1,10 @@
 package com.hsr2024.tpwalkthehood.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.UserSignupData
 import com.hsr2024.tpwalkthehood.databinding.ActivitySignupBinding
@@ -100,6 +106,10 @@ class SignupActivity : AppCompatActivity() {
                         var s= response.body().toString()
                         //Toast.makeText(this@SignupActivity, s, Toast.LENGTH_SHORT).show()
                         if (s.trim().equals("회원가입이 완료되었습니다.")) finish()
+
+                        saveFirebase(email)
+                        finish()
+
                     }
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
@@ -224,6 +234,16 @@ class SignupActivity : AppCompatActivity() {
                 }
 
             })
+        }
+    }
+
+    fun saveFirebase(email:String){
+        val data: MutableMap<String,String> = mutableMapOf()
+        data["email"] = email
+
+        val contactusRef = Firebase.firestore.collection("emailUsers")
+        contactusRef.document(email).set(data).addOnSuccessListener {
+            Log.d("회원가입","가입완료")
         }
     }
 

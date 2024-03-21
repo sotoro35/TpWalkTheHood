@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -104,8 +106,10 @@ class Tab5MyFragment : Fragment(){
                 AlertDialog.Builder(requireContext()).setMessage(s).create().show()
                 clickLogout()
 
-                alertDialog.dismiss()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    alertDialog.dismiss() },2000)
             }
+
 
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(requireContext(), "관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
