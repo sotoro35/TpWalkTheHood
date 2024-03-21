@@ -26,7 +26,9 @@ class Tab5MyFragment : Fragment(){
 
     private val binding by lazy { FragmentTab5MyBinding.inflate(layoutInflater) }
 
-    val imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${G.userAccount?.imgfile}"
+
+    var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${G.userAccount?.imgfile}"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,24 +40,24 @@ class Tab5MyFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("이미지확인", imgUrl)
+        Log.d("이미지주소", "현재주소:$imgUrl")
+       // Log.e("이미지주소","현재주소:${G.userAccount?.imgfile}")
 
         // 텍스트에 밑줄
         binding.btnLogout.paintFlags= Paint.UNDERLINE_TEXT_FLAG
-        binding.tabTvNickname.text = G.userAccount?.nickname
-
-        if (G.userAccount?.imgfile.equals("") || G.userAccount?.imgfile == null){
-            binding.tabIvProfile.setImageResource(R.drawable.profile)
-        }else Glide.with(requireContext()).load(imgUrl).into(binding.tabIvProfile)
-
         binding.btnLogout.setOnClickListener { clickLogout() }
-
         binding.changeProfile.setOnClickListener { startActivity(Intent(requireContext(),ChangeProfileActivity::class.java)) }
         binding.myFeed.setOnClickListener { startActivity(Intent(requireContext(),MyFeedActivity::class.java)) }
         binding.favorite.setOnClickListener { startActivity(Intent(requireContext(),FavoriteListActivity::class.java)) }
         binding.contactus.setOnClickListener { startActivity(Intent(requireContext(),ContactusActivity::class.java)) }
     }
 
+    override fun onResume() {
+        super.onResume()
+        //멤버변수의 값이(imgfile) 교체된걸 새로 넣어줘야 됨...
+        imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${G.userAccount?.imgfile}"
+        reloadMypage()
+    }
 
     private fun clickLogout(){
         val preferences: SharedPreferences = (activity as MainActivity).getSharedPreferences("UserData",
@@ -74,8 +76,19 @@ class Tab5MyFragment : Fragment(){
     }
 
     fun reloadMypage(){
-//fun reloadMypage(nickname:String,imgUrl:String){
+//        fun reloadMypage(imgUrl:String){
+
         binding.tabTvNickname.text = G.userAccount?.nickname
-        Glide.with(requireContext()).load(imgUrl).into(binding.tabIvProfile)
+        //Log.e("이미지주소","변경된주소:${G.userAccount?.imgfile}")
+        //Log.e("이미지주소","변경된주소:$imgUrl")
+
+        if (G.userAccount?.imgfile.equals("") || G.userAccount?.imgfile == null){
+            binding.tabIvProfile.setImageResource(R.drawable.profile)
+
+        } else {
+            Log.e("이미지","변경된imgfile값:${G.userAccount?.imgfile}")
+            Log.e("이미지주소","변경된주소:$imgUrl")
+            Glide.with(requireContext()).load(imgUrl).into(binding.tabIvProfile)
+        }
     }
 }

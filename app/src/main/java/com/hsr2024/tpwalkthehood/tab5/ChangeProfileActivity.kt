@@ -64,6 +64,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 
     }//onCreate
 
+
     private fun clickImage(){
         // 앱에서 사진 가져오기
         val intent = if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) Intent(MediaStore.ACTION_PICK_IMAGES)
@@ -119,11 +120,10 @@ class ChangeProfileActivity : AppCompatActivity() {
         inputStream.close()
         outputStream.close()
 
-        //AlertDialog.Builder(this).setMessage(file.absolutePath).create().show()
         return file.absolutePath
     }////////////////////////////////////////////////////////////////////////////
 
-    //val fragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab5MyFragment
+
     private fun clickChange(){
         // 기존 내 이메일과 비교하여 프로필 저장
         var nickname = binding.inputNickname.editText!!.text.toString()
@@ -157,14 +157,10 @@ class ChangeProfileActivity : AppCompatActivity() {
                             G.userAccount?.password = userResponse.user.password
                             G.userAccount?.imgfile = userResponse.user.imgfile
 
-
-
                         }
 
-                        //fragment.reloadMypage() 결과를 받아와서 프래그먼트에 어떻게 구현하나... 메소드가 안먹힘
                         saveSharedPreferences()
                         finish()
-
 
                     }
 
@@ -182,6 +178,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 
         if (G.userAccount?.imgfile.equals("") || G.userAccount?.imgfile == null){
             binding.ivProfile.setImageResource(R.drawable.profile)
+
         }else Glide.with(this).load(imgUrl).into(binding.ivProfile)
         binding.nicknameText.setText("${G.userAccount?.nickname}")
     }

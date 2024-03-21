@@ -129,9 +129,6 @@ class MainActivity : AppCompatActivity() {
 
         } else { requestMyLocation() }
 
-
-
-
         // 플로팅버튼 클릭시 새로고침..
         binding.reload.setOnClickListener {
             requestMyLocation()
@@ -140,7 +137,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }// onCreate..
-
 
 
     // [위치작업] 퍼미션을 받아올 대행사객체
