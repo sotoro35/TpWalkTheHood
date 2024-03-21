@@ -102,7 +102,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_kakako"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
         <ImageView
             android:id="@+id/btn_login_google"
@@ -110,7 +111,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_google"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
         <ImageView
             android:id="@+id/btn_login_naver"
@@ -118,7 +120,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_naver"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
 
     </LinearLayout>

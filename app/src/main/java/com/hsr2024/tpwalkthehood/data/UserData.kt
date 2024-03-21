@@ -37,7 +37,26 @@ data class CategoryGroupCode(
 
 )
 
-//카테고리 소분류
+data class favoriteItem(
+    var placeName:String?,
+    var roadAddress:String?,
+    var distance:String?,
+    var url:String?
+)
+
+data class FeedItem(
+
+    var email: String,
+    var nickname: String?,
+    var title:String,
+    var text:String,
+    var date:String,
+    var downloadUrl:String?,
+    var profile:String?
+)
+
+
+
 
 
 

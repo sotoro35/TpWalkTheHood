@@ -13,3 +13,10 @@ class G {
 
 
 }
+
+class L{
+    companion object{
+        var login = false
+    }
+
+}

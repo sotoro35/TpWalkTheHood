@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hsr2024.tpwalkthehood.G
+import com.hsr2024.tpwalkthehood.L
 import com.hsr2024.tpwalkthehood.MainActivity
 import com.hsr2024.tpwalkthehood.data.UserAccount
 import com.hsr2024.tpwalkthehood.data.UserLoginData
@@ -42,6 +43,9 @@ class LoginActivity : AppCompatActivity() {
         binding.tvGo.setOnClickListener { startActivity(Intent(this,MainActivity::class.java)) }
         binding.btnLogin.setOnClickListener { clickLogin() }
 
+        binding.btnLoginKakao.setOnClickListener { Toast.makeText(this, "카카오", Toast.LENGTH_SHORT).show() }
+        binding.btnLoginGoogle.setOnClickListener { Toast.makeText(this, "구글", Toast.LENGTH_SHORT).show() }
+        binding.btnLoginNaver.setOnClickListener { Toast.makeText(this, "네이버", Toast.LENGTH_SHORT).show() }
     }
 
     private fun clickLogin(){
@@ -67,7 +71,9 @@ class LoginActivity : AppCompatActivity() {
                         G.userAccount?.nickname = userResponse.user.nickname
 
                         saveSharedPreferences()
-                        finish()
+                        L.login= true
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            finish() },500)
 
                     }
 

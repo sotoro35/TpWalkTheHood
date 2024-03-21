@@ -30,20 +30,20 @@
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="산책조아"
+                android:layout_toRightOf="@id/iv_profile"
                 android:fontFamily="@font/hanbit"
-                android:textColor="#FF9800"
-                android:textStyle="bold"
                 android:padding="4dp"
-                android:layout_toRightOf="@id/iv_profile"/>
+                android:text="산책조아"
+                android:textColor="#FF9800"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_address"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_nickname"
                 android:fontFamily="@font/hanbit"
-                android:text="서울 성동구 왕십리로 17로 2길"
+                android:text="제목"
                 android:padding="4dp"/>
 
             <ImageView

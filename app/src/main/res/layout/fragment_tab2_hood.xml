@@ -23,7 +23,8 @@
             android:src="@drawable/filter"
             android:padding="12dp"
             android:layout_marginRight="8dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
     <com.kakao.vectormap.MapView
         android:id="@+id/map_view"

@@ -32,9 +32,12 @@ class ContactusActivity : AppCompatActivity() {
     }
 
     private fun clickSend(){
+
         var email = binding.inputContactusEmail.editText!!.text.toString()
         var title = binding.inputContactusTitle.editText!!.text.toString()
         var text = binding.inputContactusText.editText!!.text.toString()
+
+        if (email.isNotEmpty() && title.isNotEmpty() && text.isNotEmpty()){
 
         val data: MutableMap<String,String> = mutableMapOf()
         data["email"] = email
@@ -53,8 +56,8 @@ class ContactusActivity : AppCompatActivity() {
                 finish() },2000)
              }
 
+        } else AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
+
     }
-
-
 
 }

@@ -54,38 +54,49 @@ class ItemDetailActivity : AppCompatActivity() {
         //postDto.favorite[uid!!] = true
         binding.favor.setOnClickListener {
 
-            val data = place.place_url.replace("/","")
+            val db = Firebase.firestore.collection("favorites")
+
+            val data = place.place_url
+
             val favorlist: MutableMap<String, Any> = mutableMapOf(
             "place_name" to "${place.place_name}",
             "road_address_name" to "${place.road_address_name}",
-            "place.distance" to "${place.distance}",
+            "place_distance" to "${place.distance}",
             "email" to "${G.userAccount!!.email}",
             "url" to "${data}"
             )
-//            favorlist["place_name"] = place.place_name
-//            favorlist["road_address_name"] = place.road_address_name
-//            favorlist["place.distance"] = place.distance
-//            favorlist["email"] = G.userAccount!!.email
-//            favorlist["url"] = data
 
-
-            val favorRef = Firebase.firestore.collection("emailUsers")
-
-            if (!isFavorite) {
-                favorRef.document("${G.userAccount!!.email}")
-                    .update("${data}",favorlist)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "찜 추가", Toast.LENGTH_SHORT).show()
-                    }.addOnFailureListener { e -> Log.w("찜", "추가에러", e) }
-
-
-            } else {
-                favorRef.document("${G.userAccount!!.email}")
-                    .update("favorite", FieldValue.arrayRemove("${data}"))
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "찜 삭제", Toast.LENGTH_SHORT).show()
+            // 찜 버튼이 눌렸는지 여부 확인
+            if (isFavorite) {
+                // 찜 목록에서 제거하는 경우
+                    db.whereEqualTo("place_name", place.place_name)
+                    .whereEqualTo("email", G.userAccount!!.email)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot.documents) {
+                            // 해당 도큐먼트 삭제
+                            db.document(document.id)
+                                .delete()
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "찜 삭제", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("찜", "삭제 에러", e)
+                                }
+                        }
                     }
-                    .addOnFailureListener { e -> Log.w("찜", "삭제에러", e) }
+                    .addOnFailureListener { e ->
+                        Log.w("찜", "삭제 에러", e)
+                    }
+            } else {
+                // 찜 목록에 추가하는 경우
+                    db.add(favorlist)
+                    .addOnSuccessListener { documentReference ->
+                        Toast.makeText(this, "찜 추가", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("찜", "추가 에러", e)
+                    }
             }
 
 //            if (!isFavorite) {
@@ -117,29 +128,49 @@ class ItemDetailActivity : AppCompatActivity() {
 
     private fun loadFavorite() {
 
-        // 서버에 저장이 되어있는지 확인
-        val data = place.place_url
-        val favorRef = Firebase.firestore.collection("emailUsers")
-            favorRef.document("${G.userAccount!!.email}")
-                .get()
-                .addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()){
-                        val favoriteArray = documentSnapshot.get("favorite") as? ArrayList<String>
-                        if (favoriteArray != null && data in favoriteArray){
-                            isFavorite = true
-                            binding.favor.setImageResource(R.drawable.heart_select)
-
-                        }else{
-                            isFavorite = false
-                            binding.favor.setImageResource(R.drawable.heart)
-                        }
-
-                    }else Log.e("에러","문서를 찾지 못했습니다")
-
+        val db = Firebase.firestore.collection("favorites")
+        db.whereEqualTo("place_name", place.place_name)
+            .whereEqualTo("email", G.userAccount!!.email)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                isFavorite = !querySnapshot.isEmpty
+                    if (isFavorite) {
+                        isFavorite = true
+                        binding.favor.setImageResource(R.drawable.heart_select)
+                    } else {
+                        isFavorite = false
+                        binding.favor.setImageResource(R.drawable.heart)
+                    }
                 }
-                .addOnFailureListener { Log.e("에러","loadFavorite 실패") }
+            .addOnFailureListener { e ->
+                            Log.w("찜", "삭제 에러", e)
+            }
+
+
+//        // 서버에 저장이 되어있는지 확인
+//        val data = place.place_url
+//        val favorRef = Firebase.firestore.collection("emailUsers")
+//            favorRef.document("${G.userAccount!!.email}")
+//                .get()
+//                .addOnSuccessListener { documentSnapshot ->
+//                    if (documentSnapshot.exists()){
+//                        val favoriteArray = documentSnapshot.get("favorite") as? ArrayList<String>
+//                        if (favoriteArray != null && data in favoriteArray){
+//                            isFavorite = true
+//                            binding.favor.setImageResource(R.drawable.heart_select)
+//
+//                        }else{
+//                            isFavorite = false
+//                            binding.favor.setImageResource(R.drawable.heart)
+//                        }
+//
+//                    }else Log.e("에러","문서를 찾지 못했습니다")
+//
+//                }
+//                .addOnFailureListener { Log.e("에러","loadFavorite 실패") }
 
     }
+
 
 
     // 뒤로가기 버튼 눌렀을때 1칸만 뒤로 가도록...

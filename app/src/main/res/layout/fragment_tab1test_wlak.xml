@@ -59,7 +59,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="24dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/tv_weather"

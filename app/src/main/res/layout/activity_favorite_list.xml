@@ -24,10 +24,11 @@
         android:background="#D9D9D9"/>
 
     <TextView
+        android:id="@+id/tv_nickname_favor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
-        android:text="'아리맘' 님의 게시물"
+        android:text="'아리맘' 님의 찜 목록입니다"
         android:textSize="12sp"
         android:padding="8dp"
         android:gravity="center"/>
@@ -35,10 +36,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_favor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
 
 
 

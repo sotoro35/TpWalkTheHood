@@ -2,10 +2,16 @@ package com.hsr2024.tpwalkthehood.tab3
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.toObject
+import com.google.firebase.ktx.Firebase
+import com.hsr2024.tpwalkthehood.adapter.Tab3FeedAdapter
+import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
 import com.hsr2024.tpwalkthehood.tab5.ChangeProfileActivity
 
@@ -34,5 +40,37 @@ class Tab3FeedFragment : Fragment(){
             Intent(requireContext(),
                 EditActivity::class.java)
         ) }
+
+        loadFeed()
+
+    }
+
+    private fun loadFeed(){
+        val loadRef = Firebase.firestore.collection("Posts")
+        loadRef.get().addOnSuccessListener {querySnapshot->
+            val postList = mutableListOf<FeedItem>()
+
+            for (document in querySnapshot.documents){
+                var email: String = document.getString("email")!!
+                var nickname: String? = document.getString("nickname")?: "닉넴없음"
+                var title:String = document.getString("title")!!
+                var text:String = document.getString("text")!!
+                var date:String = document.getString("date")!!
+                var downloadUrl:String = document.getString("downloadUrl")?: ""
+                var profile:String = document.getString("title")?: ""
+
+                val postitem = FeedItem(email, nickname, title, text, date, downloadUrl, profile)
+                postList.add(postitem)
+
+                Log.w("성공", "포스트 가져오기성공")
+            }
+
+            val adapter = Tab3FeedAdapter(requireContext(),postList)
+            binding.reyclerviewTab3.adapter = adapter
+        }
+            .addOnFailureListener {exception ->
+                // 데이터 가져오기 실패 시 처리
+                Log.w("오류Feed", "Error getting documents: ", exception)
+            }
     }
 }

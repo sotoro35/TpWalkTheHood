@@ -140,7 +140,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.bnvView.selectedItemId= R.id.menu_walk
+        if (L.login) binding.bnvView.selectedItemId= R.id.menu_walk
+        L.login = false
     }
 
 

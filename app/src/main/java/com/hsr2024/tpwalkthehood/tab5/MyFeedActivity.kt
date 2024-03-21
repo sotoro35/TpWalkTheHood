@@ -20,7 +20,7 @@ class MyFeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.toolbar.setOnClickListener { clickFirebase() }
+        binding.toolbar.setOnClickListener { finish() }
     }
 
     fun clickFirebase(){
