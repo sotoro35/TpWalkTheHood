@@ -127,13 +127,10 @@ class ChangeProfileActivity : AppCompatActivity() {
     private fun clickChange(){
         // 기존 내 이메일과 비교하여 프로필 저장
         var nickname = binding.inputNickname.editText!!.text.toString()
-        var password = binding.inputPasswordConfirm.editText!!.text.toString()
+        var password = binding.inputPassword.editText!!.text.toString()
         var passwordConfirm = binding.inputPasswordConfirm.editText!!.text.toString()
 
-        if (password != passwordConfirm){
-            AlertDialog.Builder(this).setMessage("패스워드가 다릅니다.다시 확인해주세요").create().show()
-        }else{
-
+        if (saveCheck(nickname,password,passwordConfirm)){
             // 먼저 String 데이터들은 Map collection 으로 묶어서 전송 : @PartMap
             val dataPart: MutableMap<String,String> = mutableMapOf()
             dataPart["email"] = G.userAccount!!.email
@@ -156,22 +153,25 @@ class ChangeProfileActivity : AppCompatActivity() {
                             G.userAccount?.nickname = userResponse.user.nickname
                             G.userAccount?.password = userResponse.user.password
                             G.userAccount?.imgfile = userResponse.user.imgfile
-
                         }
 
-                        saveSharedPreferences()
-                        finish()
+                    //Toast.makeText(this@ChangeProfileActivity, "변경이 완료되었습니다", Toast.LENGTH_LONG)
+                    saveSharedPreferences()
+                    finish()
 
                     }
-
                     override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
-                        Toast.makeText(this@ChangeProfileActivity, "서버오류", Toast.LENGTH_SHORT)
-                            .show()
-                        Log.e("오류", "${t.message}")
-                    }
+                        if ("${t.message}".contains("IllegalStateException")) {
+                            AlertDialog.Builder(this@ChangeProfileActivity).setMessage("이미 사용중인 닉네임입니다").create().show()
+                        }else{
+                            Toast.makeText(this@ChangeProfileActivity, "관리자에게 문의하세요", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.e("정보변경 오류", "${t.message}")
+                        }
+                    } // onFailure...
             })
-        }
-    }
+        }//saveCheck
+    }//clickChange..
 
     //기존에 등록되어 있는 내 정보 넣기
     private fun loadProfile(){
@@ -196,4 +196,39 @@ class ChangeProfileActivity : AppCompatActivity() {
         edior.apply()
 
     }
+
+
+
+    private fun saveCheck(nickname:String,password:String,passwordConfirm:String) : Boolean {
+
+        var boolean = false
+
+        when{
+
+            password != passwordConfirm -> {
+                AlertDialog.Builder(this).setMessage("패스워드가 다릅니다.다시 확인해주세요").create().show()
+                boolean = false
+            }
+
+            nickname.length < 2 -> {
+                AlertDialog.Builder(this).setMessage("닉네임이 너무 짧습니다").create().show()
+                boolean = false
+            }
+
+            password.length in 1..3 -> {
+                AlertDialog.Builder(this).setMessage("비밀번호가 너무 짧습니다").create().show()
+                boolean = false
+            }
+
+            password.contains(" ") || nickname.contains(" ") -> {
+                AlertDialog.Builder(this).setMessage("띄어쓰기는 사용할 수 없습니다").create().show()
+                boolean = false
+            }
+
+            else -> boolean = true
+        } // when...
+
+        return boolean
+    }
+
 }

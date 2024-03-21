@@ -24,9 +24,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
         android:text="저장"
+        android:background="@drawable/button"
+        android:padding="12dp"
         android:textColor="#FF9900"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         android:layout_marginRight="20dp"/>
 
     <View
@@ -72,7 +74,9 @@
                     android:id="@+id/input_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="닉네임">
+                    android:hint="닉네임 (2~8자)"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="8">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/nickname_text"
                         android:layout_width="match_parent"
@@ -85,7 +89,8 @@
         android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="비밀번호">
+        android:hint="새 비밀번호(4자이상)"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,7 +103,8 @@
         android:id="@+id/input_password_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="비밀번호 확인">
+        android:hint="새 비밀번호 확인"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
