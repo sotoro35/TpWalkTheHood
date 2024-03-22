@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/container_fragment"
@@ -13,10 +17,35 @@
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 
+    </RelativeLayout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_gravity="bottom"
+        android:backgroundTint="#E1F4F6">
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bnv_menu"/>
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
+        android:background="#00000000"
+        app:menu="@menu/bnv_menu"
+        app:itemTextColor="@color/bnv"
+        android:layout_marginRight="16dp"/>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/reload"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/logo_background"
+        app:layout_anchor="@id/bab"
+        android:src="@drawable/icon_reload"
+        app:tint="@null"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,22 +20,49 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".tab4.FriendFeedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.EditMyFeed"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.ContactusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.FavoriteListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.MyFeedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab5.ChangeProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab4.ChattingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab4.FriendListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tab3.FeedDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".tab3.EditActivity"
             android:exported="false" />
         <activity
             android:name=".tab2.FilterBottomSheetDialog"
             android:exported="false" />
         <activity
-            android:name=".GuestFragment"
+            android:name=".login.GuestFragment"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".tab1.ItemDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".tab1.Tab1WalkActivity"
             android:exported="false" />
         <activity
             android:name=".login.SignupActivity"
@@ -50,6 +79,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 카카오 지도 앱키 등록 -->
+        <meta-data
+            android:name="com.kakao.vectormap.APP_KEY"
+            android:value="d93d64947a13f3365a84a2b2ca5e432d"/>
+
     </application>
 
 </manifest>

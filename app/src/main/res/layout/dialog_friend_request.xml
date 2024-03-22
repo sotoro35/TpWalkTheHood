@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_dialog">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="친구요청이 왔습니다"
+        app:titleTextAppearance="@style/title"
+        app:titleTextColor="#FF5722"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/icon_close"
+        app:navigationIconTint="#FF5722"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reyclerview_friendrequest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/toolbar"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/profile_stroke"
+            android:layout_margin="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닉네임"
+            android:fontFamily="@font/hanbit"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"/>
+
+        <TextView
+            android:id="@+id/btn_request_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수락"
+            android:fontFamily="@font/hanbit"
+            android:layout_gravity="center|right"
+            android:layout_margin="4dp"/>
+
+        <TextView
+            android:id="@+id/btn_request_decline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="거절"
+            android:fontFamily="@font/hanbit"
+            android:layout_gravity="center|right"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="동네톡"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        app:title="동네산책 톡톡"
+        app:titleCentered="true"
+        app:titleTextColor="#FF5722"
+        app:titleTextAppearance="@style/title"
+        app:navigationIcon="@drawable/bell"
+        app:menu="@menu/talk_menu"
+        app:subtitle="채팅목록"
+        app:subtitleCentered="true"
+        app:subtitleTextAppearance="@style/subtitle"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

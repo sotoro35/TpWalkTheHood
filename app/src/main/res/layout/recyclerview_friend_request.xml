@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#FFC107"
+        android:src="@drawable/cinnamaroll07"/>
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/hanbit"
+        android:text="산책조아"
+        android:textSize="16sp"
+        android:textColor="#FF9800"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/btn_request_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="수락"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="8dp"/>
+
+    <TextView
+        android:id="@+id/btn_request_decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="거절"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp" />
+
+</LinearLayout>

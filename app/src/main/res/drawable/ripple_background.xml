@@ -1,0 +1,5 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorControlHighlight" android:radius="50dp">
+    <!-- 리플 색상 설정 -->
+    <item android:drawable="@color/white" /> <!-- 배경 색상 -->
+</ripple>

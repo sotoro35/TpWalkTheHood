@@ -8,148 +8,146 @@
     android:orientation="vertical"
     tools:context=".login.SignupActivity">
 
-    <Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:navigationIcon="@drawable/ic_action_back"/>
-
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logotitle" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:fontFamily="@font/hanbit"
-        android:textSize="20sp"
-        android:text="이메일로 가입하기"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"/>
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_back"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logotitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/hanbit"
+            android:textSize="20sp"
+            android:text="이메일로 가입하기"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="닉네임 (2 ~ 8이내)"
+                app:counterEnabled="true"
+                app:counterMaxLength="8">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="8"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/btn_nickname_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="중복"
+                android:textSize="12sp"
+                android:fontFamily="@font/hanbit"
+                android:padding="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="이메일을 입력하세요">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/btn_email_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="중복"
+                android:textSize="12sp"
+                android:fontFamily="@font/hanbit"
+                android:padding="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="bottom"/>
+
+        </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_nickname"
-            android:layout_width="250dp"
+            android:id="@+id/input_layout_password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="닉네임을 입력하세요"
-            app:helperText="8자 이내로 입력하세요"
-            app:counterEnabled="true"
-            app:counterMaxLength="8">
+            android:hint="비밀번호를 입력하세요(4자이상)"
+            android:layout_marginBottom="8dp"
+            app:passwordToggleEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:ems="8"/>
+                android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/btn_nickname_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="중복"
-            android:textSize="12sp"
-            android:fontFamily="@font/hanbit"
-            android:padding="16dp"
-            android:layout_marginLeft="8dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_email"
-            android:layout_width="250dp"
+            android:id="@+id/input_layout_password_confirm"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이메일을 입력하세요">
+            android:hint="비밀번호를 입력하세요"
+            android:layout_marginBottom="8dp"
+            app:passwordToggleEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/btn_email_check"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="중복"
-            android:textSize="12sp"
             android:fontFamily="@font/hanbit"
-            android:padding="16dp"
-            android:layout_marginLeft="8dp" />
+            android:text="가입하기"
+            android:textSize="16sp"
+            android:background="@drawable/button"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"/>
 
     </LinearLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_layout_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호를 입력하세요"
-        android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
-        android:layout_marginBottom="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_layout_password_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호를 입력하세요"
-        android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
-        android:layout_marginBottom="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_layout_hood"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="동네를 입력하세요"
-        android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
-        android:layout_marginBottom="16dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/btn_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hanbit"
-        android:text="가입하기"
-        android:textSize="16sp"
-        android:background="@drawable/button"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:gravity="center"/>
 
 </LinearLayout>

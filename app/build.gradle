@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -42,12 +44,34 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // 레트로핏2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    // 글라이드
     implementation 'com.github.bumptech.glide:glide:5.0.0-rc01'
+
+
+    // 써클뷰
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // 파이어베이스
+    implementation platform('com.google.firebase:firebase-bom:32.7.4')
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // // google fused location library 추가
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
+
+    implementation "com.kakao.sdk:v2-user:2.20.0" // 카카오 로그인 API 모듈
+    implementation 'com.kakao.maps.open:android:2.9.2'// 카카오 지도
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="45dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_margin="12dp">
+
+    <TextView
+        android:id="@+id/weather_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="오후1시"
+        android:gravity="center"
+        android:layout_alignParentTop="true"/>
+
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:src="@drawable/weather_sun"
+        android:layout_below="@id/weather_time"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/weather_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:layout_below="@id/weather_icon"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="맑음"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/weather_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="8도"
+        android:textSize="12sp"
+        android:textColor="#555555"
+        android:layout_below="@id/weather_tv"
+        android:gravity="center"/>
+
+
+
+</RelativeLayout>

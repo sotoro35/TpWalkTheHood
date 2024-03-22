@@ -8,30 +8,37 @@
     tools:context=".login.LoginActivity">
 
     <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_back"
-        android:layout_margin="16dp"/>
-
-    <ImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logotitle"
-        android:layout_marginTop="80dp"/>
-    
+        android:src="@drawable/logotitle"/>
+
+    <TextView
+        android:id="@+id/tv_go"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="92dp"
+        android:layout_marginRight="92dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/hanbit"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="둘러보기"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/tv_logintitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_go"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="22dp"
         android:fontFamily="@font/hanbit"
         android:text="로그인을 해 주세요"
-        android:textSize="26sp"
-        android:layout_below="@id/iv"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"/>
+        android:textSize="26sp" />
 
     
     <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +64,8 @@
         android:layout_below="@id/input_layout_id"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp">
+        android:layout_marginRight="32dp"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,6 +80,8 @@
         android:background="@drawable/button"
         android:text="로그인"
         android:textColor="@color/black"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_below="@id/input_layout_password"
         android:layout_marginTop="8dp"
         android:layout_alignParentRight="true"
@@ -92,7 +102,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_kakako"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
         <ImageView
             android:id="@+id/btn_login_google"
@@ -100,7 +111,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_google"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
         <ImageView
             android:id="@+id/btn_login_naver"
@@ -108,7 +120,8 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_naver"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
 
     </LinearLayout>
@@ -129,6 +142,7 @@
         android:layout_alignParentBottom="true"/>
 
     <TextView
+        android:id="@+id/tv_btns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/loging_btns"
@@ -137,6 +151,5 @@
         android:fontFamily="@font/hanbit"
         android:text="간편 로그인"
         android:textSize="14sp" />
-    
 
 </RelativeLayout>
