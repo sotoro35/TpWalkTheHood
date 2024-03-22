@@ -26,9 +26,14 @@ class MyFeedActivity : AppCompatActivity() {
 
         binding.toolbar.setOnClickListener { finish() }
 
-        testload()
-        //loadMyFeed()
+        //testload()
+        loadMyFeed()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadMyFeed()
     }
 
     private fun loadMyFeed(){

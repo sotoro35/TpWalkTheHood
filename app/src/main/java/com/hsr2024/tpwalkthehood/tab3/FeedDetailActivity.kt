@@ -3,7 +3,11 @@ package com.hsr2024.tpwalkthehood.tab3
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.hsr2024.tpwalkthehood.FeedString
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
@@ -27,6 +31,11 @@ class FeedDetailActivity : AppCompatActivity() {
         binding.tvFeedTitle.text = FeedString.title
         binding.tvFeedText.text =FeedString.text
         binding.feedIv.visibility = View.VISIBLE
+        binding.btnEditF.visibility = View.INVISIBLE
+        binding.btnDeleteF.visibility = View.INVISIBLE
+
+        binding.btnEditF.setOnClickListener { Toast.makeText(this, "수정", Toast.LENGTH_SHORT).show() }
+        binding.btnDeleteF.setOnClickListener { feedDelete() }
 
         if(FeedString.profile == null || FeedString.profile == "1"){
             binding.ivProfile.setImageResource(R.drawable.profile)
@@ -40,7 +49,29 @@ class FeedDetailActivity : AppCompatActivity() {
         }
 
 
+        if (FeedString.email == G.userAccount?.email){
+            binding.btnEditF.visibility = View.VISIBLE
+            binding.btnDeleteF.visibility = View.VISIBLE
+        }
 
     }//onCreate...
+
+    private fun feedDelete(){
+        val feedDeRef = Firebase.firestore.collection("Posts")
+            feedDeRef.whereEqualTo("email",G.userAccount?.email)
+                .whereEqualTo("date",FeedString.date)
+                .whereEqualTo("nickname",FeedString.nickname)
+                .get().addOnSuccessListener { querySnapshot ->
+                    for (document in querySnapshot.documents) {
+                        feedDeRef.document(document.id)
+                            .delete()
+                            .addOnSuccessListener {
+                                AlertDialog.Builder(this).setMessage("삭제완료").create().show()
+                                finish()
+                            }
+                    }
+
+                }
+    }
 
 }

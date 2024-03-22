@@ -38,8 +38,41 @@
         android:textStyle="bold"
         android:textColor="#FFD08A"
         android:padding="14dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:foreground="?android:attr/selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/btn_edit_F"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="수정"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFD08A"
+            android:padding="8dp"
+            android:layout_toLeftOf="@id/btn_delete_F"
+            android:layout_above="@id/line4"
+            android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginRight="12dp"/>
+
+        <TextView
+            android:id="@+id/btn_delete_F"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hanbit"
+            android:text="삭제"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFD08A"
+            android:padding="8dp"
+            android:layout_above="@id/line4"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+
 
 
     <TextView
@@ -47,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
-        android:text="우리들만의 소통공간"
+        android:text=""
         android:textSize="16sp"
         android:textColor="#4CAF50"
         android:gravity="center"
