@@ -10,13 +10,22 @@ class G {
         var keywordG:String = "음식점"
         var testmessage:String? = ""
         }
-
-
 }
 
 class L{
     companion object{
         var login = false
     }
+}
 
+class FeedString{
+    companion object{
+        lateinit var email: String
+        lateinit var nickname: String
+        lateinit var title:String
+        lateinit var text:String
+        lateinit var date:String
+        lateinit var downUrl:String
+        lateinit var profile:String
+    }
 }

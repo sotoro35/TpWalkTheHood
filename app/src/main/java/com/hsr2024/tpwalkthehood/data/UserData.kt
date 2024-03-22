@@ -51,7 +51,7 @@ data class FeedItem(
     var title:String,
     var text:String,
     var date:String,
-    var downloadUrl:String?,
+    var downUrl:String?,
     var profile:String?
 )
 

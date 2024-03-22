@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -131,18 +132,44 @@ class MainActivity : AppCompatActivity() {
 
         // 플로팅버튼 클릭시 새로고침..
         binding.reload.setOnClickListener {
-            requestMyLocation()
             val animation = AnimationUtils.loadAnimation(this, R.anim.floatting_rotate)
+
+            animation.setAnimationListener(object :Animation.AnimationListener{
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    val fragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as? Tab3FeedFragment
+                    fragment?.let {
+                        when {
+                            binding.bnvView.selectedItemId == R.id.menu_walk || binding.bnvView.selectedItemId == R.id.menu_hood
+                            -> requestMyLocation()
+
+                            binding.bnvView.selectedItemId == R.id.menu_feed
+                            -> it.loadFeed()
+                        }
+                    }
+                }
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+            })
             binding.reload.startAnimation(animation)
-        }
+
+        }// reload....
 
     }// onCreate..
 
+
     override fun onResume() {
         super.onResume()
-        if (L.login) binding.bnvView.selectedItemId= R.id.menu_walk
+        if (L.login) binding.bnvView.selectedItemId = R.id.menu_walk
         L.login = false
+
     }
+
 
 
     // [위치작업] 퍼미션을 받아올 대행사객체

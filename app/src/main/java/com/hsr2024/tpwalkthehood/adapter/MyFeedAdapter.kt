@@ -5,29 +5,25 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.hsr2024.tpwalkthehood.FeedString
-import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewFeedBinding
 import com.hsr2024.tpwalkthehood.tab3.FeedDetailActivity
 
+class MyFeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<MyFeedAdapter.VHmyFeed>() {
+    inner class VHmyFeed(val binding: RecyclerviewFeedBinding): RecyclerView.ViewHolder(binding.root)
 
-class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Tab3FeedAdapter.VHtabFeed>() {
-    inner class VHtabFeed(val binding: RecyclerviewFeedBinding):ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHtabFeed {
-        return VHtabFeed(RecyclerviewFeedBinding.inflate(LayoutInflater.from(context),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHmyFeed {
+        return VHmyFeed(RecyclerviewFeedBinding.inflate(LayoutInflater.from(context),parent,false))
     }
-
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: VHtabFeed, position: Int) {
+    override fun onBindViewHolder(holder: VHmyFeed, position: Int) {
         var item = items[position]
-
         var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${item.profile}"
         holder.binding.tvNickname.text = item.nickname
         holder.binding.tvTitle.text = item.title
@@ -59,7 +55,7 @@ class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Ta
             FeedString.downUrl = item.downUrl?: ""
             FeedString.date = item.date
 
-            val intent = Intent(context,FeedDetailActivity::class.java)
+            val intent = Intent(context, FeedDetailActivity::class.java)
             context.startActivity(intent)
         }
 
