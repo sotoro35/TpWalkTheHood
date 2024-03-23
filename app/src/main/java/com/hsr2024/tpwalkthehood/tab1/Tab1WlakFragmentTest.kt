@@ -106,6 +106,11 @@ class Tab1WlakFragmentTest : Fragment(){
 
     }//onViewCreated......
 
+    override fun onResume() {
+        super.onResume()
+        binding.ivWeather.isEnabled = true
+    }
+
 
 
     var weatherArr= mutableListOf(ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather(), ModelWeather())
@@ -114,6 +119,8 @@ class Tab1WlakFragmentTest : Fragment(){
     // 날씨 정보 API 실행
     // (한 페이지 결과 수 = 60, 페이지 번호 = 1, 응답 자료 형식-"JSON", 발표 날싸, 발표 시각, 예보지점 좌표)
     fun WeatherGet(nx: String,ny: String){
+        binding.ivWeather.isEnabled = false
+
         setWeather(nx, ny)
 
         val retrofit = RetrofitHelper.getRetrofitInstance(apiUrl)
@@ -153,14 +160,16 @@ class Tab1WlakFragmentTest : Fragment(){
                         binding.tvWeather2.text = "${weatherArr[0].temp}도"
 
                     } // apply.....
+
+                    binding.ivWeather.isEnabled = true
                 }// onResponse
 
                 override fun onFailure(call: Call<Weather>, t: Throwable) {
                     Toast.makeText(requireContext(), "날씨파싱오류", Toast.LENGTH_SHORT).show()
                     Log.e("날씨","${t.message}")
+                    binding.ivWeather.isEnabled = true
                 }//onFailure
             })//retrofitService.....
-
 
     }
 

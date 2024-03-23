@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -12,6 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import com.hsr2024.tpwalkthehood.G
+import com.hsr2024.tpwalkthehood.MainActivity
+import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.Tab3FeedAdapter
 import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.FragmentTab3FeedBinding
@@ -33,6 +36,7 @@ class Tab3FeedFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,12 +46,18 @@ class Tab3FeedFragment : Fragment(){
             startActivity(Intent(requireContext(), EditActivity::class.java)
         ) }
 
-        Toast.makeText(requireContext(), "${G.userAccount?.imgfile}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), "${G.userAccount?.imgfile}", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadFeed()
 
     }
 
   fun loadFeed(){
+
         val loadRef = Firebase.firestore.collection("Posts")
         loadRef.get().addOnSuccessListener {querySnapshot->
             val postList = mutableListOf<FeedItem>()
@@ -70,11 +80,13 @@ class Tab3FeedFragment : Fragment(){
             binding.reyclerviewTab3.adapter = adapter
             adapter.notifyDataSetChanged()
 
+
             Log.w("성공", "포스트 가져오기성공")
         }
             .addOnFailureListener {exception ->
                 // 데이터 가져오기 실패 시 처리
                 Log.w("오류Feed", "Error getting documents: ", exception)
+
             }
     }
 }

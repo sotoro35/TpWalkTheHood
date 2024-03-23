@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -168,6 +169,19 @@ class MainActivity : AppCompatActivity() {
         if (L.login) binding.bnvView.selectedItemId = R.id.menu_walk
         L.login = false
 
+    }
+
+    // 탭3을 연타하지 않도록 설정..
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bnv_menu,menu)
+
+        return true
+    }
+
+    fun MenuItemEnabledState(isEnabled: Boolean){
+        val menuItem = binding.bnvView.menu.findItem(R.id.menu_feed)
+        menuItem?.isEnabled = isEnabled
     }
 
 
