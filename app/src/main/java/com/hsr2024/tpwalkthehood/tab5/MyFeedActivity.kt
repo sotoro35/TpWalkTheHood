@@ -53,8 +53,9 @@ class MyFeedActivity : AppCompatActivity() {
                     var date:String = document.getString("date")!!
                     var downUrl:String = document.getString("downUrl")?: "1"
                     var profile:String = document.getString("profile")?: "1"
+                    var fileName:String = document.getString("fileName") ?:"1"
 
-                    postitem = FeedItem(email, nickname, title, text, date, downUrl, profile)
+                    postitem = FeedItem(email, nickname, title, text, date, downUrl, profile, fileName)
                     postList.add(0,postitem)
                 }
 
@@ -82,8 +83,9 @@ class MyFeedActivity : AppCompatActivity() {
                         val date: String = document.getString("date")!!
                         val downUrl: String = document.getString("downUrl") ?: "1"
                         val profile: String = document.getString("profile") ?: "1"
+                        val fileName:String = document.getString("fileName")?: "1"
 
-                        val postitem = FeedItem(email, nickname, title, text, date, downUrl, profile)
+                        val postitem = FeedItem(email, nickname, title, text, date, downUrl, profile,fileName)
                         postList.add(0, postitem)
                     }
 

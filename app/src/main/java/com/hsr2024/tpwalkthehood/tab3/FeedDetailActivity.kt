@@ -1,17 +1,21 @@
 package com.hsr2024.tpwalkthehood.tab3
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.hsr2024.tpwalkthehood.FeedString
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.databinding.ActivityFeedDetailBinding
+import com.hsr2024.tpwalkthehood.tab5.EditMyFeed
 
 // Feed에서 아이템 클릭시 보여주는 상세내역
 // 서버에서 내용 가져와야함
@@ -36,7 +40,11 @@ class FeedDetailActivity : AppCompatActivity() {
         binding.btnEditF.visibility = View.INVISIBLE
         binding.btnDeleteF.visibility = View.INVISIBLE
 
-        binding.btnEditF.setOnClickListener { Toast.makeText(this, "수정", Toast.LENGTH_SHORT).show() }
+
+
+        binding.btnEditF.setOnClickListener {
+            startActivity(Intent((this),EditMyFeed::class.java))
+            finish()}
         binding.btnDeleteF.setOnClickListener { feedDelete() }
 
         if(FeedString.profile == null || FeedString.profile == "1"){
@@ -68,12 +76,22 @@ class FeedDetailActivity : AppCompatActivity() {
                         feedDeRef.document(document.id)
                             .delete()
                             .addOnSuccessListener {
-                                AlertDialog.Builder(this).setMessage("삭제완료").create().show()
-                                finish()
+
+                                //파일 삭제시 storage 에서도 사진 삭제....
+                                if (FeedString.fileName != null && FeedString.fileName != "1") {
+                                    val feedDimgRef =
+                                        Firebase.storage.getReference("FeedImage/${FeedString.fileName}")
+                                    feedDimgRef.delete().addOnSuccessListener {
+                                        Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
+                                    }
+                                        .addOnFailureListener { Log.e("오류", "삭제오류") }
+                                }
+
+                                AlertDialog.Builder(this).setMessage("${FeedString.fileName}").create().show()
+                               finish()
                             }
-                    }
+                    }//for
 
-                }
+                }//addOnSuccessListener
     }
-
 }

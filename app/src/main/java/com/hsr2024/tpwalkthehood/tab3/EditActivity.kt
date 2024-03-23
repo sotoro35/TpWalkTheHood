@@ -63,7 +63,7 @@ class EditActivity : AppCompatActivity() {
             binding.editProgress.visibility = View.VISIBLE
 
             // 저장소의 이미지 업로드 참조객체 얻기
-            val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date())
+            val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
             val imgRef: StorageReference = Firebase.storage.getReference("FeedImage/$fileName")
             val now = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
 
@@ -85,15 +85,16 @@ class EditActivity : AppCompatActivity() {
                         data["title"] = title
                         data["text"] = text
                         data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                        data["fileName"] = fileName
 
                         postRef.document("${now}_${G.userAccount?.email}").set(data)
                         binding.editProgress.visibility = View.GONE
                         binding.myeditSave.isEnabled = true
                         finish()
                     }
-                }
+                }//addOnSuccessListener
             }else {
-                // 글 내용을 저장
+                // 사진없는 글 내용을 저장
                 val postRef = Firebase.firestore.collection("Posts")
                 var data: MutableMap<String, Any> = mutableMapOf()
                 if (G.userAccount?.imgfile == "" || G.userAccount?.imgfile == null){
@@ -105,6 +106,7 @@ class EditActivity : AppCompatActivity() {
                 data["title"] = title
                 data["text"] = text
                 data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                data["fileName"] = "1"
 
                 postRef.document("${now}_${G.userAccount?.email}").set(data)
                 binding.editProgress.visibility = View.GONE

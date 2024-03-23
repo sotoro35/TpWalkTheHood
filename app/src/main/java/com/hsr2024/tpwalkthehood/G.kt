@@ -27,5 +27,6 @@ class FeedString{
         lateinit var date:String
         lateinit var downUrl:String
         lateinit var profile:String
+        lateinit var fileName:String
     }
 }

@@ -71,8 +71,9 @@ class Tab3FeedFragment : Fragment(){
                 var date:String = document.getString("date")!!
                 var downUrl:String = document.getString("downUrl")?: "1"
                 var profile:String = document.getString("profile")?: "1"
+                var fileName:String = document.getString("fileName")?: "1"
 
-                postitem = FeedItem(email, nickname, title, text, date, downUrl, profile)
+                postitem = FeedItem(email, nickname, title, text, date, downUrl, profile, fileName)
                 postList.add(0,postitem)
             }
 

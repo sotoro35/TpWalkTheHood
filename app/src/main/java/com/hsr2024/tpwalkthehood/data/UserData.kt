@@ -52,7 +52,8 @@ data class FeedItem(
     var text:String,
     var date:String,
     var downUrl:String?,
-    var profile:String?
+    var profile:String?,
+    var fileName:String
 )
 
 
