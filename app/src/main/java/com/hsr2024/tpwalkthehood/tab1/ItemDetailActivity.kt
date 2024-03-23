@@ -58,14 +58,18 @@ class ItemDetailActivity : AppCompatActivity() {
 
             val db = Firebase.firestore.collection("favorites")
 
-            val data = place.place_url
-
             val favorlist: MutableMap<String, Any> = mutableMapOf(
+            "id" to "${place.id}",
             "place_name" to "${place.place_name}",
+            "category_name" to "${place.category_name}",
+            "phone" to "${place.phone}",
+            "address_name" to "${place.address_name}",
             "road_address_name" to "${place.road_address_name}",
+            "x" to "${place.x}",
+            "y" to "${place.y}",
+            "place_url" to "${place.place_url}",
             "place_distance" to "${place.distance}",
             "email" to "${G.userAccount!!.email}",
-            "url" to "${data}"
             )
 
             // 찜 버튼이 눌렸는지 여부 확인
