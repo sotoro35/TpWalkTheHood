@@ -25,7 +25,6 @@ class FavoriteListActivity : AppCompatActivity() {
         binding.tvNicknameFavor.text = "' ${G.userAccount?.nickname?: "사용자"} ' 님의 찜 목록"
         loadFavorite(G.userAccount!!.email)
 
-
     }
 
     private fun loadFavorite(userEmail: String){

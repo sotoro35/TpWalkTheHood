@@ -27,6 +27,8 @@ class FeedDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.title.setNavigationOnClickListener { finish() }
+
         binding.nickname.text = FeedString.nickname
         binding.tvFeedTitle.text = FeedString.title
         binding.tvFeedText.text =FeedString.text

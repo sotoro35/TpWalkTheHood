@@ -7,7 +7,7 @@
     android:background="@color/white"
     tools:context=".tab3.FeedDetailActivity"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,30 +16,17 @@
     <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hanbit"
-        android:text="동네이야기"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#8BC34A"
-        android:gravity="center"
-        android:padding="8dp"/>
 
-    <TextView
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hanbit"
-        android:text="뒤로가기"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="#FFD08A"
-        android:padding="14dp"
-        android:layout_alignParentLeft="true"
-        android:foreground="?android:attr/selectableItemBackground"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/icon_back"
+            app:titleTextAppearance="@style/title"
+            app:titleTextColor="#8BC34A"
+            app:title="동네 이야기"
+            app:titleCentered="true"/>
+
 
         <TextView
             android:id="@+id/btn_edit_F"
@@ -72,9 +59,6 @@
             android:background="@drawable/button"
             android:foreground="?android:attr/selectableItemBackground"/>
 
-
-
-
     <TextView
         android:id="@+id/title2"
         android:layout_width="match_parent"
@@ -88,49 +72,48 @@
         android:layout_marginBottom="8dp"
         android:layout_below="@id/title"/>
 
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@id/line4"
+            android:layout_marginLeft="8dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#FFC107"
+                android:src="@drawable/cinnamaroll07"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+
+            <TextView
+                android:id="@+id/nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hanbit"
+                android:text="nickname"
+                android:textColor="#FF9800"
+                android:textSize="16sp"
+                android:layout_toRightOf="@id/iv_profile"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
         <View
             android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#D9D9D9"
+            android:background="#44444444"
             android:layout_below="@id/title2"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"/>
 
-
-<LinearLayout
-    android:id="@+id/layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_below="@id/line4"
-    android:padding="12dp">
-
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:civ_border_width="1dp"
-        app:civ_border_color="#FFC107"
-        android:src="@drawable/cinnamaroll07"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
-
-    <TextView
-        android:id="@+id/nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hanbit"
-        android:text="nickname"
-        android:textColor="#FF9800"
-        android:textSize="16sp"
-        android:layout_toRightOf="@id/iv_profile"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"/>
-        </LinearLayout>
     </RelativeLayout>
 
 <!--    <View-->
@@ -153,8 +136,7 @@
         android:fontFamily="@font/hanbit"
         android:text="제목입니다"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_feed_text"
@@ -169,14 +151,14 @@
 
     <ImageView
         android:id="@+id/feed_iv"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
         android:layout_centerInParent="true"
         android:layout_below="@id/tv_feed_text"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:src="@drawable/logo_image"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_gravity="center"/>
 
         <LinearLayout
@@ -206,7 +188,7 @@
         android:id="@+id/line2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#D9D9D9"
+        android:background="#44444444"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="20dp"/>

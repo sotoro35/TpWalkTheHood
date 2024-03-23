@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.Place
+import com.hsr2024.tpwalkthehood.data.favoriteItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityItemDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -47,6 +48,7 @@ class ItemDetailActivity : AppCompatActivity() {
             binding.webView.loadUrl(place.place_url)
 
         }//also..
+
 
         loadFavorite()
 
@@ -98,23 +100,6 @@ class ItemDetailActivity : AppCompatActivity() {
                         Log.w("찜", "추가 에러", e)
                     }
             }
-
-//            if (!isFavorite) {
-//                favorRef.document("${G.userAccount!!.email}")
-//                .update("${data}", FieldValue.arrayUnion("${data}"))
-//                .addOnSuccessListener {
-//                    Toast.makeText(this, "찜 추가", Toast.LENGTH_SHORT).show()
-//                }.addOnFailureListener { e -> Log.w("찜", "추가에러", e) }
-//
-//
-//            } else {
-//                favorRef.document("${G.userAccount!!.email}")
-//                    .update("favorite", FieldValue.arrayRemove("${data}"))
-//                    .addOnSuccessListener {
-//                        Toast.makeText(this, "찜 삭제", Toast.LENGTH_SHORT).show()
-//                    }
-//                    .addOnFailureListener { e -> Log.w("찜", "삭제에러", e) }
-//            }
 
             isFavorite =! isFavorite // 불린값을 반대로 바꿀때.. 현재 false라면 true라고 바꾸는것
             if (isFavorite) binding.favor.setImageResource(R.drawable.heart_select)
