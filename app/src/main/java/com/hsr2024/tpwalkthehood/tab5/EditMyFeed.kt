@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -72,6 +73,7 @@ class EditMyFeed : AppCompatActivity() {
 
         // 내 정보를 찾아와서 업데이트
         if (title.isNotEmpty() && text.isNotEmpty()){
+            Glide.with(this).load(R.drawable.loading).into(bindig.loading)
             bindig.myFeedSave.isEnabled = false
 
             val editMyFeedRef = Firebase.firestore.collection("Posts")
@@ -104,7 +106,7 @@ class EditMyFeed : AppCompatActivity() {
                                                 val feedDimgRef =
                                                     Firebase.storage.getReference("FeedImage/${FeedString.fileName}")
                                                 feedDimgRef.delete().addOnSuccessListener {
-                                                    Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
+                                                    //Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
                                                 }
                                                     .addOnFailureListener { Log.e("오류", "삭제오류") }
                                             }//if...
@@ -118,8 +120,6 @@ class EditMyFeed : AppCompatActivity() {
                             }//addOnsucces
                     }
                 }
-
-
 
                 // 이미지가 없으면.... 내용만 수정
             }else{

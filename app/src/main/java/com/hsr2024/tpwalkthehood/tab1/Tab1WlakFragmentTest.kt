@@ -244,18 +244,7 @@ class Tab1WlakFragmentTest : Fragment(){
                 }
 
             })
-//            .enqueue(object : Callback<String>{
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                var s = response.body()
-//                AlertDialog.Builder(requireContext()).setMessage(s).create().show()
-//            }
-//
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Toast.makeText(requireContext(), "region오류", Toast.LENGTH_SHORT).show()
-//                Log.e("region","${t.message}")
-//            }
-//
-//        })
+
 
     }
 
@@ -399,83 +388,6 @@ class Tab1WlakFragmentTest : Fragment(){
         subsubcategoryAdapter.notifyDataSetChanged()
     }
 
-
-//        private fun setupSubcategoryData(clickedCategoryId: Int): List<CategoryItem> {
-//            return when(clickedCategoryId){
-//                R.id.category_01 -> listOf(
-//                    CategoryItem("전체보기",R.drawable.icon_all),
-//                    CategoryItem("한식",R.drawable.icon_rice),
-//                    CategoryItem("중식",R.drawable.icon_noodle),
-//                    CategoryItem("일식",R.drawable.icon_sushi),
-//                    CategoryItem("피자",R.drawable.icon_pizza),
-//                    CategoryItem("치킨",R.drawable.icon_chicke),
-//                    CategoryItem("분식",R.drawable.icon_ricecake),
-//                    CategoryItem("애견동반",R.drawable.icon_pet)
-//                )
-//                R.id.category_02 -> listOf(
-//                    CategoryItem("전체보기",R.drawable.icon_all),
-//                    CategoryItem("애견동반",R.drawable.icon_pet)
-//                )
-//                R.id.category_03 -> listOf(
-//                    CategoryItem("전체보기",R.drawable.icon_all),
-//                    CategoryItem("어린이",R.drawable.icon_childre)
-//                )
-//                R.id.category_04 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-//                R.id.category_05 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-//                R.id.category_06 -> listOf(CategoryItem("전체보기",R.drawable.icon_all))
-//                R.id.category_07 -> listOf(
-//                    CategoryItem("전체보기",R.drawable.icon_all),
-//                    CategoryItem("내과",R.drawable.icon_stethoscope),
-//                    CategoryItem("이비인후과",R.drawable.icon_otorhinolaryngology),
-//                    CategoryItem("정형외과",R.drawable.icon_bone),
-//                    CategoryItem("소아청소년과",R.drawable.icon_pediatric),
-//                    CategoryItem("산부인과",R.drawable.icon_pregnant),
-//                    CategoryItem("동물",R.drawable.icon_pet)
-//                )
-//                R.id.category_08 -> listOf(
-//                    CategoryItem("전체보기",R.drawable.icon_all),
-//                    CategoryItem("동물",R.drawable.icon_pet)
-//                )
-//                else -> emptyList()
-//            }
-//        }
-//
-//        private fun setupSearchKeywords(categoryId: Int) {
-//            when(categoryId) {
-//                R.id.category_01 -> {
-//                    searchCategory = "FD6"
-//                    searchKeyword = "음식점"
-//                }
-//                R.id.category_02 -> {
-//                    searchCategory = "CE7"
-//                    searchKeyword = "카페"
-//                }
-//                R.id.category_03 -> {
-//                    searchCategory = "CT1"
-//                    searchKeyword = "문화시설"
-//                }
-//                R.id.category_04 -> {
-//                    searchCategory = "CS2"
-//                    searchKeyword = "편의점"
-//                }
-//                R.id.category_05 -> {
-//                    searchCategory = "MT1"
-//                    searchKeyword = "마트"
-//                }
-//                R.id.category_06 -> {
-//                    searchCategory = "BK9"
-//                    searchKeyword = "은행"
-//                }
-//                R.id.category_07 -> {
-//                    searchCategory = "HP8"
-//                    searchKeyword = "병원"
-//                }
-//                R.id.category_08 -> {
-//                    searchCategory = "PM9"
-//                    searchKeyword = "약국"
-//                }
-//            }
-//        }
 
 } // fragment..
 

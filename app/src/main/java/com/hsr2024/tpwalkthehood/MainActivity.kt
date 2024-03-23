@@ -26,6 +26,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.gms.common.internal.service.Common
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -225,7 +226,7 @@ class MainActivity : AppCompatActivity() {
 
             myLocation = p0.lastLocation // 마지막 추척된 위치
             locationProviderClient.removeLocationUpdates(this) // 여기서 this는 콜백객체
-            Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
 
             curPoint = dfsXyConv(myLocation?.latitude?: 37.5666, myLocation?.longitude?: 126.9782)
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
@@ -291,6 +292,7 @@ class MainActivity : AppCompatActivity() {
 
     //[검색작업] 카카오 API 검색
     fun searchPlaces(searchCategory:String,searchKeyword:String){
+
 
         findViewById<ProgressBar>(R.id.progressBar)?.visibility = View.VISIBLE
 

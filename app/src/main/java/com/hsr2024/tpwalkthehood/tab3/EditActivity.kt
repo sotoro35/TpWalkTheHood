@@ -60,7 +60,8 @@ class EditActivity : AppCompatActivity() {
         binding.myeditSave.isEnabled = false
 
         if (title.isNotEmpty() && text.isNotEmpty()) {
-            binding.editProgress.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.loading).into(binding.loading)
+
 
             // 저장소의 이미지 업로드 참조객체 얻기
             val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
@@ -88,8 +89,6 @@ class EditActivity : AppCompatActivity() {
                         data["fileName"] = fileName
 
                         postRef.document("${now}_${G.userAccount?.email}").set(data)
-                        binding.editProgress.visibility = View.GONE
-                        binding.myeditSave.isEnabled = true
                         finish()
                     }
                 }//addOnSuccessListener
@@ -109,8 +108,6 @@ class EditActivity : AppCompatActivity() {
                 data["fileName"] = "1"
 
                 postRef.document("${now}_${G.userAccount?.email}").set(data)
-                binding.editProgress.visibility = View.GONE
-                binding.myeditSave.isEnabled = true
                 finish()
             }
 

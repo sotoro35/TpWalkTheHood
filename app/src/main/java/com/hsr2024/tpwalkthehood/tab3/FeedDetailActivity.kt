@@ -82,12 +82,12 @@ class FeedDetailActivity : AppCompatActivity() {
                                     val feedDimgRef =
                                         Firebase.storage.getReference("FeedImage/${FeedString.fileName}")
                                     feedDimgRef.delete().addOnSuccessListener {
-                                        Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
+                                        //Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
                                     }
                                         .addOnFailureListener { Log.e("오류", "삭제오류") }
                                 }
 
-                                AlertDialog.Builder(this).setMessage("${FeedString.fileName}").create().show()
+                                //AlertDialog.Builder(this).setMessage("${FeedString.fileName}").create().show()
                                finish()
                             }
                     }//for
