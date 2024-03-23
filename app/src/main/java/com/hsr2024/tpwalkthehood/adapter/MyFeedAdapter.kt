@@ -14,6 +14,7 @@ import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewFeedBinding
 import com.hsr2024.tpwalkthehood.tab3.FeedDetailActivity
 
+// tab5 내글 목록
 class MyFeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<MyFeedAdapter.VHmyFeed>() {
     inner class VHmyFeed(val binding: RecyclerviewFeedBinding): RecyclerView.ViewHolder(binding.root)
 

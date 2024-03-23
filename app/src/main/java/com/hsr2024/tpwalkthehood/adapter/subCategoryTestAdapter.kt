@@ -10,6 +10,7 @@ import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.CategoryItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewCategorySubBinding
 
+// tab1 서브카테고리 리사이클러뷰
 class subCategoryTestAdapter(val context: Context, val subitems:List<CategoryItem>,val onItemClick: (CategoryItem) -> Unit) : Adapter<subCategoryTestAdapter.VHsub>(){
 
     inner class VHsub(val binding:RecyclerviewCategorySubBinding) : ViewHolder(binding.root)

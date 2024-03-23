@@ -15,6 +15,7 @@ import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewFeedBinding
 import com.hsr2024.tpwalkthehood.tab3.FeedDetailActivity
 
+// tab3 동네이야기 리사이클러뷰
 
 class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Tab3FeedAdapter.VHtabFeed>() {
     inner class VHtabFeed(val binding: RecyclerviewFeedBinding):ViewHolder(binding.root)

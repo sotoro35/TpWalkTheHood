@@ -6,11 +6,8 @@ import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hsr2024.tpwalkthehood.G
-import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.adapter.PlaceItemAdapter
-import com.hsr2024.tpwalkthehood.adapter.favoriteAdapter
 import com.hsr2024.tpwalkthehood.data.Place
-import com.hsr2024.tpwalkthehood.data.favoriteItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityFavoriteListBinding
 
 // 찜목록... 아이템상세에서 찜한것들을 보여주는곳. 찜은 계정저장(닷홈.. 파이어베이스의 계정과 비교해서..), 폰에저장
