@@ -2,12 +2,20 @@ package com.hsr2024.tpwalkthehood.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.hsr2024.tpwalkthehood.FeedString
+import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.CommentItem
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewCommentBinding
+import java.text.SimpleDateFormat
 
 class commentAdapter(val context: Context, var list: List<CommentItem>):Adapter<commentAdapter.VHcomment>() {
 
@@ -21,14 +29,53 @@ class commentAdapter(val context: Context, var list: List<CommentItem>):Adapter<
 
     override fun onBindViewHolder(holder: VHcomment, position: Int) {
         var item = list[position]
+        var s:String = date("${item.date}")
+        var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${item.profile}"
+
 
         holder.binding.commentNickname.text = item.nickname
         holder.binding.commentText.text = item.text
-        holder.binding.commentDate.text = item.date
+        holder.binding.commentDate.text = s
 
-        if (item.profile == "1" || item.profile == null){
+
+        if (item.profile == "1" || item.profile == null || item.profile == ""){
             holder.binding.commentProfile.setImageResource(R.drawable.profile)
-        }else holder.binding.commentProfile.setImageResource(R.drawable.heart_select)
+        }else Glide.with(context).load(imgUrl).into(holder.binding.commentProfile)
+
+
+        if (item.email.equals("${G.userAccount?.email}")){
+            holder.binding.commentDelete.visibility = View.VISIBLE
+
+            holder.binding.commentDelete.setOnClickListener {
+                val db = Firebase.firestore
+                val dbCom = db.collection("Posts").document("${FeedString.documentId}").collection("comments")
+                    .whereEqualTo("comment_email","${G.userAccount?.email}")
+                    .whereEqualTo("date",item.date)
+                    .get()
+                    .addOnSuccessListener {
+                        for (document in it.documents){
+                            db.document(document.id)
+
+                                .delete()
+                                .addOnSuccessListener {
+                                    Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show() }
+                        }
+                    }
+            }
+        }
+
+
 
     }
+
+    fun date(dateString:String):String{
+        var inputFormat = SimpleDateFormat("yyyyMMddHHmm")
+        var outputFormat = SimpleDateFormat("yyyy년MM월dd월HH:mm")
+
+        var date = inputFormat.parse(dateString)
+        var formatDate = outputFormat.format(date).toString()
+
+        return formatDate
+    }
+
 }

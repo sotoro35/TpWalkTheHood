@@ -18,6 +18,9 @@ import com.hsr2024.tpwalkthehood.adapter.commentAdapter
 import com.hsr2024.tpwalkthehood.data.CommentItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityFeedDetailBinding
 import com.hsr2024.tpwalkthehood.tab5.EditMyFeed
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // Feed에서 아이템 클릭시 보여주는 상세내역
 // 서버에서 내용 가져와야함
@@ -154,6 +157,8 @@ class FeedDetailActivity : AppCompatActivity() {
             }
         }//setOnClickListener
 
+        binding.saveComment.setOnClickListener { saveComment() }
+
 
 
     }//onCreate...
@@ -163,10 +168,28 @@ class FeedDetailActivity : AppCompatActivity() {
         super.onResume()
 
         loadComment()
-
     }
 
     private fun saveComment(){
+        var comment = binding.inputLayoutComment.editText!!.text.toString()
+        val db = Firebase.firestore.collection("Posts")
+        val dbCom = db.document("${FeedString.documentId}").collection("comments")
+
+        if (comment != null){
+            comment?.apply {
+                var data:MutableMap<String,Any> = mutableMapOf()
+
+                data["comment_email"] = G.userAccount!!.email
+                data["comment_nickname"] = G.userAccount!!.nickname
+                data["text"] = comment
+                data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                data["comment_profile"] = G.userAccount?.imgfile?: "1"
+
+                dbCom.document().set(data)
+                Toast.makeText(this@FeedDetailActivity, "저장성공", Toast.LENGTH_SHORT).show()
+
+            }
+        } else AlertDialog.Builder(this).setMessage("내용을 입력해주세요").create().show()
 
     }
 

@@ -2,14 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
+    android:background="@color/white"
+    android:layout_margin="4dp">
 
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_profile"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="@drawable/profile_stroke"
-        android:src="@drawable/profile"/>
+        app:civ_border_width="1dp"
+        app:civ_border_color="#FFC107"
+        android:src="@drawable/cinnamaroll07"/>
     
     <TextView
         android:id="@+id/comment_nickname"
@@ -31,13 +36,37 @@
         android:layout_marginTop="8dp"
         android:layout_below="@id/comment_profile"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/comment_text"
+        android:gravity="right">
+
+
     <TextView
         android:id="@+id/comment_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="20240325"
-        android:layout_below="@id/comment_text"
-        android:gravity="right"/>
+        android:textSize="10sp"
+        android:gravity="right"
+        android:layout_weight="1"/>
+
+
+
+        <TextView
+            android:id="@+id/comment_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"
+            android:visibility="invisible"
+            android:layout_marginLeft="8dp"
+            android:padding="6dp"
+            android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
 
 
 
