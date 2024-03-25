@@ -187,6 +187,8 @@ class FeedDetailActivity : AppCompatActivity() {
 
                 dbCom.document().set(data)
                 Toast.makeText(this@FeedDetailActivity, "저장성공", Toast.LENGTH_SHORT).show()
+                binding.inputComment.setText("")
+                loadComment()
 
             }
         } else AlertDialog.Builder(this).setMessage("내용을 입력해주세요").create().show()
@@ -216,7 +218,6 @@ class FeedDetailActivity : AppCompatActivity() {
                     val adapter = commentAdapter(this,commentsList)
                     binding.recyclerComment.adapter = adapter
                     adapter.notifyDataSetChanged()
-                    AlertDialog.Builder(this).setMessage("${commentsList.get(0).nickname}").create().show()
                     Log.e("오류아님","댓글가져오기 성공")
                 }
 
@@ -241,7 +242,10 @@ class FeedDetailActivity : AppCompatActivity() {
 
 
     private fun feedDelete(){
-        val feedDeRef = Firebase.firestore.collection("Posts")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("정말 삭제하시겠습니까?")
+        builder.setPositiveButton("확인"){ dialog, which ->
+            val feedDeRef = Firebase.firestore.collection("Posts")
             feedDeRef.whereEqualTo("email",G.userAccount?.email)
                 .whereEqualTo("date",FeedString.date)
                 .whereEqualTo("nickname",FeedString.nickname)
@@ -260,12 +264,16 @@ class FeedDetailActivity : AppCompatActivity() {
                                     }
                                         .addOnFailureListener { Log.e("오류", "삭제오류") }
                                 }
-
-                                //AlertDialog.Builder(this).setMessage("${FeedString.fileName}").create().show()
-                               finish()
+                                finish()
                             }
                     }//for
 
                 }//addOnSuccessListener
+        }
+        builder.setNegativeButton("취소"){ dialog, which ->
+            dialog.dismiss()
+        }
+        builder.create().show()
+
     }
 }

@@ -1,5 +1,6 @@
 package com.hsr2024.tpwalkthehood.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -47,24 +48,36 @@ class commentAdapter(val context: Context, var list: List<CommentItem>):Adapter<
             holder.binding.commentDelete.visibility = View.VISIBLE
 
             holder.binding.commentDelete.setOnClickListener {
-                val db = Firebase.firestore
-                val dbCom = db.collection("Posts").document("${FeedString.documentId}").collection("comments")
-                    .whereEqualTo("comment_email","${G.userAccount?.email}")
-                    .whereEqualTo("date",item.date)
-                    .get()
-                    .addOnSuccessListener {
-                        for (document in it.documents){
-                            db.document(document.id)
 
-                                .delete()
-                                .addOnSuccessListener {
-                                    Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show() }
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("정말 삭제하시겠습니까?")
+                builder.setPositiveButton("확인"){ dialog, which ->
+                    val db = Firebase.firestore
+                    val dbCom = db.collection("Posts").document("${FeedString.documentId}").collection("comments")
+                    dbCom.whereEqualTo("comment_email","${G.userAccount?.email}")
+                        .whereEqualTo("date",item.date)
+                        .get()
+                        .addOnSuccessListener {
+                            for (document in it.documents){
+                                dbCom.document(document.id)
+                                    .delete()
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show() }
+
+                                // 삭제된 댓글을 데이터 리스트에서 제거하고 RecyclerView를 다시 그립니다.
+                                list = list.filter { it.date != item.date }
+                                notifyDataSetChanged()
+                            }
                         }
-                    }
+                }
+                builder.setNegativeButton("취소"){ dialog, which ->
+                    dialog.dismiss()
+                }
+
+                builder.create().show()
+
             }
         }
-
-
 
     }
 
