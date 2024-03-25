@@ -14,6 +14,7 @@ import com.google.firebase.storage.ktx.storage
 import com.hsr2024.tpwalkthehood.FeedString
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
+import com.hsr2024.tpwalkthehood.data.FeedItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityFeedDetailBinding
 import com.hsr2024.tpwalkthehood.tab5.EditMyFeed
 
@@ -27,6 +28,11 @@ class FeedDetailActivity : AppCompatActivity() {
 
     var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${FeedString.profile}"
 
+    private var isLike= false
+    var likeNumber = FeedString.likeNum.toInt()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -39,6 +45,10 @@ class FeedDetailActivity : AppCompatActivity() {
         binding.feedIv.visibility = View.VISIBLE
         binding.btnEditF.visibility = View.INVISIBLE
         binding.btnDeleteF.visibility = View.INVISIBLE
+
+        binding.favornum.text = FeedString.likeNum
+        binding.favorFeed.isEnabled = true
+
 
 
 
@@ -64,7 +74,104 @@ class FeedDetailActivity : AppCompatActivity() {
             binding.btnDeleteF.visibility = View.VISIBLE
         }
 
+        loadLike()
+
+        binding.favorFeed.setOnClickListener {
+
+            val db = Firebase.firestore.collection("Posts")
+            val dbLike = db.document("${FeedString.documentId}").collection("Like")
+
+            val likeId = mutableMapOf<String,Any>(
+                "email" to "${G.userAccount?.email}"
+            )
+
+            if (isLike){
+                binding.favorFeed.isEnabled = false
+                // 좋아요 취소
+                dbLike.whereEqualTo("email","${G.userAccount?.email}")
+                    .get().addOnSuccessListener {
+                        for (document in it.documents){
+                            dbLike.document(document.id)
+                                .delete()
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "좋아요 취소", Toast.LENGTH_SHORT).show()
+
+                                    val db = Firebase.firestore
+                                    val likeNumDocRef = db.collection("Posts").document("${FeedString.documentId}")
+                                    db.runTransaction {transaction ->
+                                        var likeNum = transaction.get(likeNumDocRef).getLong("likeNum") ?: 0
+                                        transaction.update(likeNumDocRef,"likeNum",likeNum -1)
+                                    }
+                                        .addOnSuccessListener {
+                                            // 좋아요 수 업데이트
+                                            val updateNumRef = db.collection("Posts").document("${FeedString.documentId}")
+                                            updateNumRef.get().addOnSuccessListener {
+                                                var updateNum = it.getLong("likeNum")?:0
+                                                binding.favornum.text = updateNum.toString()
+                                                binding.favorFeed.isEnabled = true
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+
+              // binding.favorFeed.isEnabled = true
+            }else{
+                binding.favorFeed.isEnabled = false
+                //좋아요 추가
+                dbLike.add(likeId)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "좋아요", Toast.LENGTH_SHORT).show()
+
+                        val db = Firebase.firestore
+                        val likeNumDocRef = db.collection("Posts").document("${FeedString.documentId}")
+                        db.runTransaction {transaction ->
+                            var likeNum = transaction.get(likeNumDocRef).getLong("likeNum") ?: 0
+                            transaction.update(likeNumDocRef,"likeNum",likeNum +1)
+                        }.addOnSuccessListener {
+                            // 좋아요 수 업데이트
+                            val updateNumRef = db.collection("Posts").document("${FeedString.documentId}")
+                            updateNumRef.get().addOnSuccessListener {
+                                var updateNum = it.getLong("likeNum")?:0
+                                binding.favornum.text = updateNum.toString()
+                                binding.favorFeed.isEnabled = true
+                            }
+                        }
+                    }
+                //binding.favorFeed.isEnabled = true
+            }
+
+
+            isLike =! isLike
+            if (isLike) {
+                binding.favorFeed.setImageResource(R.drawable.heart_select)
+                binding.favornum.text = (likeNumber+1).toString() // 좋아요 수 업데이트
+            } else {
+                binding.favorFeed.setImageResource(R.drawable.heart)
+                if (likeNumber > 0 ){
+                    binding.favornum.text = (likeNumber-1).toString() // 좋아요 수 업데이트
+                }
+            }
+
+
+
+        }//setOnClickListener
+
     }//onCreate...
+
+    private fun loadLike(){
+        val doc = Firebase.firestore.collection("Posts")
+            doc.document("${FeedString.documentId}")
+            .collection("Like")
+            .whereEqualTo("email","${G.userAccount?.email}")
+            .get().addOnSuccessListener {
+                isLike = !it.isEmpty // true 선택됨 / false 선택안됨
+
+                if (isLike) binding.favorFeed.setImageResource(R.drawable.heart_select)
+                else binding.favorFeed.setBackgroundResource(R.drawable.heart)
+            }
+    }
+
 
     private fun feedDelete(){
         val feedDeRef = Firebase.firestore.collection("Posts")

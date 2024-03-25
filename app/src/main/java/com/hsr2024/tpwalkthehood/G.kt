@@ -28,5 +28,8 @@ class FeedString{
         lateinit var downUrl:String
         lateinit var profile:String
         lateinit var fileName:String
+        lateinit var documentId:String
+        lateinit var like:String
+        lateinit var likeNum:String
     }
 }

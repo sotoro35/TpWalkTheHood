@@ -53,7 +53,7 @@ class ItemDetailActivity : AppCompatActivity() {
         loadFavorite()
 
 
-        //postDto.favorite[uid!!] = true
+
         binding.favor.setOnClickListener {
 
             val db = Firebase.firestore.collection("favorites")

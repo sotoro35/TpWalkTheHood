@@ -53,7 +53,10 @@ data class FeedItem(
     var date:String,
     var downUrl:String?,
     var profile:String?,
-    var fileName:String
+    var fileName:String,
+    var documentId:String,
+    var like:String,
+    var likeNum:Long
 )
 
 

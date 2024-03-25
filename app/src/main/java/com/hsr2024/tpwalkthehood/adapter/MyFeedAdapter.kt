@@ -28,6 +28,7 @@ class MyFeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<MyFe
         var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${item.profile}"
         holder.binding.tvNickname.text = item.nickname
         holder.binding.tvTitle.text = item.title
+        holder.binding.tvLikenum.text = item.likeNum.toString()
 
         if (item.profile.equals("1") || item.profile == "") {
             holder.binding.ivProfile.setImageResource(R.drawable.profile)
@@ -56,6 +57,7 @@ class MyFeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<MyFe
             FeedString.downUrl = item.downUrl?: ""
             FeedString.date = item.date
             FeedString.fileName = item.fileName
+            FeedString.likeNum = item.likeNum.toString()
 
             val intent = Intent(context, FeedDetailActivity::class.java)
             context.startActivity(intent)

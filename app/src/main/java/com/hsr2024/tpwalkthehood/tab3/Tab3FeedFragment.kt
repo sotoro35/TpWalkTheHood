@@ -39,6 +39,11 @@ class Tab3FeedFragment : Fragment(){
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        loadFeed()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,6 +69,8 @@ class Tab3FeedFragment : Fragment(){
             var postitem:FeedItem
 
             for (document in querySnapshot.documents){
+
+
                 var email: String = document.getString("email")!!
                 var nickname: String? = document.getString("nickname")?: "닉넴없음"
                 var title:String = document.getString("title")!!
@@ -72,8 +79,11 @@ class Tab3FeedFragment : Fragment(){
                 var downUrl:String = document.getString("downUrl")?: "1"
                 var profile:String = document.getString("profile")?: "1"
                 var fileName:String = document.getString("fileName")?: "1"
+                var documentId = document.id
+                var like:String = document.getString("like")?: "1"
+                var likeNum:Long = document.getLong("likeNum")?: 0L
 
-                postitem = FeedItem(email, nickname, title, text, date, downUrl, profile, fileName)
+                postitem = FeedItem(email, nickname, title, text, date, downUrl, profile, fileName,documentId,like,likeNum)
                 postList.add(0,postitem)
             }
 

@@ -87,6 +87,8 @@ class EditActivity : AppCompatActivity() {
                         data["text"] = text
                         data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
                         data["fileName"] = fileName
+                        data["like"] = "1"
+                        data["likeNum"] = 0
 
                         postRef.document("${now}_${G.userAccount?.email}").set(data)
                         finish()
@@ -106,6 +108,8 @@ class EditActivity : AppCompatActivity() {
                 data["text"] = text
                 data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
                 data["fileName"] = "1"
+                data["like"] = "1"
+                data["likeNum"] = 0
 
                 postRef.document("${now}_${G.userAccount?.email}").set(data)
                 finish()

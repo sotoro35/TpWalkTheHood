@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnSignup.setOnClickListener { startActivity(Intent(this,SignupActivity::class.java)) }
-        binding.tvGo.setOnClickListener { startActivity(Intent(this,MainActivity::class.java)) }
+        binding.tvGo.setOnClickListener { finish() }
         binding.btnLogin.setOnClickListener { clickLogin() }
 
         binding.btnLoginKakao.setOnClickListener { Toast.makeText(this, "카카오", Toast.LENGTH_SHORT).show() }

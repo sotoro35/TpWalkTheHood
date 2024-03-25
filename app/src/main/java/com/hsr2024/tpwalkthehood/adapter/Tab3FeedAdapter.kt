@@ -32,6 +32,7 @@ class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Ta
         var imgUrl= "http://ruaris.dothome.co.kr/WalkTheHood/${item.profile}"
         holder.binding.tvNickname.text = item.nickname
         holder.binding.tvTitle.text = item.title
+        holder.binding.tvLikenum.text = item.likeNum.toString()
 
         if (item.profile.equals("1") || item.profile == "") {
             holder.binding.ivProfile.setImageResource(R.drawable.profile)
@@ -60,6 +61,8 @@ class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Ta
             FeedString.downUrl = item.downUrl?: ""
             FeedString.profile = item.profile?: ""
             FeedString.fileName = item.fileName
+            FeedString.documentId = item.documentId
+            FeedString.likeNum = item.likeNum.toString()
 
             val intent = Intent(context,FeedDetailActivity::class.java)
             context.startActivity(intent)
