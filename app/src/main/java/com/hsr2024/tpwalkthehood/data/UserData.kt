@@ -59,6 +59,14 @@ data class FeedItem(
     var likeNum:Long
 )
 
+data class CommentItem(
+    var email: String,
+    var nickname: String,
+    var profile: String?,
+    var text: String,
+    var date: String
+)
+
 
 
 

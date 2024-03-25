@@ -14,7 +14,8 @@ import com.google.firebase.storage.ktx.storage
 import com.hsr2024.tpwalkthehood.FeedString
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
-import com.hsr2024.tpwalkthehood.data.FeedItem
+import com.hsr2024.tpwalkthehood.adapter.commentAdapter
+import com.hsr2024.tpwalkthehood.data.CommentItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityFeedDetailBinding
 import com.hsr2024.tpwalkthehood.tab5.EditMyFeed
 
@@ -30,7 +31,6 @@ class FeedDetailActivity : AppCompatActivity() {
 
     private var isLike= false
     var likeNumber = FeedString.likeNum.toInt()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,12 +152,56 @@ class FeedDetailActivity : AppCompatActivity() {
                     binding.favornum.text = (likeNumber-1).toString() // 좋아요 수 업데이트
                 }
             }
-
-
-
         }//setOnClickListener
 
+
+
     }//onCreate...
+
+
+    override fun onResume() {
+        super.onResume()
+
+        loadComment()
+
+    }
+
+    private fun saveComment(){
+
+    }
+
+    private fun loadComment(){
+        val db = Firebase.firestore.collection("Posts")
+        db.document("${FeedString.documentId}").collection("comments")
+            .get()
+            .addOnSuccessListener {
+                if (!it.isEmpty){
+                    val commentsList = mutableListOf<CommentItem>()
+                    var item:CommentItem
+
+                    for (document in it.documents){
+                        var email = document.getString("comment_email")
+                        var nickname = document.getString("comment_nickname")
+                        var profile = document.getString("comment_profile")
+                        var text = document.getString("text")
+                        var date = document.getString("date")
+
+                        item = CommentItem(email!!,nickname!!,profile,text!!,date!!)
+                        commentsList.add(0,item)
+
+                    }
+                    val adapter = commentAdapter(this,commentsList)
+                    binding.recyclerComment.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                    AlertDialog.Builder(this).setMessage("${commentsList.get(0).nickname}").create().show()
+                    Log.e("오류아님","댓글가져오기 성공")
+                }
+
+
+
+            }.addOnFailureListener {
+                Log.e("오류댓글","댓글가져오기 오류: ${it.message}") }
+    }
 
     private fun loadLike(){
         val doc = Firebase.firestore.collection("Posts")

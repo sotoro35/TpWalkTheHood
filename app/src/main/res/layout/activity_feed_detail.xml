@@ -209,24 +209,44 @@
         android:id="@+id/recycler_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:padding="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        android:nestedScrollingEnabled="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="12dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="댓글입력"
-        app:endIconDrawable="@drawable/send24"
-        app:endIconMode="custom"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="12dp">
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="1">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:gravity="center"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/save_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="댓글저장"
+                android:padding="8dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button"
+                android:layout_marginRight="30dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

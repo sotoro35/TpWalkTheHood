@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/comment_profile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/profile_stroke"
+        android:src="@drawable/profile"/>
+    
+    <TextView
+        android:id="@+id/comment_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hanbit"
+        android:text="닉네임"
+        android:textSize="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_alignBottom="@id/comment_profile"
+        android:layout_toRightOf="@id/comment_profile"/>
+
+    <TextView
+        android:id="@+id/comment_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/comment_profile"/>
+
+    <TextView
+        android:id="@+id/comment_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="20240325"
+        android:layout_below="@id/comment_text"
+        android:gravity="right"/>
+
+
+
+
+
+
+</RelativeLayout>
