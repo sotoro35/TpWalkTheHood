@@ -165,7 +165,7 @@
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="검색결과가 없습니다"
+            android:text="검색결과가 없습니다.\n The search result is not available.\n Searching is not possible from overseas."
             android:fontFamily="@font/hanbit"
             android:textSize="20sp"
             android:gravity="center_horizontal"
