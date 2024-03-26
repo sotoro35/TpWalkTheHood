@@ -174,6 +174,7 @@ class FeedDetailActivity : AppCompatActivity() {
         var comment = binding.inputLayoutComment.editText!!.text.toString()
         val db = Firebase.firestore.collection("Posts")
         val dbCom = db.document("${FeedString.documentId}").collection("comments")
+        var date = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
 
         if (comment != null){
             comment?.apply {
@@ -185,7 +186,7 @@ class FeedDetailActivity : AppCompatActivity() {
                 data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
                 data["comment_profile"] = G.userAccount?.imgfile?: "1"
 
-                dbCom.document().set(data)
+                dbCom.document("${date}${G.userAccount!!.email}").set(data)
                 Toast.makeText(this@FeedDetailActivity, "저장성공", Toast.LENGTH_SHORT).show()
                 binding.inputComment.setText("")
                 loadComment()
@@ -200,11 +201,14 @@ class FeedDetailActivity : AppCompatActivity() {
         db.document("${FeedString.documentId}").collection("comments")
             .get()
             .addOnSuccessListener {
+                val commentCount = it.size().toString()
+
                 if (!it.isEmpty){
                     val commentsList = mutableListOf<CommentItem>()
                     var item:CommentItem
 
                     for (document in it.documents){
+
                         var email = document.getString("comment_email")
                         var nickname = document.getString("comment_nickname")
                         var profile = document.getString("comment_profile")
@@ -218,6 +222,8 @@ class FeedDetailActivity : AppCompatActivity() {
                     val adapter = commentAdapter(this,commentsList)
                     binding.recyclerComment.adapter = adapter
                     adapter.notifyDataSetChanged()
+
+                    binding.tvCommentNum.text = "댓글 $commentCount"
                     Log.e("오류아님","댓글가져오기 성공")
                 }
 

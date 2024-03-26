@@ -26,7 +26,6 @@ class MyFeedActivity : AppCompatActivity() {
 
         binding.toolbar.setOnClickListener { finish() }
 
-        //testload()
         loadMyFeed()
 
     }
@@ -38,12 +37,13 @@ class MyFeedActivity : AppCompatActivity() {
 
     private fun loadMyFeed(){
         val myFeedRef = Firebase.firestore.collection("Posts")
-        myFeedRef
-            .whereEqualTo("email", G.userAccount?.email)
+
+        myFeedRef.whereEqualTo("email", G.userAccount?.email)
             .get()
             .addOnSuccessListener {querySnapshot ->
                 val postList = mutableListOf<FeedItem>()
                 var postitem: FeedItem
+
 
                 for (document in querySnapshot.documents){
                     var email: String = document.getString("email")!!
@@ -58,6 +58,7 @@ class MyFeedActivity : AppCompatActivity() {
                     var like:String = document.getString("like")?: "1"
                     var likeNum:Long = document.getLong("likeNum")?: 0L
 
+
                     postitem = FeedItem(email, nickname, title, text, date, downUrl, profile, fileName,documentId,like,likeNum)
                     postList.add(0,postitem)
                 }
@@ -65,79 +66,7 @@ class MyFeedActivity : AppCompatActivity() {
                 val adapter = MyFeedAdapter(this,postList)
                 binding.recyclerViewMyFeed.adapter = adapter
                 adapter.notifyDataSetChanged()
-
             }
     }//loadMyFeed
 
-    fun testload(){
-        val userEmail = G.userAccount?.email
-        if (userEmail != null) {
-            val myFeedRef = Firebase.firestore.collection("Posts")
-            myFeedRef
-                .whereEqualTo("email", userEmail)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    val postList = mutableListOf<FeedItem>()
-                    for (document in querySnapshot.documents) {
-                        val email: String = document.getString("email")!!
-                        val nickname: String? = document.getString("nickname") ?: "닉넴없음"
-                        val title: String = document.getString("title")!!
-                        val text: String = document.getString("text")!!
-                        val date: String = document.getString("date")!!
-                        val downUrl: String = document.getString("downUrl") ?: "1"
-                        val profile: String = document.getString("profile") ?: "1"
-                        val fileName:String = document.getString("fileName")?: "1"
-                        var documentId = document.id
-                        var like:String = document.getString("like")?: "1"
-                        var likeNum:Long = document.getLong("likeNum")?: 0L
-
-                        val postitem = FeedItem(email, nickname, title, text, date, downUrl, profile,fileName,documentId,like,likeNum)
-                        postList.add(0, postitem)
-                    }
-
-                    val adapter = MyFeedAdapter(this, postList)
-                    binding.recyclerViewMyFeed.adapter = adapter
-                    adapter.notifyDataSetChanged()
-                }
-                .addOnFailureListener { exception ->
-                    // 데이터 가져오기 실패 시 처리
-                    Log.w("오류Feed", "Error getting documents: ", exception)
-                }
-        } else {
-            AlertDialog.Builder(this).setMessage("이메일null").create().show()
-            Log.w("오류Feed", "사용자 이메일이 null입니다.")
-        }
-    }
-
-
-
-
-
-
-
-
-
-    fun clickFirebase(){
-
-//        val test: CollectionReference = Firebase.firestore.collection("emailUsers")
-//        test.firestore.document("sotoro11@naver.com").collection("FavoriteList").document("favorite001").get().addOnCompleteListener {
-//
-//            var s= it?.result?.data?.get("favorUrl").toString()
-//            AlertDialog.Builder(this).setMessage("$s").create().show()
-//        }
-//
-//        var db:CollectionReference = Firebase.firestore.collection("emailUsers")
-//            db.document("sotoro11@naver.com").collection("FavoriteList").get().addOnSuccessListener {
-//                result->
-//                for (document in result){
-//                    Log.d("db성공","${document.id} => ${document.data}")
-//                    AlertDialog.Builder(this).setMessage("${document.id} => ${document.data}").create().show()
-//                }
-//            }
-//                .addOnFailureListener { exception->
-//                    Log.d("db실패", "Error getting documents: ", exception)
-//                }
-
-
-    }
 }

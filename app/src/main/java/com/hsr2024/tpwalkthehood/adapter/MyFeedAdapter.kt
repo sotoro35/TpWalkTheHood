@@ -57,6 +57,7 @@ class MyFeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<MyFe
             FeedString.downUrl = item.downUrl?: ""
             FeedString.date = item.date
             FeedString.fileName = item.fileName
+            FeedString.documentId = item.documentId
             FeedString.likeNum = item.likeNum.toString()
 
             val intent = Intent(context, FeedDetailActivity::class.java)

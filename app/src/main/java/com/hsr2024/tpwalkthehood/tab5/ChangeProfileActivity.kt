@@ -63,6 +63,8 @@ class ChangeProfileActivity : AppCompatActivity() {
         binding.btnChangeProfileSave.setOnClickListener { clickChange() }
         binding.btnChangeImage.setOnClickListener { clickImage() }
 
+        binding.btnChangeProfileSave.isEnabled = true
+
 
     }//onCreate
 
@@ -133,6 +135,9 @@ class ChangeProfileActivity : AppCompatActivity() {
         var passwordConfirm = binding.inputPasswordConfirm.editText!!.text.toString()
 
         if (saveCheck(nickname,password,passwordConfirm)){
+
+            Glide.with(this).load(R.drawable.loading).into(binding.loading)
+            binding.btnChangeProfileSave.isEnabled = false
             // 먼저 String 데이터들은 Map collection 으로 묶어서 전송 : @PartMap
             val dataPart: MutableMap<String,String> = mutableMapOf()
             dataPart["email"] = G.userAccount!!.email
@@ -175,6 +180,8 @@ class ChangeProfileActivity : AppCompatActivity() {
                                 .show()
                             Log.e("정보변경 오류", "${t.message}")
                         }
+
+                        binding.btnChangeProfileSave.isEnabled = true
                     } // onFailure...
             })
         }//saveCheck
@@ -192,6 +199,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 
     // 저장하기하면 앱에 프로필 이미지 저장하기
     fun saveSharedPreferences(){
+
         // SharedPreference 로 저장하기 - "Data.xml"파일에 저장해주는 객체를 소환하기
         val preferences: SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
         // 저장작업 시작! -- 작성자 객체를 리턴해 줌

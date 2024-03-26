@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/hanbit"
             android:text="수정"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="#FFD08A"
             android:padding="8dp"
@@ -50,11 +50,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/hanbit"
             android:text="삭제"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="#FFD08A"
             android:padding="8dp"
             android:layout_above="@id/line4"
+            android:layout_marginRight="12dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/button"
             android:foreground="?android:attr/selectableItemBackground"/>
@@ -107,7 +108,7 @@
             android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#44444444"
+            android:background="#FFFFFF"
             android:layout_below="@id/title2"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
@@ -155,7 +156,7 @@
         android:layout_height="350dp"
         android:layout_centerInParent="true"
         android:layout_below="@id/tv_feed_text"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:adjustViewBounds="true"
         android:src="@drawable/logo_image"
         android:visibility="visible"
@@ -165,8 +166,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="right"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp">
+            android:layout_marginRight="16dp">
 
             <ImageView
                 android:id="@+id/favor_feed"
@@ -188,10 +190,10 @@
         android:id="@+id/line2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#44444444"
+        android:background="#22888888"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="4dp"/>
 
     <TextView
         android:id="@+id/tv_comment_num"
@@ -199,7 +201,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hanbit"
         android:text="댓글  0"
-        android:textSize="16sp"
+        android:textSize="1sp"
         android:textStyle="bold"
         android:padding="8dp"
         android:layout_marginTop="12dp"
@@ -209,7 +211,7 @@
         android:id="@+id/recycler_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
         android:nestedScrollingEnabled="true"/>
@@ -228,7 +230,9 @@
         android:hint="댓글입력"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="16dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#22888888"
+        android:backgroundTint="#22888888">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_comment"
             android:layout_width="match_parent"
@@ -245,7 +249,7 @@
                 android:padding="8dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/button"
-                android:layout_marginRight="30dp"/>
+                android:layout_marginRight="16dp"/>
 
         </LinearLayout>
 

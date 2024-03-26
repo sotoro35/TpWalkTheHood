@@ -56,7 +56,7 @@ data class FeedItem(
     var fileName:String,
     var documentId:String,
     var like:String,
-    var likeNum:Long
+    var likeNum:Long,
 )
 
 data class CommentItem(
@@ -64,7 +64,7 @@ data class CommentItem(
     var nickname: String,
     var profile: String?,
     var text: String,
-    var date: String
+    var date: String,
 )
 
 

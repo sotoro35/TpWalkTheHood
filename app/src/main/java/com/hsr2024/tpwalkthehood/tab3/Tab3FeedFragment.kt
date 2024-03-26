@@ -65,11 +65,10 @@ class Tab3FeedFragment : Fragment(){
 
         val loadRef = Firebase.firestore.collection("Posts")
         loadRef.get().addOnSuccessListener {querySnapshot->
+
             val postList = mutableListOf<FeedItem>()
             var postitem:FeedItem
-
             for (document in querySnapshot.documents){
-
 
                 var email: String = document.getString("email")!!
                 var nickname: String? = document.getString("nickname")?: "닉넴없음"

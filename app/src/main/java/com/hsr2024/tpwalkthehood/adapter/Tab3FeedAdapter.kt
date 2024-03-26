@@ -55,11 +55,11 @@ class Tab3FeedAdapter(val context: Context, val items:List<FeedItem>):Adapter<Ta
         holder.binding.root.setOnClickListener {
             FeedString.email = item.email
             FeedString.nickname = item.nickname?: ""
+            FeedString.profile = item.profile?: ""
             FeedString.title = item.title
             FeedString.text = item.text
             FeedString.date = item.date
             FeedString.downUrl = item.downUrl?: ""
-            FeedString.profile = item.profile?: ""
             FeedString.fileName = item.fileName
             FeedString.documentId = item.documentId
             FeedString.likeNum = item.likeNum.toString()

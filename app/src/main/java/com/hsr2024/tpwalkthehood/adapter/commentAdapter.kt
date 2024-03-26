@@ -82,7 +82,7 @@ class commentAdapter(val context: Context, var list: List<CommentItem>):Adapter<
     }
 
     fun date(dateString:String):String{
-        var inputFormat = SimpleDateFormat("yyyyMMddHHmm")
+        var inputFormat = SimpleDateFormat("yyyyMMddHHmmss")
         var outputFormat = SimpleDateFormat("yyyy년MM월dd월HH:mm")
 
         var date = inputFormat.parse(dateString)
