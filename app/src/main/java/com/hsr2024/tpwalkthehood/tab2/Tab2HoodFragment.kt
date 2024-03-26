@@ -108,7 +108,7 @@ class Tab2HoodFragment : Fragment() {
             view.findViewById<TextView>(R.id.btn_spinner).setOnClickListener {
                 G.categoryG = serchCategory
                 G.keywordG = clicksubKeyword
-                Toast.makeText(requireContext(), "${G.categoryG}:${G.keywordG}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "${G.categoryG}:${G.keywordG}", Toast.LENGTH_SHORT).show()
                 main.searchPlaces(G.categoryG, G.keywordG)
                 binding.mapView.start(mapLifeCycleCallback,mapReadyCallbak)
                 bottomSheetDialog.dismiss()

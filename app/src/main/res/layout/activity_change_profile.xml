@@ -7,6 +7,13 @@
     android:background="@color/white"
     tools:context=".tab5.ChangeProfileActivity">
 
+    <ImageView
+        android:id="@+id/loading"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -28,7 +35,9 @@
         android:textColor="#FF9900"
         android:layout_alignParentRight="true"
         android:layout_marginTop="12dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"/>
 
     <View
         android:layout_width="match_parent"
@@ -80,7 +89,9 @@
                         android:id="@+id/nickname_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:maxLength="8"
+                        android:minEms="2"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

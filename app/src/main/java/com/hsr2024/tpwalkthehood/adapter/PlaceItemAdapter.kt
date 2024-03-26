@@ -14,6 +14,8 @@ import com.hsr2024.tpwalkthehood.data.Place
 import com.hsr2024.tpwalkthehood.databinding.RecyclerviewSearchItemBinding
 import com.hsr2024.tpwalkthehood.tab1.ItemDetailActivity
 
+// tab1 리스트 아이템 디테일 목록
+
 class PlaceItemAdapter(val context: Context,val itemList:List<Place>): Adapter<PlaceItemAdapter.VHplace>(){
 
     inner class VHplace(val binding:RecyclerviewSearchItemBinding) : ViewHolder(binding.root)

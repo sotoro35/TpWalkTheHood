@@ -63,26 +63,9 @@
                 android:layout_alignParentBottom="true"
                 android:padding="4dp"/>
 
-            <ImageView
-                android:id="@+id/iv_comment"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/comment"
-                android:layout_toRightOf="@id/tv_likenum"
-                android:layout_alignParentBottom="true"/>
-
-            <TextView
-                android:id="@+id/tv_commentnum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/hanbit"
-                android:text="12"
-                android:layout_toRightOf="@id/iv_comment"
-                android:layout_alignParentBottom="true"
-                android:padding="4dp"/>
-
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 app:cardCornerRadius="10dp"

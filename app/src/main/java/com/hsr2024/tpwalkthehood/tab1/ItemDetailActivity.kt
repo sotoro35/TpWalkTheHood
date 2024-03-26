@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.hsr2024.tpwalkthehood.G
 import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.Place
+import com.hsr2024.tpwalkthehood.data.favoriteItem
 import com.hsr2024.tpwalkthehood.databinding.ActivityItemDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -48,22 +49,27 @@ class ItemDetailActivity : AppCompatActivity() {
 
         }//also..
 
+
         loadFavorite()
 
 
-        //postDto.favorite[uid!!] = true
+
         binding.favor.setOnClickListener {
 
             val db = Firebase.firestore.collection("favorites")
 
-            val data = place.place_url
-
             val favorlist: MutableMap<String, Any> = mutableMapOf(
+            "id" to "${place.id}",
             "place_name" to "${place.place_name}",
+            "category_name" to "${place.category_name}",
+            "phone" to "${place.phone}",
+            "address_name" to "${place.address_name}",
             "road_address_name" to "${place.road_address_name}",
+            "x" to "${place.x}",
+            "y" to "${place.y}",
+            "place_url" to "${place.place_url}",
             "place_distance" to "${place.distance}",
             "email" to "${G.userAccount!!.email}",
-            "url" to "${data}"
             )
 
             // 찜 버튼이 눌렸는지 여부 확인
@@ -98,23 +104,6 @@ class ItemDetailActivity : AppCompatActivity() {
                         Log.w("찜", "추가 에러", e)
                     }
             }
-
-//            if (!isFavorite) {
-//                favorRef.document("${G.userAccount!!.email}")
-//                .update("${data}", FieldValue.arrayUnion("${data}"))
-//                .addOnSuccessListener {
-//                    Toast.makeText(this, "찜 추가", Toast.LENGTH_SHORT).show()
-//                }.addOnFailureListener { e -> Log.w("찜", "추가에러", e) }
-//
-//
-//            } else {
-//                favorRef.document("${G.userAccount!!.email}")
-//                    .update("favorite", FieldValue.arrayRemove("${data}"))
-//                    .addOnSuccessListener {
-//                        Toast.makeText(this, "찜 삭제", Toast.LENGTH_SHORT).show()
-//                    }
-//                    .addOnFailureListener { e -> Log.w("찜", "삭제에러", e) }
-//            }
 
             isFavorite =! isFavorite // 불린값을 반대로 바꿀때.. 현재 false라면 true라고 바꾸는것
             if (isFavorite) binding.favor.setImageResource(R.drawable.heart_select)

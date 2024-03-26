@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.annotation.LayoutRes
 import com.hsr2024.tpwalkthehood.databinding.ItemSpinnerOptionBinding
 
+// tab2 드롭다운 목록
+
 class OptionSpinnerAdapter(context: Context, @LayoutRes private val resId:Int, private val menuList:List<String>)
     : ArrayAdapter<String>(context,resId,menuList){
 

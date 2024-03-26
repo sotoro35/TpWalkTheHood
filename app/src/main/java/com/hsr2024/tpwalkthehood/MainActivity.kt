@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -24,6 +26,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.gms.common.internal.service.Common
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -131,18 +134,44 @@ class MainActivity : AppCompatActivity() {
 
         // 플로팅버튼 클릭시 새로고침..
         binding.reload.setOnClickListener {
-            requestMyLocation()
+
+            when (binding.bnvView.selectedItemId) {
+                R.id.menu_walk -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace((R.id.container_fragment), Tab1WlakFragmentTest(),).commit()
+                    requestMyLocation()
+                }
+
+                R.id.menu_hood -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace((R.id.container_fragment), Tab2HoodFragment(),).commit()
+                    searchPlaces("FD6", "음식점")
+                }
+
+                R.id.menu_feed -> if (G.userAccount?.email == null || G.userAccount?.email == "") supportFragmentManager.beginTransaction()
+                    .replace((R.id.container_fragment), GuestFragment(),).commit()
+                else {
+                    supportFragmentManager.beginTransaction().replace((R.id.container_fragment), Tab3FeedFragment()).commit()
+                    requestMyLocation()
+                }
+
+            }
+
             val animation = AnimationUtils.loadAnimation(this, R.anim.floatting_rotate)
             binding.reload.startAnimation(animation)
-        }
+
+        }// reload....
 
     }// onCreate..
 
+
     override fun onResume() {
         super.onResume()
-        if (L.login) binding.bnvView.selectedItemId= R.id.menu_walk
+        if (L.login) binding.bnvView.selectedItemId = R.id.menu_walk
         L.login = false
+
     }
+
 
 
     // [위치작업] 퍼미션을 받아올 대행사객체
@@ -184,7 +213,7 @@ class MainActivity : AppCompatActivity() {
 
             myLocation = p0.lastLocation // 마지막 추척된 위치
             locationProviderClient.removeLocationUpdates(this) // 여기서 this는 콜백객체
-            Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "${myLocation?.longitude}:${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
 
             curPoint = dfsXyConv(myLocation?.latitude?: 37.5666, myLocation?.longitude?: 126.9782)
             //차후 키워드 검색시... 파싱하는 작업 메소드 실행
@@ -192,18 +221,31 @@ class MainActivity : AppCompatActivity() {
             //searchPlaces()
 
             // [날씨에게 좌표넘기기]
-            if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_walk) {
-                val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
-                //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
-                fragment.clickCategory(findViewById(R.id.category_01))
-                fragment.WeatherGet(curPoint!!.x.toString(),curPoint!!.y.toString())
-                // [ 동 구해오기 ]
-                fragment.regionNameRetrofit(myLocation?.longitude.toString(),myLocation?.latitude.toString())
+            val selectedItemId = findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId
+            when (selectedItemId) {
+               R.id.menu_walk -> {
+                    val fragment =
+                        supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
+                    //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
+                    fragment.clickCategory(findViewById(R.id.category_01))
+                    fragment.WeatherGet(curPoint!!.x.toString(), curPoint!!.y.toString())
+                    // [ 동 구해오기 ]
+                    fragment.regionNameRetrofit(
+                        myLocation?.longitude.toString(),
+                        myLocation?.latitude.toString()
+                    )
+                }
 
-            }else if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_hood) {
-                    val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab2HoodFragment
+                R.id.menu_hood -> {
                     searchPlaces("FD6", "음식점")
                 }
+
+                R.id.menu_feed -> {
+                    val fragment =
+                        supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab3FeedFragment
+                    fragment.loadFeed()
+                }
+            }
         }
     } // locationcallback....
 
@@ -250,6 +292,7 @@ class MainActivity : AppCompatActivity() {
 
     //[검색작업] 카카오 API 검색
     fun searchPlaces(searchCategory:String,searchKeyword:String){
+
 
         findViewById<ProgressBar>(R.id.progressBar)?.visibility = View.VISIBLE
 

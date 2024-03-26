@@ -28,7 +28,7 @@ class EditActivity : AppCompatActivity() {
     val binding by lazy { ActivityEditBinding.inflate(layoutInflater) }
 
     private var imgUri: Uri?= null //선택된 이미지의 콘텐츠 주소(경로)
-    private var downloadUrl:String? = null
+    private var downUrl:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,48 +60,61 @@ class EditActivity : AppCompatActivity() {
         binding.myeditSave.isEnabled = false
 
         if (title.isNotEmpty() && text.isNotEmpty()) {
-            binding.editProgress.visibility = View.VISIBLE
+            Glide.with(this).load(R.drawable.loading).into(binding.loading)
+
 
             // 저장소의 이미지 업로드 참조객체 얻기
-            val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date())
+            val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
             val imgRef: StorageReference = Firebase.storage.getReference("FeedImage/$fileName")
+            val now = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
 
             // 이미지가 있다면 저장소에 저장
             if (imgUri !== null) {
                 imgRef.putFile(imgUri!!).addOnSuccessListener {
-                    downloadUrl = it.toString()
-                    // 글 내용을 저장
-                    val postRef = Firebase.firestore.collection("Posts")
-                    var data: MutableMap<String, Any> = mutableMapOf()
-                    data["profile"] = G.userAccount?.imgfile ?: R.drawable.profile
-                    data["downloadUrl"] = downloadUrl?:""
-                    data["email"] = G.userAccount!!.email
-                    data["nickname"] = G.userAccount?.nickname ?: ""
-                    data["title"] = title
-                    data["text"] = text
-                    data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                    imgRef.downloadUrl.addOnSuccessListener {
+                        downUrl = it.toString()
 
-                    postRef.document().set(data)
-                    binding.editProgress.visibility = View.GONE
-                    binding.myeditSave.isEnabled = true
-                    finish()
-                }
+                        // 글 내용을 저장
+                        val postRef = Firebase.firestore.collection("Posts")
+                        var data: MutableMap<String, Any> = mutableMapOf()
+                        if (G.userAccount?.imgfile == "" || G.userAccount?.imgfile == null){
+                            data["profile"] = "1"
+                        }else data["profile"] = G.userAccount?.imgfile!!
+                        data["downUrl"] = downUrl?:"1"
+                        data["email"] = G.userAccount!!.email
+                        data["nickname"] = G.userAccount?.nickname ?: ""
+                        data["title"] = title
+                        data["text"] = text
+                        data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                        data["fileName"] = fileName
+                        data["like"] = "1"
+                        data["likeNum"] = 0
+
+                        postRef.document("${now}_${G.userAccount?.email}").set(data)
+                        finish()
+                    }
+                }//addOnSuccessListener
             }else {
-                // 글 내용을 저장
+                // 사진없는 글 내용을 저장
                 val postRef = Firebase.firestore.collection("Posts")
                 var data: MutableMap<String, Any> = mutableMapOf()
-                data["profile"] = G.userAccount?.imgfile ?: R.drawable.profile
+                if (G.userAccount?.imgfile == "" || G.userAccount?.imgfile == null){
+                    data["profile"] = "1"
+                }else data["profile"] = G.userAccount?.imgfile!!
+                data["downUrl"] = downUrl?:"1"
                 data["email"] = G.userAccount!!.email
                 data["nickname"] = G.userAccount?.nickname ?: ""
                 data["title"] = title
                 data["text"] = text
                 data["date"] = SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA).format(Date()).toString()
+                data["fileName"] = "1"
+                data["like"] = "1"
+                data["likeNum"] = 0
 
-                postRef.document().set(data)
-                binding.editProgress.visibility = View.GONE
-                binding.myeditSave.isEnabled = true
+                postRef.document("${now}_${G.userAccount?.email}").set(data)
                 finish()
             }
+
         }else {
             AlertDialog.Builder(this).setMessage("모두 입력해주세요").create().show()
             binding.myeditSave.isEnabled = true

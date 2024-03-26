@@ -51,8 +51,20 @@ data class FeedItem(
     var title:String,
     var text:String,
     var date:String,
-    var downloadUrl:String?,
-    var profile:String?
+    var downUrl:String?,
+    var profile:String?,
+    var fileName:String,
+    var documentId:String,
+    var like:String,
+    var likeNum:Long,
+)
+
+data class CommentItem(
+    var email: String,
+    var nickname: String,
+    var profile: String?,
+    var text: String,
+    var date: String,
 )
 
 

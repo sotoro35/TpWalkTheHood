@@ -29,6 +29,7 @@ import com.hsr2024.tpwalkthehood.network.RetrofitService
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.concurrent.TimeUnit
 
 // 1번째이동.. 내 프로필 수정버전
 // 불러오기는 비밀번호를 뺀 나머지를 다 불러옴. 연결된 계정을 보여줌. 이메일주소 or 카카오 or 구글 or 네이버
@@ -62,6 +64,8 @@ class ChangeProfileActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.btnChangeProfileSave.setOnClickListener { clickChange() }
         binding.btnChangeImage.setOnClickListener { clickImage() }
+
+        binding.btnChangeProfileSave.isEnabled = true
 
 
     }//onCreate
@@ -132,7 +136,11 @@ class ChangeProfileActivity : AppCompatActivity() {
         var password = binding.inputPassword.editText!!.text.toString()
         var passwordConfirm = binding.inputPasswordConfirm.editText!!.text.toString()
 
+
         if (saveCheck(nickname,password,passwordConfirm)){
+
+            Glide.with(this).load(R.drawable.loading).into(binding.loading)
+            binding.btnChangeProfileSave.isEnabled = false
             // 먼저 String 데이터들은 Map collection 으로 묶어서 전송 : @PartMap
             val dataPart: MutableMap<String,String> = mutableMapOf()
             dataPart["email"] = G.userAccount!!.email
@@ -175,6 +183,8 @@ class ChangeProfileActivity : AppCompatActivity() {
                                 .show()
                             Log.e("정보변경 오류", "${t.message}")
                         }
+
+                        binding.btnChangeProfileSave.isEnabled = true
                     } // onFailure...
             })
         }//saveCheck
@@ -192,6 +202,7 @@ class ChangeProfileActivity : AppCompatActivity() {
 
     // 저장하기하면 앱에 프로필 이미지 저장하기
     fun saveSharedPreferences(){
+
         // SharedPreference 로 저장하기 - "Data.xml"파일에 저장해주는 객체를 소환하기
         val preferences: SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
         // 저장작업 시작! -- 작성자 객체를 리턴해 줌

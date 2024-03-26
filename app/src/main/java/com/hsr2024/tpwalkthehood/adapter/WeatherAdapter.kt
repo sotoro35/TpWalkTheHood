@@ -10,6 +10,7 @@ import com.hsr2024.tpwalkthehood.R
 import com.hsr2024.tpwalkthehood.data.ModelWeather
 import com.hsr2024.tpwalkthehood.databinding.RecyclerViewWeatherBinding
 
+// tab1 날씨 리사이클러뷰
 class WeatherAdapter(val context: Context,var items:List<ModelWeather>):Adapter<WeatherAdapter.VHweather>() {
     inner class VHweather(val binding:RecyclerViewWeatherBinding):ViewHolder(binding.root)
 

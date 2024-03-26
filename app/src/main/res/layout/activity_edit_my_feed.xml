@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,17 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".tab5.EditMyFeed">
+
+    <ImageView
+        android:id="@+id/loading"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,6 +33,7 @@
             app:titleCentered="true"/>
 
         <TextView
+            android:id="@+id/my_feed_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hanbit"
@@ -56,9 +68,11 @@
         app:counterMaxLength="20"
         android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:maxLength="20"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,6 +82,7 @@
         android:layout_weight="1"
         android:hint="내용을 입력하세요">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
@@ -97,4 +112,6 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
