@@ -29,6 +29,7 @@ import com.hsr2024.tpwalkthehood.network.RetrofitService
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.concurrent.TimeUnit
 
 // 1번째이동.. 내 프로필 수정버전
 // 불러오기는 비밀번호를 뺀 나머지를 다 불러옴. 연결된 계정을 보여줌. 이메일주소 or 카카오 or 구글 or 네이버
@@ -133,6 +135,7 @@ class ChangeProfileActivity : AppCompatActivity() {
         var nickname = binding.inputNickname.editText!!.text.toString()
         var password = binding.inputPassword.editText!!.text.toString()
         var passwordConfirm = binding.inputPasswordConfirm.editText!!.text.toString()
+
 
         if (saveCheck(nickname,password,passwordConfirm)){
 
