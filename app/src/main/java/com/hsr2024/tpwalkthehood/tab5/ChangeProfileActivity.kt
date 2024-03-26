@@ -64,6 +64,7 @@ class ChangeProfileActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.btnChangeProfileSave.setOnClickListener { clickChange() }
         binding.btnChangeImage.setOnClickListener { clickImage() }
+        binding.tvEmail.text = "연결된 계정\n${G.userAccount?.email}"
 
         binding.btnChangeProfileSave.isEnabled = true
 

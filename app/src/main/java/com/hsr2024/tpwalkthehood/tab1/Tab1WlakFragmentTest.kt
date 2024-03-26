@@ -87,18 +87,27 @@ class Tab1WlakFragmentTest : Fragment(){
             placeAdapter.notifyDataSetChanged()
         }
 
+        binding.ivWeather.isEnabled =true
         // 날씨 클릭시 다이얼로그...
         try {
             binding.ivWeather.setOnClickListener {
-                main.requestMyLocation()
+
                 val dialogView = layoutInflater.inflate(R.layout.dialog_weather, null)
                 val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_weather)
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setView(dialogView)
+                if (main.myLocation != null){
+                    binding.ivWeather.isEnabled = false
+                    main.requestMyLocation()
+                    val weatherAdapter = WeatherAdapter(requireContext(), weatherArr)
+                    recyclerView.adapter = weatherAdapter
 
-                val weatherAdapter = WeatherAdapter(requireContext(), weatherArr)
-                recyclerView.adapter = weatherAdapter
-                builder.show()
+                    builder.show()
+
+                    binding.ivWeather.isEnabled = true
+
+                } else main.myLocation?: AlertDialog.Builder(requireContext()).setMessage("다시 시도해주세요").create().show()
+
             }
         }catch ( e:Exception){
             AlertDialog.Builder(requireContext()).setMessage("다시 시도해주세요").create().show()

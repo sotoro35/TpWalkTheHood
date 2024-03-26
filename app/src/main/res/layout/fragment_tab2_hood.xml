@@ -34,7 +34,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
     <RelativeLayout
@@ -55,7 +55,8 @@
             android:fontFamily="@font/hanbit"
             android:text=" "
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"/>
 
         <TextView
             android:id="@+id/hood_address_name"
@@ -73,7 +74,8 @@
             android:text="10M"
             android:textColor="#FF9900"
             android:layout_below="@id/hood_address_name"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"/>
 
     </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

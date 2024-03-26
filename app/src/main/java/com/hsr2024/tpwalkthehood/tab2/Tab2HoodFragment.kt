@@ -174,12 +174,12 @@ class Tab2HoodFragment : Fragment() {
                     label.setStyles(R.drawable.pin_g)
                     val layout = GuiLayout(Orientation.Vertical)
                     layout.setPadding(16,16,16,16)
-                    layout.setBackground(R.drawable.pin_g2,true)
+                    layout.setBackground(R.drawable.pin_s,true)
 
                     this.texts.forEach {
                         val guiText = GuiText(it)
                         guiText.setTextSize(30)
-                        guiText.setTextColor(Color.GREEN)
+                        guiText.setTextColor(Color.BLUE)
                         layout.addView(guiText)
                     }
 
@@ -189,7 +189,7 @@ class Tab2HoodFragment : Fragment() {
                     options.setTag(this.tag)
 
                     kakaoMap.mapWidgetManager!!.infoWindowLayer.removeAll()
-                   kakaoMap.mapWidgetManager!!.infoWindowLayer.addInfoWindow(options)
+                    kakaoMap.mapWidgetManager!!.infoWindowLayer.addInfoWindow(options)
 
                     place= tag as Place
                     binding.hoodPlaceName.text = place.place_name
@@ -199,16 +199,6 @@ class Tab2HoodFragment : Fragment() {
                 }//label.apply
 
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-
-                //var labelStyle=  LabelStyle.from(R.drawable.pin_g)
-                //                var labelStyle2=  LabelStyle.from(R.drawable.pin_y)
-                //                // 이전에 클릭된 레이블이 있으면 해당 레이블의 스타일을 원래대로 복원
-                //                previouslyClickedLabel?.changeStyles(LabelStyles.from(labelStyle))
-                //                // 현재 클릭된 레이블의 스타일 변경
-                //                label.changeStyles(LabelStyles.from(labelStyle2))
-                //                // 현재 클릭된 레이블을 이전에 클릭된 레이블로 설정
-                //                previouslyClickedLabel = label
 
             }// setOnLabelClickListener....
         }// onMap

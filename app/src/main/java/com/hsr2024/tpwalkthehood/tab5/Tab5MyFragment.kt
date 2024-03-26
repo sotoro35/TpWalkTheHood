@@ -83,6 +83,11 @@ class Tab5MyFragment : Fragment(){
         builder.setView(dialogV)
         alertDialog = builder.create()
 
+        dialogV.findViewById<TextView>(R.id.btn_x).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+
         dialogV.findViewById<TextView>(R.id.deleteOk).setOnClickListener {
             val passwordV = dialogV.findViewById<TextInputLayout>(R.id.input_password_delete)
             var password = passwordV.editText!!.text.toString()
@@ -104,10 +109,13 @@ class Tab5MyFragment : Fragment(){
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 var s = response.body()
                 AlertDialog.Builder(requireContext()).setMessage(s).create().show()
-                clickLogout()
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    alertDialog.dismiss() },2000)
+                if (s.equals("회원탈퇴 되었습니다.\n이용해주셔서 감사합니다")) {
+                    clickLogout()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        alertDialog.dismiss() },2000)
+                }
+
             }
 
 

@@ -7,17 +7,16 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
     <FrameLayout
         android:id="@+id/container_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:layout_weight="1"/>
 
-    </RelativeLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bab"
@@ -47,5 +46,7 @@
         app:layout_anchor="@id/bab"
         android:src="@drawable/icon_reload"
         app:tint="@null"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
