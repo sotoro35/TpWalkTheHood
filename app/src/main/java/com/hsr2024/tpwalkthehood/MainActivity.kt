@@ -134,30 +134,30 @@ class MainActivity : AppCompatActivity() {
 
         // 플로팅버튼 클릭시 새로고침..
         binding.reload.setOnClickListener {
+
+            when (binding.bnvView.selectedItemId) {
+                R.id.menu_walk -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace((R.id.container_fragment), Tab1WlakFragmentTest(),).commit()
+                    requestMyLocation()
+                }
+
+                R.id.menu_hood -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace((R.id.container_fragment), Tab2HoodFragment(),).commit()
+                    searchPlaces("FD6", "음식점")
+                }
+
+                R.id.menu_feed -> if (G.userAccount?.email == null || G.userAccount?.email == "") supportFragmentManager.beginTransaction()
+                    .replace((R.id.container_fragment), GuestFragment(),).commit()
+                else {
+                    supportFragmentManager.beginTransaction().replace((R.id.container_fragment), Tab3FeedFragment()).commit()
+                    requestMyLocation()
+                }
+
+            }
+
             val animation = AnimationUtils.loadAnimation(this, R.anim.floatting_rotate)
-
-            animation.setAnimationListener(object :Animation.AnimationListener{
-                override fun onAnimationStart(animation: Animation?) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation?) {
-                    val fragment = supportFragmentManager.findFragmentById(R.id.container_fragment) as? Tab3FeedFragment
-                    fragment?.let {
-                        when {
-                            binding.bnvView.selectedItemId == R.id.menu_walk || binding.bnvView.selectedItemId == R.id.menu_hood
-                            -> requestMyLocation()
-
-                            binding.bnvView.selectedItemId == R.id.menu_feed
-                            -> it.loadFeed()
-                        }
-                    }
-                }
-                override fun onAnimationRepeat(animation: Animation?) {
-
-                }
-
-            })
             binding.reload.startAnimation(animation)
 
         }// reload....
@@ -170,19 +170,6 @@ class MainActivity : AppCompatActivity() {
         if (L.login) binding.bnvView.selectedItemId = R.id.menu_walk
         L.login = false
 
-    }
-
-    // 탭3을 연타하지 않도록 설정..
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.bnv_menu,menu)
-
-        return true
-    }
-
-    fun MenuItemEnabledState(isEnabled: Boolean){
-        val menuItem = binding.bnvView.menu.findItem(R.id.menu_feed)
-        menuItem?.isEnabled = isEnabled
     }
 
 
@@ -234,18 +221,31 @@ class MainActivity : AppCompatActivity() {
             //searchPlaces()
 
             // [날씨에게 좌표넘기기]
-            if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_walk) {
-                val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
-                //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
-                fragment.clickCategory(findViewById(R.id.category_01))
-                fragment.WeatherGet(curPoint!!.x.toString(),curPoint!!.y.toString())
-                // [ 동 구해오기 ]
-                fragment.regionNameRetrofit(myLocation?.longitude.toString(),myLocation?.latitude.toString())
+            val selectedItemId = findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId
+            when (selectedItemId) {
+               R.id.menu_walk -> {
+                    val fragment =
+                        supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab1WlakFragmentTest
+                    //AlertDialog.Builder(this@MainActivity).setMessage("${curPoint!!.x}:${curPoint!!.y}").create().show()
+                    fragment.clickCategory(findViewById(R.id.category_01))
+                    fragment.WeatherGet(curPoint!!.x.toString(), curPoint!!.y.toString())
+                    // [ 동 구해오기 ]
+                    fragment.regionNameRetrofit(
+                        myLocation?.longitude.toString(),
+                        myLocation?.latitude.toString()
+                    )
+                }
 
-            }else if (findViewById<BottomNavigationView>(R.id.bnv_view).selectedItemId == R.id.menu_hood) {
-                    val fragment=  supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab2HoodFragment
+                R.id.menu_hood -> {
                     searchPlaces("FD6", "음식점")
                 }
+
+                R.id.menu_feed -> {
+                    val fragment =
+                        supportFragmentManager.findFragmentById(R.id.container_fragment) as Tab3FeedFragment
+                    fragment.loadFeed()
+                }
+            }
         }
     } // locationcallback....
 

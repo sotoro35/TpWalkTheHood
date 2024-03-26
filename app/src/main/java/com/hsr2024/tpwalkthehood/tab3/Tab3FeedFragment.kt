@@ -63,6 +63,7 @@ class Tab3FeedFragment : Fragment(){
 
   fun loadFeed(){
 
+
         val loadRef = Firebase.firestore.collection("Posts")
         loadRef.get().addOnSuccessListener {querySnapshot->
 
